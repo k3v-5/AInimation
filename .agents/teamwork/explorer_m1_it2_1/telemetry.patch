@@ -1,0 +1,97 @@
+--- a/backend/core/telemetry.py
++++ b/backend/core/telemetry.py
+@@ -20,8 +20,11 @@
+ import inspect
+ import logging
+ from typing import (
++    AsyncContextManager,
+     AsyncIterator,
++    Awaitable,
+     Callable,
++    Coroutine,
+     Deque,
+     Dict,
+     List,
+@@ -138,7 +141,7 @@
+         callback_or_replay: Union[TelemetryEventCallback, bool] = True,
+         replay_history: bool = True,
+         max_queue_size: Optional[int] = None,
+-    ) -> Union[AsyncIterator[asyncio.Queue[TelemetryEvent]], Callable[[], None]]:
++    ) -> Union[AsyncContextManager[asyncio.Queue[TelemetryEvent]], Callable[[], None]]:
+         """
+         Flexible subscriber method supporting both callback functions and async context managers.
+ 
+@@ -193,6 +196,14 @@
+                 finally:
+                     queue.task_done()
+ 
++    @staticmethod
++    async def _wrap_awaitable(awaitable: Awaitable[object]) -> None:
++        """Wrap an awaitable in a coroutine with exception logging."""
++        try:
++            await awaitable
++        except Exception as exc:
++            logger.warning("Error executing async telemetry callback subscriber: %s", exc)
++
+     def _invoke_callbacks(self, event: TelemetryEvent) -> None:
+         """Execute all registered callback subscribers."""
+         for callback in list(self._callbacks):
+@@ -201,7 +212,22 @@
+                 if inspect.isawaitable(result):
+                     loop = self.get_event_loop()
+                     if loop is not None and loop.is_running():
+-                        asyncio.create_task(result)  # type: ignore[arg-type]
++                        coro: Coroutine[object, object, None] = self._wrap_awaitable(result)
++                        try:
++                            current_loop = asyncio.get_running_loop()
++                        except RuntimeError:
++                            current_loop = None
++
++                        if current_loop is loop:
++                            loop.create_task(coro)
++                        else:
++                            asyncio.run_coroutine_threadsafe(coro, loop)
++                    else:
++                        logger.warning(
++                            "TelemetryBus._invoke_callbacks: async callback dropped; no running event loop available."
++                        )
++                        if inspect.iscoroutine(result):
++                            result.close()
+             except Exception as exc:
+                 logger.warning("Error executing telemetry callback subscriber: %s", exc)
+ 
+@@ -246,24 +272,23 @@
+     def emit_threadsafe(self, event: TelemetryEvent) -> None:
+         """
+         Thread-safe emission helper for synchronous background worker threads.
+-        Schedules `emit` on the registered asyncio event loop or invokes callbacks immediately.
+-        """
+-        # Update history and latest caches synchronously
++        Schedules `emit` on the registered asyncio event loop or invokes callbacks immediately
++        if no event loop is active.
++        """
++        loop = self.get_event_loop()
++        if loop is not None and loop.is_running():
++            asyncio.run_coroutine_threadsafe(self.emit(event), loop)
++            return
++
++        # Fallback when running without an active event loop (e.g. standalone CLI or unit test)
+         self._history.append(event)
+         if isinstance(event, ProgressEvent):
+             self._latest_progress = event
+         elif isinstance(event, PlanProposalEvent):
+             self._latest_plan = event
+ 
+-        # Always invoke sync callbacks immediately
+         self._invoke_callbacks(event)
+-
+-        loop = self.get_event_loop()
+-        if loop is None or not loop.is_running():
+-            logger.debug("TelemetryBus.emit_threadsafe running without active event loop; queue broadcast deferred.")
+-            return
+-
+-        asyncio.run_coroutine_threadsafe(self.emit(event), loop)
++        logger.debug("TelemetryBus.emit_threadsafe running without active event loop; queue broadcast deferred.")
+ 
+     def get_history(self) -> List[TelemetryEvent]:
+         """Return a snapshot of recent telemetry events."""

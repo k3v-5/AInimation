@@ -1,0 +1,144 @@
+--- tests/e2e/test_tier1_features.py
++++ tests/e2e/test_tier1_features.py
+@@ -369,9 +369,18 @@
+ @pytest.mark.tier1
+ def test_f_ui_07_intermediate_asset_cards() -> None:
+     """F-UI-07: Intermediate asset cards (stems, 3D mesh, mocap clip, rendered video)."""
+     project_root = Path(__file__).resolve().parent.parent.parent
+-    comp_path = project_root / "src" / "components"
+-    if not comp_path.exists():
+-        pytest.skip("Asset cards pending Milestone 5 frontend implementation")
+-    assert comp_path.is_dir()
++    types_file = project_root / "src" / "types" / "index.ts"
++    copilot_file = project_root / "src" / "components" / "copilot" / "CopilotChat.tsx"
++    
++    assert types_file.is_file(), "src/types/index.ts must exist"
++    types_content = types_file.read_text(encoding="utf-8")
++    assert "output_preview" in types_content, "PlanStepSchema must declare output_preview"
++    assert "asset_ready" in types_content, "TelemetryEventSchema must support asset_ready event"
++    
++    assert copilot_file.is_file(), "src/components/copilot/CopilotChat.tsx must exist"
++    copilot_content = copilot_file.read_text(encoding="utf-8")
++    has_card_logic = any(
++        kw in copilot_content
++        for kw in ("output_preview", "AssetCard", "asset_card", "glb", "stems", "mocap", "mesh")
++    )
++    assert has_card_logic, (
++        "CopilotChat or component tree must declare or render intermediate asset cards (stems, mesh, mocap, or output_preview)"
++    )
+ 
+ 
+ @pytest.mark.tier1
+@@ -424,10 +433,37 @@
+ @pytest.mark.tier1
+ def test_f_doc_01_documentation_completeness() -> None:
+     """F-DOC-01: Comprehensive README.md and MCP tool documentation catalog."""
+     project_root = Path(__file__).resolve().parent.parent.parent
+     readme_path = project_root / "README.md"
+     if not readme_path.exists():
+         pytest.skip("README.md pending Milestone 6 documentation phase")
+     content = readme_path.read_text(encoding="utf-8")
+-    assert "IANIMATION" in content
++    
++    # 1. MCP Tools catalog with JSON Schema definitions
++    required_tools = [
++        "analyze_audio",
++        "image_to_3d",
++        "auto_rig",
++        "extract_mocap",
++        "build_ue5_scene",
++        "render_video",
++    ]
++    for tool in required_tools:
++        assert tool in content, f"README.md must document tool '{tool}'"
++    
++    # Tool JSON Schemas or parameters specification
++    assert any(term in content for term in ("JSON Schema", "json_schema", "schema", "Schema", "Parameters")), (
++        "README.md must specify JSON schemas or parameter specifications for FastMCP tools"
++    )
++    
++    # 2. Invocation call examples
++    assert any(term in content for term in ("Ejemplo de Llamada", "Invocation Example", "call_tool", "jsonrpc", "ejemplo", "example")), (
++        "README.md must provide invocation call examples"
++    )
++    
++    # 3. Environment variables table
++    required_env_vars = ["FAL_KEY", "TRIPO_API_KEY", "CAS_CACHE_DIR"]
++    for env_var in required_env_vars:
++        assert env_var in content, f"README.md must document environment variable '{env_var}'"
++        
++    # 4. Default communication ports
++    required_ports = ["30010", "30020", "8888"]
++    for port in required_ports:
++        assert port in content, f"README.md must document standard port '{port}'"
+ 
+ 
+ @pytest.mark.tier1
+ def test_f_e2e_01_suite_pass_threshold() -> None:
+     """F-E2E-01: Pass 100% of the opaque-box E2E test suite (Tiers 1-4)."""
+-    # Self-validating assertion: this test runs and passes within the suite
+-    assert True
++    import json
++    project_root = Path(__file__).resolve().parent.parent.parent
++    report_path = project_root / "tests" / "e2e" / "reports" / "e2e_results.json"
++    if not report_path.exists():
++        pytest.skip("E2E results report tests/e2e/reports/e2e_results.json not found")
++    
++    with open(report_path, "r", encoding="utf-8") as f:
++        data = json.load(f)
++        
++    summary = data.get("summary", {})
++    total = summary.get("total_tests", 0)
++    passed = summary.get("passed", 0)
++    failed = summary.get("failed", 0)
++    coverage = summary.get("feature_coverage_pct", 0.0)
++    
++    assert total >= 58, f"Expected total_tests >= 58, got {total}"
++    assert passed == total, f"Expected all tests to pass ({total}), but {passed} passed and {failed} failed"
++    assert failed == 0, f"Expected 0 failed tests, got {failed}"
++    assert coverage == 100.0, f"Expected 100.0% feature coverage, got {coverage}%"
++    assert summary.get("features_covered", 0) >= 41, f"Expected at least 41 features covered"
+ 
+ 
+ @pytest.mark.tier1
+ def test_f_e2e_02_adversarial_stress_pass() -> None:
+-    """F-E2E-02: Adversarial coverage hardening (Tier 5) with Challenger stress testing."""
+-    assert True
++    """F-E2E-02: Adversarial coverage hardening (Tier 5) with Challenger stress testing & AST Zero-Any verification."""
++    import ast
++    project_root = Path(__file__).resolve().parent.parent.parent
++    backend_dir = project_root / "backend"
++    
++    # 1. AST Static Verification: Zero-Any policy across all backend modules
++    any_violations: List[str] = []
++    for py_file in backend_dir.rglob("*.py"):
++        if "__pycache__" in str(py_file):
++            continue
++        tree = ast.parse(py_file.read_text(encoding="utf-8"), filename=str(py_file))
++        for node in ast.walk(tree):
++            if isinstance(node, ast.ImportFrom):
++                for alias in node.names:
++                    if alias.name == "Any":
++                        any_violations.append(f"{py_file.name}:{node.lineno}: ImportFrom Any")
++            elif isinstance(node, ast.Name) and node.id == "Any":
++                any_violations.append(f"{py_file.name}:{node.lineno}: Name Any")
++    
++    assert not any_violations, f"Forbidden 'Any' found in backend Python files: {any_violations}"
++
++    # 2. Adversarial GLB Container Integrity Verification
++    from backend.ue5.client import _validate_glb_container
++    with pytest.raises(ValueError, match="smaller than 12-byte header"):
++        _validate_glb_container(b"")
++    with pytest.raises(ValueError, match="Invalid glTF magic"):
++        _validate_glb_container(b"BAD_MAGIC_HEADER_TEST")
++
++    # 3. Adversarial CAS Path Traversal Resistance
++    from backend.core.cache import ContentAddressableStorage
++    cas = ContentAddressableStorage(cache_dir=project_root / ".cache_test")
++    with pytest.raises(ValueError, match="Path traversal"):
++        cas.put_bytes(b"data", key="../../malicious_key")
++
++    # 4. Adversarial Audio Digital Silence Stability
++    from backend.ai.audio import AudioAnalyzer
++    analyzer = AudioAnalyzer()
++    assert analyzer.health_check() is True

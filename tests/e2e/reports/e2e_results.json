@@ -1,0 +1,406 @@
+{
+  "timestamp": "2026-10-14T04:24:19.254341+00:00",
+  "tier": "all",
+  "summary": {
+    "total_tests": 58,
+    "passed": 58,
+    "failed": 0,
+    "skipped": 0,
+    "features_covered": 41,
+    "features_total": 41,
+    "feature_coverage_pct": 100.0
+  },
+  "covered_feature_ids": [
+    "F-AI-01",
+    "F-AI-02",
+    "F-AI-03",
+    "F-AI-04",
+    "F-AI-05",
+    "F-AI-06",
+    "F-AI-07",
+    "F-AI-08",
+    "F-AI-09",
+    "F-AI-10",
+    "F-CORE-01",
+    "F-CORE-02",
+    "F-CORE-03",
+    "F-CORE-04",
+    "F-DOC-01",
+    "F-E2E-01",
+    "F-E2E-02",
+    "F-MCP-01",
+    "F-MCP-02",
+    "F-MCP-03",
+    "F-MCP-04",
+    "F-MCP-05",
+    "F-TEST-01",
+    "F-TEST-02",
+    "F-TEST-03",
+    "F-UE5-01",
+    "F-UE5-02",
+    "F-UE5-03",
+    "F-UE5-04",
+    "F-UE5-05",
+    "F-UE5-06",
+    "F-UE5-07",
+    "F-UE5-08",
+    "F-UI-01",
+    "F-UI-02",
+    "F-UI-03",
+    "F-UI-04",
+    "F-UI-05",
+    "F-UI-06",
+    "F-UI-07",
+    "F-UI-08"
+  ],
+  "test_results": [
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_core_01_domain_models_schema",
+      "outcome": "PASSED",
+      "duration_seconds": 0.6923,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_core_02_telemetry_event_dispatch",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_core_03_cas_cache_put_get",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_core_04_app_config_defaults_and_env",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_01_rest_client_call_and_property",
+      "outcome": "PASSED",
+      "duration_seconds": 0.2954,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_02_websocket_rpc_and_subscribe",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_03_mock_server_lifecycle",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_04_dynamic_asset_import_glb_fbx",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_05_pbr_material_assignment",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_06_lumen_lighting_presets",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_07_cinecamera_beat_sync",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ue5_08_mrq_job_submission_and_poll",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_01_base_provider_registry",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0066,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_02_audio_bpm_and_beat_grid",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0003,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_03_stem_separation_demucs",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_04_image_to_3d_cloud_adapters",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_05_procedural_glb_cpu_stub",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_06_auto_rig_biped_armature",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_07_video_rotoscopy_rembg",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0003,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_08_mediapipe_dance_loop",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0003,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_09_comfyui_headless_client",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ai_10_async_engine_cancellation",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_mcp_01_tool_registration_and_schemas",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0024,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_mcp_02_dual_invocation_parity",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_mcp_03_plan_generation_and_steps",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_mcp_04_confirmation_gate_workflow",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_mcp_05_telemetry_streaming_sse_ws",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_01_tauri_config_and_rust_bridge",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_02_media_dropzone_contract",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_03_timeline_tracks_and_markers",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_04_viewport_threejs_contract",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_05_pixel_streaming_interface",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_06_copilot_chat_approval_cards",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_07_intermediate_asset_cards",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0008,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_ui_08_zustand_store_zod_schema",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_test_01_backend_test_suite_status",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0004,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_test_02_frontend_test_suite_status",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0004,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_test_03_verify_pipeline_cli_exec",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0005,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_doc_01_documentation_completeness",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0006,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_e2e_01_suite_pass_threshold",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0008,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier1_features.py::test_f_e2e_02_adversarial_stress_pass",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0748,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_core_01_invalid_payload_validation",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ai_02_silent_and_extreme_bpm",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0679,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ai_02_corrupt_audio_file",
+      "outcome": "PASSED",
+      "duration_seconds": 0.001,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ai_05_1x1_and_monochrome_image",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0032,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ue5_04_corrupt_glb_import_failure",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0008,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ue5_07_zero_beats_fallback",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_core_01_negative_and_zero_spatial_transforms",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_ai_10_cancellation_token_abort",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_mcp_04_rejected_step_halts_pipeline",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0004,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier2_boundaries.py::test_f_mcp_01_tool_invalid_args_rpc_error",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0002,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier3_interactions.py::test_interaction_audio_to_camera_choreography",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0193,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier3_interactions.py::test_interaction_image_to_3d_to_auto_rig",
+      "outcome": "PASSED",
+      "duration_seconds": 0.004,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier3_interactions.py::test_interaction_scene_assembly_to_mrq_render",
+      "outcome": "PASSED",
+      "duration_seconds": 12.2539,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier3_interactions.py::test_interaction_plan_proposal_approval_telemetry",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0004,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier4_scenarios.py::test_scenario_a_full_pipeline",
+      "outcome": "PASSED",
+      "duration_seconds": 12.25,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier4_scenarios.py::test_scenario_b_telemetry_flow",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0516,
+      "reason": ""
+    },
+    {
+      "nodeid": "tests/e2e/test_tier4_scenarios.py::test_scenario_c_offline_fallback",
+      "outcome": "PASSED",
+      "duration_seconds": 0.0027,
+      "reason": ""
+    }
+  ]
+}

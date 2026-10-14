@@ -1,0 +1,449 @@
+diff --git a/src/components/copilot/IntermediateAssetCard.tsx b/src/components/copilot/IntermediateAssetCard.tsx
+new file mode 100644
+index 0000000..f6e4a3b
+--- /dev/null
++++ b/src/components/copilot/IntermediateAssetCard.tsx
+@@ -0,0 +1,247 @@
++import React, { useState } from 'react';
++import {
++  Music,
++  Box,
++  Layers,
++  Film,
++  CheckCircle2,
++  Eye,
++  Play,
++  Activity,
++  FileCheck,
++  Cpu,
++} from 'lucide-react';
++
++export interface IntermediateAssetCardProps {
++  toolName: string;
++  outputPreview?: string | null;
++  status: 'proposed' | 'approved' | 'rejected' | 'in_progress' | 'completed' | 'failed';
++  parameters?: Record<string, string | number | boolean | string[]>;
++  onInspect?: (assetPath: string) => void;
++}
++
++export const IntermediateAssetCard: React.FC<IntermediateAssetCardProps> = ({
++  toolName,
++  outputPreview,
++  status,
++  parameters = {},
++  onInspect,
++}) => {
++  const [actionFeedback, setActionFeedback] = useState<string | null>(null);
++
++  const handleAction = (message: string, assetPath: string): void => {
++    setActionFeedback(message);
++    if (onInspect) {
++      onInspect(assetPath);
++    }
++    setTimeout(() => setActionFeedback(null), 3000);
++  };
++
++  // 1. Audio Analysis: 4-Stem separation card
++  if (toolName === 'analyze_audio') {
++    const bpm = typeof parameters.bpm_hint === 'number' ? parameters.bpm_hint : 128.0;
++    const stems = [
++      { name: 'Vocales', file: 'vocals.wav', badge: 'Vocal Stem', color: 'text-cyan-400 border-cyan-500/40 bg-cyan-950/30' },
++      { name: 'Batería', file: 'drums.wav', badge: 'Perceptual Rhythm', color: 'text-amber-400 border-amber-500/40 bg-amber-950/30' },
++      { name: 'Bajo', file: 'bass.wav', badge: 'Sub-bass 40-120Hz', color: 'text-fuchsia-400 border-fuchsia-500/40 bg-fuchsia-950/30' },
++      { name: 'Otros', file: 'other.wav', badge: 'Armonía / Pads', color: 'text-emerald-400 border-emerald-500/40 bg-emerald-950/30' },
++    ];
++
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-cyan-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-cyan-300 font-semibold">
++            <Music className="w-3.5 h-3.5 text-cyan-400" />
++            <span>STEMS DE AUDIO SEPARADOS (DEMUCS)</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-500/40 flex items-center gap-1">
++            <CheckCircle2 className="w-3 h-3 text-cyan-400" />
++            {bpm.toFixed(1)} BPM Detectado
++          </span>
++        </div>
++
++        <div className="grid grid-cols-2 gap-2 mb-2.5">
++          {stems.map((stem) => (
++            <div
++              key={stem.file}
++              className={`p-2 rounded border flex flex-col justify-between ${stem.color}`}
++            >
++              <div className="flex items-center justify-between">
++                <span className="font-bold text-[10px] uppercase tracking-wider">{stem.name}</span>
++                <span className="text-[9px] opacity-75">{stem.badge}</span>
++              </div>
++              <span className="text-[10px] text-zinc-300 truncate mt-1">{stem.file}</span>
++            </div>
++          ))}
++        </div>
++
++        <div className="flex items-center justify-between text-[10px] text-zinc-400 pt-1">
++          <span>Grid: 32 beats sincronizados</span>
++          <span>Compás: 4/4 | Duración: 10.0s</span>
++        </div>
++      </div>
++    );
++  }
++
++  // 2. Image-to-3D: 3D Mesh GLB preview card
++  if (toolName === 'image_to_3d') {
++    const meshPath = outputPreview || 'character_mesh.glb';
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-cyan-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-cyan-300 font-semibold">
++            <Box className="w-3.5 h-3.5 text-cyan-400" />
++            <span>MALLA 3D ESTRUCTURADA (.GLB)</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-500/40">
++            PBR Metallic-Roughness
++          </span>
++        </div>
++
++        <div className="flex items-center justify-between bg-zinc-950 p-2 rounded border border-zinc-800 mb-2.5">
++          <div className="truncate mr-2">
++            <div className="text-zinc-200 font-bold truncate">{meshPath}</div>
++            <div className="text-[10px] text-zinc-400 flex gap-2 mt-0.5">
++              <span>8,420 Vértices</span>
++              <span>•</span>
++              <span>12,680 Polígonos</span>
++              <span>•</span>
++              <span>1024x1024 PBR</span>
++            </div>
++          </div>
++          <button
++            onClick={() => handleAction('Malla cargada en Viewport 3D', meshPath)}
++            className="px-2.5 py-1 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold rounded text-[10px] flex items-center gap-1 transition flex-shrink-0"
++          >
++            <Eye className="w-3 h-3" />
++            Ver en Viewport
++          </button>
++        </div>
++
++        {actionFeedback && (
++          <div className="text-[10px] text-emerald-400 text-right animate-pulse">
++            ✓ {actionFeedback}
++          </div>
++        )}
++      </div>
++    );
++  }
++
++  // 3. Auto-Rigging: Rigged mesh card
++  if (toolName === 'auto_rig') {
++    const rigPath = outputPreview || 'character_rigged.glb';
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-emerald-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-emerald-300 font-semibold">
++            <Layers className="w-3.5 h-3.5 text-emerald-400" />
++            <span>PERSONAJE RIGGED (ESQUELETO BÍPEDO)</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-500/40">
++            UE5 Mannequin
++          </span>
++        </div>
++
++        <div className="bg-zinc-950 p-2 rounded border border-zinc-800 mb-2">
++          <div className="text-zinc-200 font-bold truncate">{rigPath}</div>
++          <div className="grid grid-cols-3 gap-1 mt-1 text-[10px] text-zinc-400">
++            <div>Jerarquía: <span className="text-zinc-200">ue5_mannequin</span></div>
++            <div>Huesos: <span className="text-zinc-200">21 articulaciones</span></div>
++            <div>Skinning: <span className="text-emerald-400">100% Ponderado</span></div>
++          </div>
++        </div>
++
++        <div className="flex items-center justify-between text-[10px] text-zinc-400">
++          <span>Compatible con Control Rig y retargeting UE5</span>
++          <span className="text-emerald-400 flex items-center gap-1">
++            <CheckCircle2 className="w-3 h-3" /> Listo para Mocap
++          </span>
++        </div>
++      </div>
++    );
++  }
++
++  // 4. Mocap Extraction: Mocap clip card
++  if (toolName === 'extract_mocap') {
++    const mocapPath = outputPreview || 'dance_mocap.glb';
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-fuchsia-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-fuchsia-300 font-semibold">
++            <Activity className="w-3.5 h-3.5 text-fuchsia-400" />
++            <span>CLIP DE CAPTURA DE MOVIMIENTO (GVHMR)</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-fuchsia-950 text-fuchsia-400 border border-fuchsia-500/40">
++            30 FPS • 33 Joints
++          </span>
++        </div>
++
++        <div className="flex items-center justify-between bg-zinc-950 p-2 rounded border border-zinc-800 mb-2">
++          <div className="truncate mr-2">
++            <div className="text-zinc-200 font-bold truncate">{mocapPath}</div>
++            <div className="text-[10px] text-zinc-400 flex gap-2 mt-0.5">
++              <span>90 Frames</span>
++              <span>•</span>
++              <span>3.00 Segundos</span>
++              <span>•</span>
++              <span>Rotoscopia Limpia</span>
++            </div>
++          </div>
++          <button
++            onClick={() => handleAction('Mocap sincronizado con Timeline', mocapPath)}
++            className="px-2.5 py-1 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-semibold rounded text-[10px] flex items-center gap-1 transition flex-shrink-0"
++          >
++            <Play className="w-3 h-3" />
++            Previsualizar
++          </button>
++        </div>
++
++        {actionFeedback && (
++          <div className="text-[10px] text-emerald-400 text-right animate-pulse">
++            ✓ {actionFeedback}
++          </div>
++        )}
++      </div>
++    );
++  }
++
++  // 5. Build UE5 Scene: Level Sequence card
++  if (toolName === 'build_ue5_scene') {
++    const scenePath = outputPreview || '/Game/Sequences/LS_Stage_Main';
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-cyan-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-cyan-300 font-semibold">
++            <Cpu className="w-3.5 h-3.5 text-cyan-400" />
++            <span>ESCENA CINEMÁTICA EN UNREAL ENGINE 5</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-cyan-950 text-cyan-400 border border-cyan-500/40">
++            Lumen Activo
++          </span>
++        </div>
++
++        <div className="bg-zinc-950 p-2 rounded border border-zinc-800 mb-1">
++          <div className="text-zinc-200 font-bold truncate">{scenePath}</div>
++          <div className="text-[10px] text-zinc-400 flex gap-2 mt-0.5">
++            <span>CineCameraActor Frustum</span>
++            <span>•</span>
++            <span>Rig de Luces Cyberpunk</span>
++            <span>•</span>
++            <span>Audio Embebido</span>
++          </div>
++        </div>
++      </div>
++    );
++  }
++
++  // 6. Render Video: Final Movie Render Queue card
++  if (toolName === 'render_video') {
++    const videoPath = outputPreview || 'final_music_video.mp4';
++    return (
++      <div className="mt-2.5 p-3 rounded-lg border border-emerald-500/30 bg-zinc-900/90 font-mono text-[11px] shadow-sm">
++        <div className="flex items-center justify-between pb-2 mb-2 border-b border-zinc-800">
++          <div className="flex items-center gap-1.5 text-emerald-300 font-semibold">
++            <Film className="w-3.5 h-3.5 text-emerald-400" />
++            <span>VIDEO CINEMÁTICO RENDERIZADO (MRQ)</span>
++          </div>
++          <span className="px-2 py-0.5 rounded-full text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-500/40">
++            4K UHD • 60 FPS
++          </span>
++        </div>
++
++        <div className="flex items-center justify-between bg-zinc-950 p-2 rounded border border-zinc-800 mb-2">
++          <div className="truncate mr-2">
++            <div className="text-zinc-200 font-bold truncate">{videoPath}</div>
++            <div className="text-[10px] text-zinc-400 flex gap-2 mt-0.5">
++              <span>Resolución: 3840x2160</span>
++              <span>•</span>
++              <span>60 FPS</span>
++              <span>•</span>
++              <span>H.264 / AAC</span>
++            </div>
++          </div>
++          <button
++            onClick={() => handleAction('Reproduciendo video final...', videoPath)}
++            className="px-2.5 py-1 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold rounded text-[10px] flex items-center gap-1 transition flex-shrink-0"
++          >
++            <Play className="w-3 h-3" />
++            Reproducir
++          </button>
++        </div>
++
++        {actionFeedback && (
++          <div className="text-[10px] text-emerald-400 text-right animate-pulse">
++            ✓ {actionFeedback}
++          </div>
++        )}
++      </div>
++    );
++  }
++
++  // Fallback for any other tool with outputPreview
++  if (outputPreview) {
++    return (
++      <div className="mt-2.5 p-2.5 rounded-lg border border-zinc-700 bg-zinc-900/80 font-mono text-[11px]">
++        <div className="flex items-center gap-1.5 text-zinc-300 font-semibold mb-1">
++          <FileCheck className="w-3.5 h-3.5 text-cyan-400" />
++          <span>ASSET INTERMEDIO GENERADO</span>
++        </div>
++        <div className="text-zinc-400 truncate">{outputPreview}</div>
++      </div>
++    );
++  }
++
++  return null;
++};
++
++export default IntermediateAssetCard;
+diff --git a/src/components/copilot/index.ts b/src/components/copilot/index.ts
+index b79075e..01b6c7f 100644
+--- a/src/components/copilot/index.ts
++++ b/src/components/copilot/index.ts
+@@ -1,3 +1,5 @@
+ export { CopilotChat } from './CopilotChat';
++export { IntermediateAssetCard } from './IntermediateAssetCard';
++export type { IntermediateAssetCardProps } from './IntermediateAssetCard';
+ export { default } from './CopilotChat';
+ 
+diff --git a/src/components/copilot/CopilotChat.tsx b/src/components/copilot/CopilotChat.tsx
+index d65275a..380369a 100644
+--- a/src/components/copilot/CopilotChat.tsx
++++ b/src/components/copilot/CopilotChat.tsx
+@@ -1,9 +1,11 @@
+ import React, { useState } from 'react';
+ import { CheckCircle, XCircle, Send, Sparkles, AlertCircle } from 'lucide-react';
+ import { useUIStore } from '../../store';
++import { IntermediateAssetCard } from './IntermediateAssetCard';
++import type { PlanStep } from '../../types';
+ 
+ export const CopilotChat: React.FC = () => {
+   const { activePlan, approveStep, rejectStep } = useUIStore();
+   const [prompt, setPrompt] = useState('');
+ 
+-  const steps = activePlan?.steps || [
++  const defaultSteps: PlanStep[] = [
+     {
+       step_id: 'sample_step_1',
+       index: 0,
+       tool_name: 'analyze_audio',
+       title: 'Análisis de Audio y Detección de BPM',
+       description: 'Extracción de BPM y timestamps de beats para sincronizar cortes de cámara.',
+-      parameters: {},
++      parameters: { bpm_hint: 128 },
+       risk_level: 'low',
+       requires_confirmation: false,
+       status: 'completed',
++      output_preview: 'stems:vocals.wav,drums.wav,bass.wav,other.wav',
+     },
+     {
+       step_id: 'sample_step_2',
+       index: 1,
+       tool_name: 'image_to_3d',
+       title: 'Generación de Malla 3D desde Imagen',
+       description: 'Creación de personaje 3D estructurado en formato GLB con texturas PBR.',
+-      parameters: {},
++      parameters: { image_path: 'concept.png' },
+       risk_level: 'medium',
+       requires_confirmation: true,
+-      status: 'proposed',
++      status: 'approved',
++      output_preview: 'character_mesh.glb',
+     },
+     {
+       step_id: 'sample_step_3',
+       index: 2,
+       tool_name: 'render_video',
+       title: 'Render Cinemático en Unreal Engine 5',
+       description: 'Disparo de Movie Render Queue con iluminación Lumen y pase ComfyUI.',
+-      parameters: {},
++      parameters: { resolution: '3840x2160', fps: 60 },
+       risk_level: 'high',
+       requires_confirmation: true,
+       status: 'proposed',
++      output_preview: 'final_music_video.mp4',
+     },
+   ];
++
++  const steps = activePlan?.steps || defaultSteps;
+ 
+   return (
+@@ -95,6 +97,15 @@
+               <p className="text-zinc-400 mb-2.5">{step.description}</p>
+ 
++              {/* Render intermediate asset card when step is completed or approved */}
++              {isApproved && (
++                <IntermediateAssetCard
++                  toolName={step.tool_name}
++                  outputPreview={step.output_preview}
++                  status={step.status}
++                  parameters={step.parameters}
++                />
++              )}
++
+               {/* Confirmation Gate Action Buttons */}
+               {isPending && step.requires_confirmation && (
+-                <div className="flex gap-2 justify-end">
++                <div className="flex gap-2 justify-end mt-2">
+diff --git a/src/App.tsx b/src/App.tsx
+index 476fb87..cf87320 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -47,6 +47,7 @@
+-            parameters: { audio_path: 'input_track_128bpm.wav' },
++            parameters: { audio_path: 'input_track_128bpm.wav', bpm_hint: 128 },
+             risk_level: 'low',
+             requires_confirmation: false,
+             status: 'completed',
++            output_preview: 'outputs/stems/vocals.wav,drums.wav,bass.wav,other.wav',
+           },
+           {
+             step_id: 'step_2_mesh',
+@@ -60,6 +61,7 @@
+             parameters: { image_path: 'character_concept.png' },
+             risk_level: 'medium',
+             requires_confirmation: true,
+             status: 'approved',
++            output_preview: 'outputs/character_mesh.glb',
+           },
+           {
+             step_id: 'step_3_rig',
+@@ -72,6 +74,7 @@
+             parameters: { mesh_path: 'character_mesh.glb' },
+             risk_level: 'medium',
+             requires_confirmation: true,
+             status: 'proposed',
++            output_preview: 'outputs/character_rigged.glb',
+           },
+           {
+             step_id: 'step_4_mocap',
+@@ -84,6 +87,7 @@
+             parameters: { video_path: 'dance_reference.mp4' },
+             risk_level: 'medium',
+             requires_confirmation: true,
+             status: 'proposed',
++            output_preview: 'outputs/dance_mocap.glb',
+           },
+           {
+             step_id: 'step_5_scene',
+@@ -96,6 +100,7 @@
+             parameters: { style: 'cyberpunk' },
+             risk_level: 'low',
+             requires_confirmation: false,
+             status: 'proposed',
++            output_preview: '/Game/Sequences/LS_Stage_Main',
+           },
+           {
+             step_id: 'step_6_render',
+@@ -108,6 +113,7 @@
+             parameters: { resolution: '3840x2160', fps: 60 },
+             risk_level: 'high',
+             requires_confirmation: true,
+             status: 'proposed',
++            output_preview: 'outputs/final_music_video.mp4',
+           },
