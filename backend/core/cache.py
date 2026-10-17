@@ -101,8 +101,8 @@ def hash_file(file_path: Path, chunk_size: int = 65536) -> str:
 def _canonical_json_default(obj: object) -> str:
     """Coerce non-primitive objects (such as Path) to deterministic strings."""
     if isinstance(obj, Path):
-        return obj.as_posix()
-    return str(obj)
+        return obj.as_posix().replace("\\", "/")
+    return str(obj).replace("\\", "/")
 
 
 def canonical_params_hash(params: ParamDict) -> str:

@@ -26,6 +26,7 @@ from backend.core.models import (
     LogEvent,
 )
 from backend.core.telemetry import get_telemetry_bus
+from backend.engines.base import get_engine_adapter
 from backend.ue5.client import UE5RestClient
 from backend.ue5.lighting import LightingRig
 from backend.ue5.mrq import render_sequence
@@ -103,14 +104,16 @@ def auto_rig(
     mesh_path: str,
     skeleton_type: str = "ue5_mannequin",
     output_path: Optional[str] = None,
+    engine: str = "auto",
 ) -> AutoRigResult:
     """
-    Bind an anatomical biped skeletal hierarchy to a static 3D mesh.
+    Bind an anatomical skeletal hierarchy (UE5 humanoid, Avian, Canine) to a static 3D mesh.
 
     Args:
-        mesh_path: Path to input 3D mesh (.glb/.fbx).
-        skeleton_type: Hierarchy standard ('ue5_mannequin', 'mixamo').
+        mesh_path: Path to input 3D mesh (.glb/.obj/.fbx).
+        skeleton_type: Hierarchy standard ('ue5_mannequin', 'avian', 'canine', 'mixamo').
         output_path: Optional destination for the rigged character asset.
+        engine: Target rigging engine ('auto', 'ue5', or 'blender').
 
     Returns:
         AutoRigResult with bone hierarchy and binding status.
@@ -118,7 +121,7 @@ def auto_rig(
     if not isinstance(mesh_path, str) or not mesh_path.strip():
         raise TypeError(f"mesh_path must be a non-empty string, got {type(mesh_path).__name__}")
 
-    return ai_auto_rig(mesh_path=mesh_path, skeleton_type=skeleton_type, output_path=output_path)
+    return ai_auto_rig(mesh_path=mesh_path, skeleton_type=skeleton_type, output_path=output_path, engine=engine)
 
 
 def extract_mocap(
@@ -147,47 +150,35 @@ SceneConfigValue = Union[str, int, float, bool, None, List[Dict[str, float]], Di
 SceneConfigDict = Dict[str, SceneConfigValue]
 
 
-def build_ue5_scene(scene_config: Union[SceneConfig, SceneConfigDict]) -> SceneBuildResult:
+def build_scene(
+    scene_config: Union[SceneConfig, SceneConfigDict],
+    engine: str = "ue5",
+) -> SceneBuildResult:
     """
-    Assemble an Unreal Engine 5 cinematic scene (Level Sequence) with lighting and camera.
+    Assemble a 3D scene (Unreal Engine Level Sequence or Blender .blend) with lighting and camera.
 
     Args:
         scene_config: Specification of mesh, animation, lighting, and camera keyframes.
+        engine: Target engine adapter ('ue5' or 'blender'). Defaults to 'ue5' for retrocompatibility.
 
     Returns:
-        SceneBuildResult with instantiated sequence path and actor IDs.
+        SceneBuildResult with instantiated sequence/scene path and actor IDs.
     """
     if isinstance(scene_config, dict):
         config_obj = SceneConfig.model_validate(scene_config)
     else:
         config_obj = scene_config
 
-    ue5 = UE5RestClient()
-    actor_ids: List[str] = []
+    adapter = get_engine_adapter(engine)
+    return adapter.build_scene(config_obj)
 
-    # 1. Spawn character mesh actor
-    char_id = ue5.spawn_actor(actor_class="SkeletalMeshActor")
-    actor_ids.append(char_id)
 
-    # 2. Spawn camera actor
-    cam_id = ue5.spawn_actor(actor_class="CineCameraActor")
-    actor_ids.append(cam_id)
-
-    # 3. Configure Lumen lighting preset
-    lighting_setup = LightingRig.get_preset(config_obj.lighting_preset)
-    for light in lighting_setup.lights:
-        light_id = ue5.spawn_actor(actor_class=f"{light.light_type}Light")
-        actor_ids.append(light_id)
-
-    scene_path = f"/Game/Sequences/LS_{config_obj.level_name}"
-    return SceneBuildResult(
-        success=True,
-        actor_ids=actor_ids,
-        scene_path=scene_path,
-        camera_actor_id=cam_id,
-        character_actor_id=char_id,
-        message="UE5 scene built successfully with Lumen lighting and CineCamera track",
-    )
+def build_ue5_scene(scene_config: Union[SceneConfig, SceneConfigDict]) -> SceneBuildResult:
+    """
+    Assemble an Unreal Engine 5 cinematic scene (Level Sequence) with lighting and camera.
+    Maintained as a high-fidelity alias for build_scene(scene_config, engine='ue5').
+    """
+    return build_scene(scene_config, engine="ue5")
 
 
 def render_video(
@@ -197,17 +188,19 @@ def render_video(
     resolution: str = "1920x1080",
     warmup_frames: int = 15,
     anti_aliasing_samples: int = 8,
+    engine: str = "auto",
 ) -> RenderResult:
     """
-    Render final cinematic video from Level Sequence using Movie Render Queue.
+    Render final cinematic video or still from Level Sequence (UE5 MRQ) or Blender scene.
 
     Args:
-        scene_path: Path to Level Sequence package.
-        output_path: Destination path for final .mp4 video.
+        scene_path: Path to Level Sequence package or Blender scene file.
+        output_path: Destination path for final .mp4 video or image.
         fps: Video frame rate.
         resolution: Output resolution string (e.g. '1280x720', '1920x1080').
         warmup_frames: Simulation warmup frames.
         anti_aliasing_samples: Spatial/temporal AA samples.
+        engine: Target engine ('auto', 'ue5', or 'blender').
 
     Returns:
         RenderResult with final video file statistics.
@@ -217,7 +210,15 @@ def render_video(
     if not isinstance(output_path, str) or not output_path.strip():
         raise TypeError(f"output_path must be a non-empty string, got {type(output_path).__name__}")
 
-    return render_sequence(
+    eng = engine.lower().strip()
+    if eng == "auto":
+        if scene_path.endswith((".blend", ".obj", ".glb", ".gltf")) or output_path.endswith((".png", ".jpg")):
+            eng = "blender"
+        else:
+            eng = "ue5"
+
+    adapter = get_engine_adapter(eng)
+    return adapter.render_video(
         scene_path=scene_path,
         output_path=output_path,
         fps=fps,

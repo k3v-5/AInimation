@@ -263,6 +263,29 @@ class PBRTextureSet(StrictBaseModel):
         ])
 
 
+class MultiViewImageSet(StrictBaseModel):
+    """
+    Set of multi-angle reference images for orthographic character turnaround reconstruction.
+    Allows exact cross-sectional carving without monocular depth ambiguity.
+    """
+    front_image_path: Optional[str] = Field(
+        default=None,
+        description="Path to canonical front-view reference image",
+    )
+    side_image_path: Optional[str] = Field(
+        default=None,
+        description="Path to canonical side-profile reference image",
+    )
+    back_image_path: Optional[str] = Field(
+        default=None,
+        description="Path to canonical rear-dorsal reference image",
+    )
+    top_image_path: Optional[str] = Field(
+        default=None,
+        description="Path to canonical top-down cranial/aerial reference image",
+    )
+
+
 class ImageTo3DRequest(StrictBaseModel):
     """
     Input payload for generating a 3D textured mesh from a 2D reference image.
@@ -271,6 +294,10 @@ class ImageTo3DRequest(StrictBaseModel):
         ...,
         min_length=1,
         description="Path to input 2D image file (.png, .jpg, .jpeg, .webp)",
+    )
+    multi_views: Optional[MultiViewImageSet] = Field(
+        default=None,
+        description="Optional set of multi-angle turnaround reference images (front, side, back, top)",
     )
     provider: str = Field(
         default="auto",

@@ -1,0 +1,8 @@
+newmtl Mat_subject_torso
+Kd 1.0 1.0 1.0
+Ks 0.2 0.2 0.2
+Ns 32.0
+d 1.0
+map_Kd subject_torso_albedo.png
+map_d subject_torso_albedo.png
+map_Bump -bm 1.0 subject_torso_normal.png

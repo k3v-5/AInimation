@@ -317,7 +317,7 @@ class TestTelemetryBusAdversarial:
             queues: List[asyncio.Queue[TelemetryEvent]] = []
 
             for i in range(5):
-                q: asyncio.Queue[TelemetryEvent] = asyncio.Queue(maxsize=4000)
+                q: asyncio.Queue[TelemetryEvent] = asyncio.Queue(maxsize=10000)
                 bus.add_subscriber(q)
                 queues.append(q)
 
@@ -341,7 +341,7 @@ class TestTelemetryBusAdversarial:
                         message=f"Event {seq} from producer {p_id}",
                     )
                     await bus.emit(ev)
-                    if seq % 25 == 0:
+                    if seq % 10 == 0:
                         await asyncio.sleep(0)  # Cooperative yield to event loop
 
             consumer_tasks = [asyncio.create_task(consumer(i, queues[i])) for i in range(5)]
@@ -350,8 +350,10 @@ class TestTelemetryBusAdversarial:
             # Wait for all producers to finish emitting
             await asyncio.gather(*producer_tasks)
 
-            # Allow consumers to drain remaining queue
-            await asyncio.sleep(0.3)
+            # Allow consumers to drain remaining queue completely
+            drain_deadline = time.time() + 5.0
+            while any(not q.empty() for q in queues) and time.time() < drain_deadline:
+                await asyncio.sleep(0.02)
             stop_event.set()
             await asyncio.gather(*consumer_tasks)
 

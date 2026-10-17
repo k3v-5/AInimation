@@ -106,7 +106,24 @@ def generate_procedural_glb(
     )
 
 
+class VolumetricReliefProvider(ImageTo3DProvider):
+    """Offline anatomical volumetric depth inflation provider generating real 3D OBJ meshes."""
+
+    def __init__(self) -> None:
+        super().__init__(name="volumetric_relief", is_cloud=False)
+
+    def health_check(self) -> bool:
+        return True
+
+    def generate(self, image_path: str, output_path: Optional[str] = None) -> ImageTo3DResult:
+        from backend.ai.volumetric_3d import generate_volumetric_mesh
+        dest = output_path or str(Path(image_path).with_suffix(".obj"))
+        return generate_volumetric_mesh(image_path, dest, provider_name=self.name)
+
+
 # Register providers
 provider_registry.register("image_to_3d", ProceduralGLBProvider())
+provider_registry.register("image_to_3d", VolumetricReliefProvider())
 provider_registry.register("image_to_3d", TripoProvider())
 provider_registry.register("image_to_3d", FalAIProvider())
+

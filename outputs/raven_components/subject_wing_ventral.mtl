@@ -1,0 +1,7 @@
+newmtl Mat_subject_wing_ventral
+Kd 1.0 1.0 1.0
+Ks 0.2 0.2 0.2
+Ns 32.0
+d 1.0
+map_Kd subject_wing_ventral_albedo.png
+map_Bump -bm 1.0 subject_wing_ventral_normal.png

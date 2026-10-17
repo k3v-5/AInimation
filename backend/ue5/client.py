@@ -254,9 +254,9 @@ class UE5RestClient:
             except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as net_err:
                 last_error = net_err
                 # If connection is explicitly refused, the target port is closed; fail fast without sleeping
-                if isinstance(net_err, (ConnectionRefusedError, ConnectionResetError)) or (
+                if isinstance(net_err, ConnectionRefusedError) or (
                     isinstance(net_err, urllib.error.URLError)
-                    and isinstance(getattr(net_err, "reason", None), (ConnectionRefusedError, ConnectionResetError))
+                    and isinstance(getattr(net_err, "reason", None), ConnectionRefusedError)
                 ):
                     break
                 if attempt < max_attempts - 1:

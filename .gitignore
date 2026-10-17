@@ -61,3 +61,9 @@ Thumbs.db
 # Temporary verification and scratch
 temp_verify_run/
 *.tmp
+
+# Standalone 3D tools and binaries
+/blender
+/tools/blender/
+!backend/blender/
+

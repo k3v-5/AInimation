@@ -1,0 +1,7 @@
+newmtl Mat_raven_subject
+Kd 1 1 1
+Ks 0.1 0.1 0.1
+Ns 32
+d 1
+map_Kd raven_subject_albedo.png
+map_Bump -bm 1.0 raven_subject_normal.png

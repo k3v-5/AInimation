@@ -1,0 +1,9 @@
+newmtl Mat_subject_humanoid
+Kd 1.0 1.0 1.0
+Ks 0.2 0.2 0.2
+Ns 32.0
+d 1.0
+map_Kd subject_humanoid_albedo.png
+map_d subject_humanoid_albedo.png
+map_Bump -bm 1.0 subject_humanoid_normal.png
+map_Pr subject_humanoid_roughness.png

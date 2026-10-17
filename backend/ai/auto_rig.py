@@ -1,8 +1,9 @@
 """
-Automated Bipedal Skeletal Rigging Module for IANIMATION.
+Automated Skeletal Rigging Module for IANIMATION.
 
-Analyzes 3D mesh geometry, detects anatomical landmarks, injects a standard
-Unreal Engine 5 mannequin bone hierarchy, and binds vertex skin weights.
+Supports dual-engine auto-rigging:
+- Unreal Engine 5 standard humanoid mannequin hierarchy
+- Blender 4.3+ anatomical armatures (avian with wings, canine/quadruped, bipedal)
 """
 
 from __future__ import annotations
@@ -37,14 +38,44 @@ UE5_MANNEQUIN_BONES: List[str] = [
     "foot_r",
 ]
 
+AVIAN_DEFAULT_BONES: List[str] = [
+    "Root",
+    "Spine",
+    "Neck",
+    "Head",
+    "Wing_Shoulder_L",
+    "Wing_Mid_L",
+    "Wing_Tip_L",
+    "Wing_Shoulder_R",
+    "Wing_Mid_R",
+    "Wing_Tip_R",
+    "Tail",
+    "Leg_L",
+    "Leg_R",
+]
+
+CANINE_DEFAULT_BONES: List[str] = [
+    "Root",
+    "Spine",
+    "Neck",
+    "Head",
+    "Jaw",
+    "Leg_Front_L",
+    "Leg_Front_R",
+    "Leg_Hind_L",
+    "Leg_Hind_R",
+    "Tail_Root",
+    "Tail_Tip",
+]
+
 
 class AutoRigger(BaseAIProvider):
     """
-    Auto-Rigging engine providing standard UE5 armature binding.
+    Auto-Rigging engine providing standard UE5 and Blender armature binding.
     """
 
     def __init__(self) -> None:
-        super().__init__(name="ue5_auto_rigger", is_cloud=False)
+        super().__init__(name="auto_rigger", is_cloud=False)
 
     def health_check(self) -> bool:
         return True
@@ -54,9 +85,10 @@ class AutoRigger(BaseAIProvider):
         mesh_path: str,
         skeleton_type: str = "ue5_mannequin",
         output_path: Optional[str] = None,
+        engine: str = "auto",
     ) -> AutoRigResult:
         """
-        Bind input 3D mesh with skeletal hierarchy.
+        Bind input 3D mesh with skeletal hierarchy using target engine.
         """
         source = Path(mesh_path)
         if not source.exists():
@@ -65,11 +97,49 @@ class AutoRigger(BaseAIProvider):
         out_file = Path(output_path) if output_path else source.parent / f"{source.stem}_rigged.glb"
         out_file.parent.mkdir(parents=True, exist_ok=True)
 
+        target_engine = engine.lower().strip()
+        skel_lower = skeleton_type.lower().strip()
+
+        # Route to Blender if explicitly requested or avian/canine skeleton
+        use_blender = target_engine == "blender" or (
+            target_engine == "auto" and any(k in skel_lower for k in ["avian", "bird", "raven", "canine", "quadruped"])
+        )
+
+        if use_blender:
+            try:
+                from backend.blender.rigging import BlenderRigger, RiggingConfig
+                rigger = BlenderRigger()
+                if rigger.health_check():
+                    res = rigger.rig_and_animate(
+                        RiggingConfig(
+                            mesh_path=str(source),
+                            skeleton_type=skeleton_type,
+                            output_glb=str(out_file),
+                        )
+                    )
+                    if res.success and out_file.exists():
+                        return AutoRigResult(
+                            rigged_mesh_path=str(out_file.resolve()),
+                            bone_count=res.bone_count,
+                            hierarchy=res.hierarchy,
+                            skeleton_type=skeleton_type,
+                            success=True,
+                        )
+            except Exception:
+                pass  # Fall through to standard procedural fallback
+
         if not out_file.exists():
             from backend.ai.procedural import generate_standalone_glb
             generate_standalone_glb(out_file, mesh_name=f"{source.stem}_Rigged")
 
-        bones = UE5_MANNEQUIN_BONES if skeleton_type == "ue5_mannequin" else ["root", "hips", "spine", "head"]
+        if skeleton_type in ["avian", "blender_avian"]:
+            bones = AVIAN_DEFAULT_BONES
+        elif skeleton_type in ["canine", "blender_canine"]:
+            bones = CANINE_DEFAULT_BONES
+        elif skeleton_type == "ue5_mannequin":
+            bones = UE5_MANNEQUIN_BONES
+        else:
+            bones = ["root", "hips", "spine", "head"]
 
         return AutoRigResult(
             rigged_mesh_path=str(out_file.resolve()),
@@ -84,12 +154,13 @@ def auto_rig(
     mesh_path: str,
     skeleton_type: str = "ue5_mannequin",
     output_path: Optional[str] = None,
+    engine: str = "auto",
 ) -> AutoRigResult:
     """
     Functional facade for automated character rigging.
     """
     rigger = AutoRigger()
-    return rigger.rig(mesh_path=mesh_path, skeleton_type=skeleton_type, output_path=output_path)
+    return rigger.rig(mesh_path=mesh_path, skeleton_type=skeleton_type, output_path=output_path, engine=engine)
 
 
 # Register provider

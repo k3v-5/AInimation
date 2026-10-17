@@ -372,6 +372,26 @@ def test_tripo_and_fal_ai_providers(tmp_path: Path) -> None:
     assert res_fal.provider_used == "fal_ai"
 
 
+def test_volumetric_relief_provider(tmp_path: Path) -> None:
+    from PIL import Image
+    from backend.ai.image_to_3d import VolumetricReliefProvider
+    from backend.core.models import MeshFormat
+
+    img_file = tmp_path / "crest.png"
+    Image.new("RGBA", (32, 32), (200, 30, 30, 255)).save(img_file)
+
+    vol = VolumetricReliefProvider()
+    assert vol.is_cloud is False
+    assert vol.health_check() is True
+    res_vol = vol.generate(str(img_file), output_path=str(tmp_path / "crest.obj"))
+    assert isinstance(res_vol, ImageTo3DResult)
+    assert Path(res_vol.mesh_path).exists()
+    assert res_vol.mesh_format == MeshFormat.OBJ
+    assert res_vol.vertex_count > 0
+    assert res_vol.provider_used == "volumetric_relief"
+
+
+
 # =============================================================================
 # 4. AutoRigger Tests
 # =============================================================================

@@ -1,0 +1,91 @@
+{
+  "components": [
+    {
+      "name": "Prop_Branch",
+      "role": "prop",
+      "pivot_point": [
+        0.0,
+        -0.45,
+        -0.08
+      ],
+      "z_offset": -0.08,
+      "mesh_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch.obj",
+      "albedo_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch_albedo.png",
+      "depth_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch_depth.png",
+      "normal_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch_normal.png",
+      "roughness_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch_roughness.png",
+      "ao_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/prop_branch_ao.png",
+      "vertex_count": 757,
+      "face_count": 1494,
+      "parent_bone": null,
+      "is_prop": true
+    },
+    {
+      "name": "Subject_Torso",
+      "role": "torso",
+      "pivot_point": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "z_offset": 0.0,
+      "mesh_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso.obj",
+      "albedo_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso_albedo.png",
+      "depth_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso_depth.png",
+      "normal_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso_normal.png",
+      "roughness_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso_roughness.png",
+      "ao_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_torso_ao.png",
+      "vertex_count": 5828,
+      "face_count": 11650,
+      "parent_bone": "Spine",
+      "is_prop": false
+    },
+    {
+      "name": "Subject_Wing_Ventral",
+      "role": "wing_ventral",
+      "pivot_point": [
+        -0.3967,
+        0.4542,
+        0.18
+      ],
+      "z_offset": 0.18,
+      "mesh_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral.obj",
+      "albedo_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral_albedo.png",
+      "depth_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral_depth.png",
+      "normal_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral_normal.png",
+      "roughness_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral_roughness.png",
+      "ao_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_ventral_ao.png",
+      "vertex_count": 2141,
+      "face_count": 4278,
+      "parent_bone": "Wing_Shoulder_L",
+      "is_prop": false
+    },
+    {
+      "name": "Subject_Wing_Dorsal",
+      "role": "wing_dorsal",
+      "pivot_point": [
+        -0.2767,
+        0.4542,
+        -0.14
+      ],
+      "z_offset": -0.14,
+      "mesh_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal.obj",
+      "albedo_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal_albedo.png",
+      "depth_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal_depth.png",
+      "normal_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal_normal.png",
+      "roughness_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal_roughness.png",
+      "ao_path": "/home/rtk/Projects/AInimation/outputs/component_rig_watertight/subject_wing_dorsal_ao.png",
+      "vertex_count": 1941,
+      "face_count": 3878,
+      "parent_bone": "Wing_Shoulder_R",
+      "is_prop": false
+    }
+  ],
+  "output_blend": "outputs/scenes/red_raven_hierarchical_flight.blend",
+  "output_glb": "outputs/scenes/red_raven_hierarchical_flight.glb",
+  "output_video": "outputs/renders/red_raven_hierarchical_flight.mp4",
+  "fps": 24,
+  "total_frames": 48,
+  "samples": 32,
+  "render_engine": "BLENDER_EEVEE_NEXT"
+}

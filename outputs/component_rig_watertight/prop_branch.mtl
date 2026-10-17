@@ -1,0 +1,9 @@
+newmtl Mat_prop_branch
+Kd 1.0 1.0 1.0
+Ks 0.2 0.2 0.2
+Ns 32.0
+d 1.0
+map_Kd prop_branch_albedo.png
+map_d prop_branch_albedo.png
+map_Bump -bm 1.0 prop_branch_normal.png
+map_Pr prop_branch_roughness.png
