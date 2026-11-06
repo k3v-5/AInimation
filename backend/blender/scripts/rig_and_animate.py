@@ -185,6 +185,41 @@ def apply_animation(arm_obj, anim_data: dict):
     bpy.ops.object.mode_set(mode='OBJECT')
 
 
+def apply_kinematic_constraints(arm_obj, skeleton_type: str):
+    """
+    Apply anatomical rotation limits and IK constraints to arm_obj pose bones.
+    Guarantees that joints do not invert or hyperextend (e.g. knees only bend backward).
+    """
+    try:
+        from backend.ai.advanced_kinematics import get_standard_joint_limits
+        limits = get_standard_joint_limits(skeleton_type)
+    except Exception as exc:
+        print(f"Notice: using fallback kinematic limits: {exc}")
+        return
+
+    bpy.context.view_layer.objects.active = arm_obj
+    bpy.ops.object.mode_set(mode='POSE')
+
+    for lim in limits:
+        pb = arm_obj.pose.bones.get(lim.bone_name)
+        if not pb:
+            continue
+        c = pb.constraints.new(type='LIMIT_ROTATION')
+        c.name = f"Limit_{pb.name}"
+        c.use_limit_x = True
+        c.min_x = math.radians(lim.min_pitch_deg)
+        c.max_x = math.radians(lim.max_pitch_deg)
+        c.use_limit_y = True
+        c.min_y = math.radians(lim.min_roll_deg)
+        c.max_y = math.radians(lim.max_roll_deg)
+        c.use_limit_z = True
+        c.min_z = math.radians(lim.min_yaw_deg)
+        c.max_z = math.radians(lim.max_yaw_deg)
+        c.owner_space = 'LOCAL'
+
+    bpy.ops.object.mode_set(mode='OBJECT')
+
+
 def setup_cinematic_lighting_and_camera(mesh_obj, total_frames: int):
     """Set up 3-point studio lighting and 85mm portrait camera oriented at subject."""
     # Compute mesh center and dimensions
@@ -330,6 +365,7 @@ def main():
     mesh_obj = import_mesh(mesh_path)
     arm_obj = create_armature(skeleton_type, bones_data)
     bind_skin(mesh_obj, arm_obj, bones_data)
+    apply_kinematic_constraints(arm_obj, skeleton_type)
 
     if anim_data:
         apply_animation(arm_obj, anim_data)

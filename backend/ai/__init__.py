@@ -24,6 +24,18 @@ from backend.ai.mocap import (
     rotoscope_video,
 )
 from backend.ai.neural import ComfyUIClient, NeuralEnhancer, enhance_video
+from backend.ai.advanced_kinematics import (
+    BipedalWalkCycleParams,
+    CollisionCapsule,
+    IKChainSpec,
+    JointLimit,
+    KinematicRigResult,
+    generate_bipedal_walk_cycle,
+    get_standard_collision_hulls,
+    get_standard_joint_limits,
+    resolve_capsule_interpenetration,
+    solve_two_bone_ik,
+)
 
 __all__ = [
     "BaseAIProvider",
@@ -50,4 +62,14 @@ __all__ = [
     "ComfyUIClient",
     "NeuralEnhancer",
     "enhance_video",
+    "BipedalWalkCycleParams",
+    "CollisionCapsule",
+    "IKChainSpec",
+    "JointLimit",
+    "KinematicRigResult",
+    "generate_bipedal_walk_cycle",
+    "get_standard_collision_hulls",
+    "get_standard_joint_limits",
+    "resolve_capsule_interpenetration",
+    "solve_two_bone_ik",
 ]
