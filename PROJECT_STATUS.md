@@ -5,7 +5,8 @@
 > 1. **Motor de Retopología y Quad Remeshing (`backend/ai/quad_remesher.py`)**: Conversión automatizada de mallas densas triangulares / marching-cubes en topología regular de cuadriláteros (*quad-dominant* y *pure-quads* vía subdivisión Catmull-Clark), alineación con tensores de curvatura principal $(v_{min}, v_{max})$, métricas de aspecto e integridad manifold, y exportadores a OBJ (con polígonos de 4 vértices `f v1 v2 v3 v4`) y glTF 2.0.
 > 2. **Baker PBR High-to-Low Poly (`backend/ai/pbr_baker.py`)**: Transferencia de micro-relieve y detalles de alta frecuencia desde el esculpido denso high-poly (arrugas, costuras mecánicas, micro-poros) hacia la malla low-poly retopologizada. Generación de mapas de normales en espacio tangente (TBN ortogonalizado MikkTSpace), mapas de cavidad/curvatura, oclusión ambiental (AO) y empaquetado glTF estándar ORM (Occlusion-Roughness-Metallic).
 > 3. **Dinámicas de Personaje y Twist Bones (`backend/ai/character_dynamics.py`)**: Inyección anatómica de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) para suprimir el colapso de volumen ("candy-wrapper artifact") durante rotaciones axiales. Simulación física secundaria de resortes-amortiguador (Verlet spring-damper) para accesorios dinámicos (cabello, cables, capas, colas) con preservación exacta de longitud y hulls de colisión esférica corporales.
-> Suite global de pruebas con **904/904 tests backend pasados al 100%** (incluyendo los 6 tests de cinemática avanzada y los 6 tests de integración nativa con Blender 5.2.0 LTS), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux con auto-detección en `E:/Blender/blender.exe`).
+> 4. **Cinemática Avanzada, IK Analítico y Anti-Colisión (`backend/ai/advanced_kinematics.py` & `scripts/build_ragdoll_firefighter_production.py`)**: Solucionador analítico Two-Bone IK para extremidades, restricciones de rotación angular anatómicas estrictas (rodillas con flexión exclusivamente hacia atrás $[-135^\circ, 0^\circ]$, codos con bisagra exclusivamente hacia adelante $[0^\circ, 135^\circ]$), cápsulas anti-colisión corporal (`Hull_Torso`) para erradicar solapamientos de geometría o penetración de ropa, y generador procedural de ciclos de marcha bípeda/robótica con balanceo pélvico, balanceo de brazos contralateral y contacto firme con el suelo a $Z=0.00$m.
+> Suite global de pruebas con **910/910 tests backend pasados al 100%** (incluyendo los 6 tests de cinemática avanzada y los 6 tests de integración nativa con Blender 5.2.0 LTS), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux con auto-detección en `E:/Blender/blender.exe`).
 
 ---
 
@@ -437,6 +438,41 @@ graph TD
         - Stills canónicos de inspección: 0° Frontal (`raven_360_angle_000_front.png`), 90° Perfil (`raven_360_angle_090_profile.png`), 180° Dorsal Espalda (`raven_360_angle_180_dorsal.png`), 270° Columna (`raven_360_angle_270_back.png`).
         - Script de automatización: [`scripts/render_raven_flight_blender.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/render_raven_flight_blender.py).
         - Pruebas unitarias: `tests/backend/test_blender_rigging.py` (**6/6 tests pasados al 100% en 14.09s**).
+
+    - **11. Pipeline de Articulación 3D, Cinemática Avanzada y Ciclo de Marcha del Muñeco Bombero (Ragdoll Firefighter) en Blender 5.2.0 LTS EEVEE (Zero-Any, Zero 2D Fake Warping)**:
+      - **Geometría Volumétrica 3D Real ($Z(x, y)$) y Perfil Sagital Adaptado**:
+        - Transformación 100% 3D de la imagen del muñeco de trapo bombero (`inputs/ragdoll_firefighter_rgba.png`, 357x433 px) a malla poligonal cerrada estanca (*genus-0 watertight manifold* de 18,443 vértices y 36,882 polígonos) sin huecos perimetrales ni costuras cortadas.
+        - Perfil sagital y transversal volumétrico diseñado a medida: domo esférico profundo del casco con ala perimetral sobresaliente ($Z_{ant} \approx 0.22$, $Z_{post} \approx -0.20$), cabeza esférica de tela de arpillera con ojos de botón elevados, chaqueta de bombero acolchada con cuello prominente y cinturón de cuero con hebilla metálica, hacha de bombero de juguete integrada y botas anchas con puntera prominente apoyadas en el suelo ($Z=0.00$m).
+        - Síntesis de textura dorsal limpia para la parte trasera: eliminación del duplicado facial y ojos de botón mediante inpainting Navier-Stokes Telea, preservando la continuidad de las bandas amarillas reflectantes del abrigo y la campana trasera del casco protector de cuello.
+      - **Jerarquía Esquelética Bípeda Proporcional y Restricciones Cinemáticas**:
+        - Armadura estandarizada de 15 huesos (`Root`, `Spine`, `Chest`, `Neck`, `Head`, `Shoulder_L/R`, `UpperArm_L/R`, `LowerArm_L/R`, `UpperLeg_L/R`, `LowerLeg_L/R`, `Foot_L/R`).
+        - Enlace de malla (*skinning*) mediante decaimiento gaussiano continuo de distancias ($C^\infty$) evitando rasgaduras o desgarres de vértices.
+        - **Límites Angulares Mecánicos (`LIMIT_ROTATION`)**:
+          - Rodillas (`LowerLeg_L`, `LowerLeg_R`): limitadas estrictamente a $[-135^\circ, 0^\circ]$ (rotación exclusivamente hacia atrás, previniendo rodillas invertidas).
+          - Codos (`LowerArm_L`, `LowerArm_R`): limitados estrictamente a $[0^\circ, 135^\circ]$ (flexión exclusivamente hacia adelante, sin hiperextensión).
+        - **Cápsula Anti-Colisión Corporal (`Hull_Torso`)**: volumen cilíndrico de radio $r=0.26$m en torso/vientre; brazos configurados con holgura lateral exterior ($X \ge 0.42$m), garantizando que las manoplas oscilen libremente al costado del cuerpo sin tocar ni penetrar la tela gruesa del saco ni el hacha.
+      - **Ciclo de Marcha Bípeda Procedural (48 cuadros @ 24 FPS = bucle continuo de 2.0s)**:
+        - Balanceo pélvico vertical sinusoidal ($\Delta Z = -0.026 \sin(2\theta)$) y desplazamiento lateral rítmico ($\Delta X = 0.020 \sin(\theta)$) para transferencia natural de peso.
+        - Dinámica de flexión de pierna en fase de balanceo y extensión firme en fase de apoyo con rodadura de talón a punta ($+15^\circ$ a $-12^\circ$).
+        - Balanceo contralateral de brazos en contrafase respecto a las piernas para equilibrar el momento angular.
+      - **Renderizado Nativo en Blender 5.2.0 LTS EEVEE**:
+        - Material PBR Principled BSDF opaco (`blend_method = 'OPAQUE'`, `use_backface_culling = True`) con especularidad mate baja (`Specular IOR Level = 0.12`, rugosidad $\approx 0.88$) que reproduce fielmente la textura táctil de la tela de arpillera y cuero, eliminando brillos plásticos o transparencias dithered.
+        - Mapeado de normales tangenciales MikkTSpace suavizado (`Strength = 0.40`).
+        - Escena con iluminación de estudio de 3 puntos (Key Light 420W, Fill Light 180W, Rim Light 420W) y plano receptor de sombra suave de contacto.
+        - Cámara de 75mm encuadrada frontalmente a la altura del personaje.
+      - **Activos Finales Generados y Verificados Visualmente**:
+        - Escena nativa de Blender: [`outputs/scenes/ragdoll_firefighter_walk.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.blend) (1.25 MB).
+        - Contenedor animado glTF 2.0: [`outputs/scenes/ragdoll_firefighter_walk.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.glb) (1.76 MB).
+        - Video de animación MP4 H.264: [`outputs/renders/ragdoll_firefighter_walk.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.mp4) (335 KB, 24 FPS, 48 cuadros).
+        - Animación GIF en bucle: [`outputs/renders/ragdoll_firefighter_walk.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.gif) (2.44 MB).
+        - Cuadros canónicos de inspección visual:
+          - Frontal 0°: [`ragdoll_angle_000_front.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_000_front.png)
+          - Perfil 90°: [`ragdoll_angle_090_profile.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_090_profile.png)
+          - Dorsal 180°: [`ragdoll_angle_180_dorsal.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_180_dorsal.png)
+          - Espalda 3/4 270°: [`ragdoll_angle_270_back.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_270_back.png)
+        - Script maestro de automatización: [`scripts/build_ragdoll_firefighter_production.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/build_ragdoll_firefighter_production.py).
+        - Documento Showcase: [`ragdoll_firefighter_showcase.md`](file:///C:/Users/sasuk/.gemini/antigravity/brain/25a9dd69-1a8e-409b-85e3-41655796e664/ragdoll_firefighter_showcase.md).
+        - Pruebas unitarias: `tests/backend/test_advanced_kinematics.py` (**6/6 tests pasados al 100% en 1.95s**).
 
 ---
 

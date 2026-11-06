@@ -293,9 +293,12 @@ def _generate_component_obj(
     back_mask = mask[:, ::-1].copy()
     back_rgb = clean_rgb[:, ::-1].copy()
 
-    if role == "torso":
+    if role in ["torso", "humanoid", "character"]:
         y_g, x_g = np.ogrid[:h_orig, :w_orig]
-        facial_mask = (x_g > int(w_orig * 0.49)) & (y_g < int(h_orig * 0.40)) & back_mask
+        if role in ["humanoid", "character"]:
+            facial_mask = (x_g > int(w_orig * 0.28)) & (x_g < int(w_orig * 0.72)) & (y_g > int(h_orig * 0.20)) & (y_g < int(h_orig * 0.44)) & back_mask
+        else:
+            facial_mask = (x_g > int(w_orig * 0.49)) & (y_g < int(h_orig * 0.40)) & back_mask
         body_donor = back_mask & (~facial_mask)
 
         if np.any(body_donor) and np.any(facial_mask):
