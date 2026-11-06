@@ -58,9 +58,23 @@ env/
 .DS_Store
 Thumbs.db
 
-# Temporary verification and scratch
+# Blender backup files
+*.blend1
+*.blend2
+
+# Temporary verification, scratch, and cache
 temp_verify_run/
+scratch/
+outputs/cache/
+*_frames/
 *.tmp
+
+# Temporary test scenes and intermediate renders
+outputs/scenes/test_*
+outputs/renders/test_*
+outputs/renders/hunyuan2_*
+outputs/renders/clay_*
+outputs/renders/neural_*
 
 # Standalone 3D tools and binaries
 /blender

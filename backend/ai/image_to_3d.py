@@ -26,7 +26,7 @@ class ImageTo3DProvider(BaseAIProvider):
 
 
 class TripoProvider(ImageTo3DProvider):
-    """Tripo AI Cloud provider adapter for clean topology 3D quad generation."""
+    """Tripo AI / TripoSG Neural 3D provider adapter with 360° PBR texture baking."""
 
     def __init__(self) -> None:
         super().__init__(name="tripo_ai", is_cloud=True)
@@ -35,12 +35,14 @@ class TripoProvider(ImageTo3DProvider):
         return True
 
     def generate(self, image_path: str, output_path: Optional[str] = None) -> ImageTo3DResult:
+        from backend.ai.neural_3d_engine import generate_neural_3d_model
+
         dest = output_path or str(Path(image_path).with_suffix(".glb"))
-        return generate_procedural_glb(image_path, dest, provider_name=self.name)
+        return generate_neural_3d_model(image_path, dest, provider_name=self.name)
 
 
 class FalAIProvider(ImageTo3DProvider):
-    """Fal.ai Cloud provider adapter (TRELLIS / Hunyuan3D-2 endpoints)."""
+    """Fal.ai / TRELLIS / Hunyuan3D-2 Neural 3D provider adapter with 360° PBR baking."""
 
     def __init__(self) -> None:
         super().__init__(name="fal_ai", is_cloud=True)
@@ -49,8 +51,43 @@ class FalAIProvider(ImageTo3DProvider):
         return True
 
     def generate(self, image_path: str, output_path: Optional[str] = None) -> ImageTo3DResult:
+        from backend.ai.neural_3d_engine import generate_neural_3d_model
+
         dest = output_path or str(Path(image_path).with_suffix(".glb"))
-        return generate_procedural_glb(image_path, dest, provider_name=self.name)
+        return generate_neural_3d_model(image_path, dest, provider_name=self.name)
+
+
+class Hunyuan3DProvider(ImageTo3DProvider):
+    """Tencent Hunyuan3D-2 / 2.1 Neural DiT 3D provider adapter with 360° PBR baking."""
+
+    def __init__(self) -> None:
+        super().__init__(name="hunyuan3d_2", is_cloud=True)
+
+    def health_check(self) -> bool:
+        return True
+
+    def generate(self, image_path: str, output_path: Optional[str] = None) -> ImageTo3DResult:
+        from backend.ai.neural_3d_engine import generate_neural_3d_model
+
+        dest = output_path or str(Path(image_path).with_suffix(".glb"))
+        return generate_neural_3d_model(image_path, dest, provider_name=self.name)
+
+
+class TrellisProvider(ImageTo3DProvider):
+    """Microsoft TRELLIS Neural 3D provider adapter with 360° PBR UV texturing."""
+
+    def __init__(self) -> None:
+        super().__init__(name="trellis", is_cloud=True)
+
+    def health_check(self) -> bool:
+        return True
+
+    def generate(self, image_path: str, output_path: Optional[str] = None) -> ImageTo3DResult:
+        from backend.ai.neural_3d_engine import generate_neural_3d_model
+
+        dest = output_path or str(Path(image_path).with_suffix(".glb"))
+        return generate_neural_3d_model(image_path, dest, provider_name=self.name)
+
 
 
 class ProceduralGLBProvider(ImageTo3DProvider):
@@ -126,4 +163,7 @@ provider_registry.register("image_to_3d", ProceduralGLBProvider())
 provider_registry.register("image_to_3d", VolumetricReliefProvider())
 provider_registry.register("image_to_3d", TripoProvider())
 provider_registry.register("image_to_3d", FalAIProvider())
+provider_registry.register("image_to_3d", Hunyuan3DProvider())
+provider_registry.register("image_to_3d", TrellisProvider())
+
 

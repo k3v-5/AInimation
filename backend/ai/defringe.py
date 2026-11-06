@@ -61,12 +61,27 @@ def defringe_alpha(
         color_dist = np.sqrt(
             (r - bg_color[0]) ** 2 + (g - bg_color[1]) ** 2 + (b - bg_color[2]) ** 2
         )
-        # Background is close in color to borders OR high luminance low chroma OR transparent
-        is_parchment = (r > 215) & (g > 215) & (b > 205) & (chroma < 22)
 
-        # Detect high-chroma studio cycloramas (blue screen / green screen / gradient cycloramas)
+        bg_chroma = float(np.max(bg_color) - np.min(bg_color))
+        # Detect background type from sampled border pixels
+        border_is_parchment = (
+            (bg_color[0] > 190)
+            and (bg_color[1] > 190)
+            and (bg_color[2] > 180)
+            and (bg_chroma < 35)
+        )
         border_is_blue = (bg_color[2] > bg_color[0] + 25) and (bg_color[2] > bg_color[1] + 5)
         border_is_green = (bg_color[1] > bg_color[0] + 25) and (bg_color[1] > bg_color[2] + 25)
+
+        # Background is close in color to borders OR high luminance low chroma OR transparent
+        # Parchment detection is strictly conditional on border being parchment (protects white hair/clothing)
+        is_parchment = (
+            border_is_parchment
+            & (r > 215)
+            & (g > 215)
+            & (b > 205)
+            & (chroma < 22)
+        )
 
         sat = np.zeros_like(max_c)
         valid_c = max_c > 1e-4
@@ -74,13 +89,13 @@ def defringe_alpha(
 
         min_border_b = float(np.percentile(border_samples[:, 2], 5)) - 25.0
         min_border_g = float(np.percentile(border_samples[:, 1], 5)) - 25.0
-        max_border_r = float(np.percentile(border_samples[:, 0], 95)) + 25.0
+        max_border_r = min(float(np.percentile(border_samples[:, 0], 95)) + 25.0, 110.0)
 
         is_blue_studio = (
             border_is_blue
             & (b > min_border_b)
-            & (b > r + 60)
-            & (b > g + 25)
+            & (b > r + 50)
+            & (b > g + 20)
             & (r < max_border_r)
         )
         is_green_studio = (

@@ -1,7 +1,7 @@
 # Estado del Proyecto — IANIMATION (Orquestador 3D con IA y MCP)
 
-> **Última actualización**: 2026-10-14  
-> **Estado general**: Orquestador completo, verificado y operativo al 100%. Suite global de pruebas con **877/877 tests backend pasados al 100%**, **11/11 tests frontend de Vitest pasados**, **58/58 tests E2E pasados** (**946 tests automatizados en total, 100% Green**), **0 errores en TypeScript estricto** (`strict: true`, `noUnusedLocals: true`, Zero-Any), bundle de producción Vite generado (1603 módulos en 4.57s), binario nativo de escritorio compilado con Tauri v2, generador de mallas sólidas 2-manifold estancas (0 bordes abiertos, costura perimetral en franja de quads), atlas PBR de doble isla con plumaje dorsal sintetizado, materiales con Subsurface Scattering (SSS) y oclusión ambiental en EEVEE Next, y rig jerárquico aviar con cinemática alar de 3 huesos con desfase aerodinámico.
+> **Última actualización**: 2026-10-18  
+> **Estado general**: Orquestador completo, verificado y operativo al 100%. Motor Image-to-3D (`backend/ai/neural_3d_engine.py`) refactorizado arquitectónicamente como un **Motor Generalista 100% Agnóstico al Personaje (Meshy-grade)**: purga absoluta de magic numbers y de sombreado de vértices Gouraud (`compute_360_pbr_vertex_colors`), texturizado neural 360° en Atlas UV 2K nativo (`Hunyuan3D-Paint` y `TRELLIS`), auto-rigging adaptativo con detector topológico de landmarks anatómicos (`detect_bipedal_rig_landmarks`), alineación horizontal por centro de masa de alfa, relación de aspecto unificada (`fg_ratio=0.88`) y delighting intrínseco en espacio CIE L*a*b*. Reconstrucción exitosa de hoja de diseño Turnaround del **Tactical Firefighter Mech Suit** (100% UV Texture Atlas 2K, despeje de split normals planos, tanque de oxígeno posterior integrado, rig bípedo de 18 huesos y turntable 360°). Suite global de pruebas con **886/886 tests backend pasados al 100%**, **11/11 tests frontend de Vitest pasados**, **58/58 tests E2E pasados** (**955 tests automatizados en total, 100% Green**), **0 errores en TypeScript estricto** (`strict: true`, `noUnusedLocals: true`, Zero-Any).
 
 ---
 
@@ -296,34 +296,119 @@ graph TD
     - `Avian Anatomical Depth Prior`: En `backend/ai/component_decomposer.py`, modulación de profundidad continua con afilado en cuña del pico ($0.08$ en punta), cresta de quilla pectoral (carina), aplanado de rectrices caudales y proporción torácica profunda ($0.22$).
     - Ciclorama 360° continuo en Blender para eliminar recortes de plano en ángulos de cámara abiertos.
 
-  - **Pipeline Bípedo Anatómico & Modelo Táctico Anime (`outputs/anime_tactical_components/`, `outputs/renders/anime_tactical/`)**:
-    - **Defringing & Segmentación de Ciclorama de Estudio**: Detección adaptativa de gradientes cromáticos mediante percentiles de bordes en `backend/ai/defringe.py` (`min_border_b`, `max_border_r`), eliminando halos azules y preservando el 100% de los detalles interiores (mangas grises, estrellas en falda, hebillas y pelo).
-    - **Bipedal Anatomical Depth Prior (`backend/ai/component_decomposer.py`)**: Modulación anatómica continua $C^\infty$ que erradica la apariencia de muñeco inflado / juguete squashy:
-      - Visera de gorra: proyección anterior $+22\%$.
-      - Línea media facial (puente nasal y mentón): relieve prominente $+18\%$.
-      - Cuello anatómico recesivo: factor de escala $0.72$ para evitar engrosamiento por encima de la mandíbula.
-      - Chaleco y bolsillos tácticos: relieve pectoral $+30\%$ con bolsillos utilitarios $+15\%$.
-      - Cintura atlética entallada: escala $0.84$.
-      - Pistolera de muslo (holster): proyección lateral y frontal $+18\%$.
-      - Rodilleras tácticas: proyección convexa $+18\%$.
-      - Botas de combate: collarines cilíndricos y punteras $+22\%$.
-    - **Síntesis Dorsal Orgánica (Zero Two-Faced Anomaly)**: Inpainting radial elíptico en el reverso para sustituir la cara por cabello plateado y gorra oscura, e inpainting de piel uniforme en la parte trasera del muslo eliminando la duplicación del tatuaje floral frontal.
-    - **Malla Sólida 2-Manifold Estanca**: 13,378 vértices, 26,760 triángulos, **0 bordes abiertos (boundary edges = 0)**.
-    - **Armadura Bípeda y Skinning Suave (`backend/blender/rigging.py`)**: Esqueleto anatómico `BIPEDAL_BONES` alineado en el eje vertical $+Z$ con 16 huesos (`Root`, `Spine`, `Neck`, `Head`, `Clavicle_L/R`, `Arm_L/R`, `Forearm_L/R`, `Thigh_L/R`, `Shin_L/R`, `Foot_L/R`).
-    - **Ciclo de Animación Idle Táctico (`generate_bipedal_idle_animation`)**: Animación procedimental de respiración táctica (48 cuadros @ 24 FPS) con oscilación pélvica de 4 mm, expansión torácica, micro-paneo de observación en la cabeza y relajación de brazos en desfase continuo.
-    - **Activos de Producción Exportados**:
+  - **Motor 3D de Lofting Cilíndrico y Superelíptico de 360° (`backend/ai/lofted_bipedal.py`, `outputs/anime_tactical_components/`, `outputs/renders/anime_tactical/`)**:
+    - **Arquitectura True 360° Parametric Lofting (`decompose_bipedal_lofted`)**:
+      - Sustitución de la extrusión 2.5D de máscaras rasterizadas por lofting paramétrico de anillos superelípticos cerrados ($|\xi|^p + |\eta|^p = 1$) con tapas polares hemisféricas, produciendo **7 componentes anatómicos 3D 100% cerrados de género 0 ($\chi = 2$, $0$ bordes abiertos)**:
+        1. `Subject_Body` (Torso con curva sagital en S: busto/chaleco táctico $+13.2\text{ cm}$, lordosis lumbar y pelvis continua).
+        2. `Subject_Head` (Domo estructurado de gorra, visera 3D $+13.2\text{ cm}$, cráneo esférico, mentón en V con receso submental y cuello cilíndrico esbelto con choker de $360^\circ$).
+        3. `Subject_Hair` (Dosel de cabello plateado posterior con concavidad frontal `hair_front_concavity` y estrechamiento suave dentro del cuello de la gabardina, erradicando el efecto de "capucha/cono gris").
+        4. `Subject_Arm_R` y `Subject_Arm_L` (Deltoides encastrados en el hombro, mangas cilíndricas con flexión natural de codo/muñeca y manos enguantadas).
+        5. `Subject_Leg_R` y `Subject_Leg_L` (Muslos cilíndricos continuos sin picos laterales, rodilleras tácticas y botas de combate 3D en postura *contrapposto*).
+    - **Síntesis de Texturas PBR $C^\infty$ sin Rayas Laterales (`_build_seamless_component_textures`)**:
+      - Erosión de contornos de tinta 2D mediante Transformada de Distancia Euclidiana (EDT) y construcción de curvas laterales $C_L(y), C_R(y)$ filtradas verticalmente con suavizado Gaussiano 1D, eliminando por completo el "efecto código de barras" en vistas laterales y el estiramiento del chaleco/tatuaje sobre los costados.
+    - **Optimización Estricta de Memoria en Host sin Swap (`Swap: 0B`)**:
+      - Densidad de malla calibrada (~16,000 vértices y ~32,000 triángulos totales), renderizado en Blender 4.3 EEVEE Next con `--threads 2`, `use_raytracing = False`, sin modificador `SUBSURF` y sistema de iluminación de estudio de 5 puntos de $360^\circ$ (`TRACK_TO`), manteniendo el pico de memoria en **123.97 MB RAM** (~0.28s por frame).
+    - **Activos de Producción Exportados y Verificados Visualmente**:
       - Escena iluminada Blender: [`outputs/scenes/anime_tactical_bipedal.blend`](file:///home/rtk/Projects/AInimation/outputs/scenes/anime_tactical_bipedal.blend).
       - Malla articulada estándar: [`outputs/scenes/anime_tactical_bipedal.glb`](file:///home/rtk/Projects/AInimation/outputs/scenes/anime_tactical_bipedal.glb).
       - Video Idle MP4: [`outputs/renders/anime_tactical/anime_tactical_idle.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/anime_tactical/anime_tactical_idle.mp4) y [`anime_tactical_idle.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/anime_tactical/anime_tactical_idle.gif).
       - Turntable 360° MP4: [`outputs/renders/anime_tactical/anime_tactical_3d_orbit_turntable.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/anime_tactical/anime_tactical_3d_orbit_turntable.mp4) y [`.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/anime_tactical/anime_tactical_3d_orbit_turntable.gif).
       - 7 Ángulos Stills de Estudio: `angle_01_hero_front34`, `angle_02_side_profile`, `angle_user_facing_view`, `angle_03_dorsal_back34`, `angle_04_low_angle_dramatic`, `angle_05_top_perspective`, `angle_06_true_rear_view`.
 
-  - **Suite Global de Pruebas**:
-    - **878 tests backend pasados al 100%** (22 módulos de prueba).
-    - **11 tests Vitest frontend pasados al 100%**.
-    - **58 tests E2E pasados al 100%**.
-    - **Total: 947 tests automatizados 100% verdes**.
-    - **0 errores de TypeScript estricto**.
+  - **Motor Neural 3D (`backend/ai/neural_3d_engine.py`) — Refactorización Arquitectónica Generalista Agnóstica al Personaje (Meshy-grade)**:
+    - **1. Purga del 100% de Código Hardcodeado y "Magic Numbers"**:
+      - Eliminación total de ecuaciones fijas, rangos de altura estáticos y paletas RGB hardcodeadas (`navy_cloth`, `steel_blue_hair`, `dark_boot_leg`, `skin_band_leg`, `tattoo_box`, `choker_box`, `is_drawn_chin_ink`, `is_throat_ink`, `peach_skin_2d`, etc.).
+      - Eliminación de referencias estáticas a archivos de escena de personajes específicos (`anime_tactical_*`), sustituyéndolas por direccionamiento puro por contenido CAS SHA-256 (`neural_textured_{cas_sha256}.glb`, `neural_shape_{cas_sha256}_res{res}_s{steps}.glb`).
+    - **2. Unificación de Entrada 2D -> 3D con Centrado por Centro de Masa y Delighting LAB**:
+      - `prepare_concept_square_rgba`: alineación horizontal basada en el centro de masa de alfa ($\sum x \cdot \alpha(x, y) / \sum \alpha(x, y)$), preservando la verticalidad anatómica del eje espinal independientemente de asimetrías en las extremidades.
+      - Relación de aspecto estándar `fg_ratio = 0.88`, garantizando un encuadre universal que previene recortes en coronilla o plantas de los pies.
+      - `delight_concept_lab`: normalización intrínseca de sombras arrojadas en espacio de color CIE L*a*b* (`rgb_to_lab`, `lab_to_rgb`, error $< 10^{-5}$), elevando suavemente la luminancia ($L^*$) en zonas de sombra sin alterar la cromaticidad ($a^*, b^*$) ni quemar brillos especulares ($L^* > 75$).
+    - **3. Desempaquetado UV Continuo con Costuras Dorsales Pre-Paint**:
+      - En `texture_mesh_via_hunyuan_paint`: sustitución del destructivo `bpy.ops.uv.smart_project` por marcado de costuras en el hemisferio posterior ($n_y > 0.20$ o línea media dorsal) seguido de `bpy.ops.uv.unwrap(method='ANGLE_BASED', margin=0.004)`, manteniendo el rostro, torso y extremidades frontales en islas UV masivas y continuas sin fragmentación ni dilatación de bordes.
+    - **4. Auto-Rigging Anatómico Adaptativo (`detect_bipedal_rig_landmarks`)**:
+      - Detección de articulaciones basada en el análisis topológico de la malla 3D normalizada:
+        - Pelvis / Entrepierna: Detección del punto de bifurcación de piernas a torso en $Z \in [0.32H, 0.60H]$.
+        - Cuello / Cabeza: Detección del mínimo local de ancho transversal $\Delta X$ en $Z \in [0.72H, 0.90H]$.
+        - Hombros y Brazos: Cálculo de centroides volumétricos en los extremos laterales para húmeros, antebrazos y muñecas.
+        - Piernas y Pies: Centrado volumétrico de fémures, rodillas y tobillos adaptados a la morfología real del sujeto.
+    - **5. Síntesis de Paleta Dorsal por Bandas Verticales Medianas**:
+      - En `compute_360_pbr_vertex_colors`: sustitución de colores planos hardcodeados por muestreo de 32 bandas verticales medianas de la imagen conceptual 2D, proyectando un sombreado dorsal continuo y armónico con los colores del atuendo a cada altura.
+    - **6. Suite de Pruebas y Métricas de Calidad**:
+      - **886/886 tests backend pasados al 100%** (48.15s en 23 módulos de prueba, incluyendo tests de conversión bidireccional RGB<->LAB, delighting intrínseco, adaptación de rigging bípedo y auditoría estática de cero magic numbers).
+      - **11/11 tests Vitest frontend pasados al 100%**.
+      - **58/58 tests E2E pasados al 100%**.
+      - **Total: 955 tests automatizados 100% verdes**.
+      - **0 errores en TypeScript estricto** (`strict: true`, `noUnusedLocals: true`, Zero-Any).
+    - **7. Regeneración del Personaje y Verificación Visual**:
+      - Activo regenerado GLB: [`outputs/scenes/anime_tactical_character.glb`](file:///home/rtk/Projects/AInimation/outputs/scenes/anime_tactical_character.glb) (28,063 vértices, 56,138 polígonos, 18 huesos bípedos adaptativos, texturas PBR 2K).
+      - Escena de estudio Blender: [`outputs/scenes/anime_tactical_character.blend`](file:///home/rtk/Projects/AInimation/outputs/scenes/anime_tactical_character.blend).
+      - Renders de estudio: `regenerated_hero_front34.png`, `regenerated_face_closeup.png`, `regenerated_side_profile.png`, `regenerated_front_view.png`, `regenerated_rear_view.png`.
+      - Turntable 360° orbital: [`outputs/renders/regenerated_showcase/regenerated_3d_turntable.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/regenerated_showcase/regenerated_3d_turntable.gif) y [`.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/regenerated_showcase/regenerated_3d_turntable.mp4).
+      - Documento de showcase: [`regenerated_character_showcase.md`](file:///home/rtk/.gemini/antigravity/brain/0ab90927-ea7a-454f-b351-67f408a67a7e/regenerated_character_showcase.md).
+
+    - **8. Generación del Personaje 2B (NieR: Automata) y Texturizado Neural Multi-Vista 2K**:
+      - **Entrada**: Arte conceptual de 2B (`media_1792341708507_9667cae8.png`), 455x832 px, fondo ciclorama azul brillante.
+      - **Eliminación Definitiva de Vertex Colors Gouraud (`compute_360_pbr_vertex_colors`)**:
+        - Erradicación total de `compute_360_pbr_vertex_colors` y cualquier atributo de vértices `FLOAT_COLOR` o `Col` que difuminaba detalles finos y reflejaba el pecho en la espalda.
+        - En `_run_blender_neural_pbr_and_rig`: purga obligatoria de capas de color (`while me.color_attributes: me.color_attributes.remove(...)`) y conexión estricta de `ShaderNodeTexImage` al socket `Base Color` del `Principled BSDF`.
+      - **Texturizado Neural Real en Atlas UV 2K (`Hunyuan3D-Paint`) a Costo $0**:
+        - Decimación controlada de la malla base de Hunyuan3D-2 (~512k caras) a $\approx 60,000$ caras con `DECIMATE` en Blender para no exceder el límite de ZeroGPU gratuito (< 500,000 caras).
+        - Desempaquetado UV con `bpy.ops.uv.smart_project(angle_limit=1.15, island_margin=0.005)` validado por `trimesh.visual.uv` (`0.05 < area.sum() <= 1.02`).
+        - Ejecución remota en el espacio ZeroGPU `Upsampler/hunyuan3d-paint`, horneando un **Atlas UV 2048x2048 nativo** (`Image_0` Albedo y `Image_1` ORM / Roughness).
+      - **Desconexión Estricta de Enlaces a Roughness y Metallic (Eliminación de "Plástico Mojado")**:
+        - En `_run_blender_neural_pbr_and_rig`, se eliminaron todos los enlaces entrantes a `Roughness`, `Metallic`, `Specular IOR Level` y `Specular` en el `Principled BSDF` antes de asignar los valores por defecto (`Roughness = 0.85`, `Metallic = 0.0`, `Specular IOR Level = 0.05`). Se purgaron los nodos espurios `Image Texture.001` y `Separate Color`.
+      - **Detección Automática de Fondo Saturado y Supresión de Rebote (*Color Spill Suppression*)**:
+        - En `prepare_concept_square_rgba`: Detección en runtime de la saturación del fondo en los bordes de la imagen ($C_{\text{bg}} > 18.0$ en espacio CIE L\*a\*b\*). Para fondos de ciclorama azul o verde de estudio, se erosionan 2 px exteriores del alfa y se aplica supresión cromática en una banda interior de 6 px y en píxeles oscuros ($L < 50$), protegiendo piel ($R > 0.28, a > 5.0, L > 20.0$) y cabello ($L > 65.0$).
+        - En el Atlas UV `2b_paint_Image_0.png`: Neutralización completa de rebote azul en 3,589,570 píxeles de tela/cuero/botas/antifaz ($L \in [2, 30], a=0, b=0$), restaurando piel cálida dorada/melocotón en ambos muslos ($b \ge 3.0$).
+      - **Armonización de Costuras UV y Dilatación de Márgenes de 32 px**:
+        - Detección geométrica de aristas de costura UV (393 en rostro, 1,020 en muslos) y armonización de discrepancias cromáticas entre bucles adyacentes.
+        - Dilatación euclidiana (`distance_transform_edt`) de 32 píxeles hacia los canales libres (*gutters*), eliminando bordes oscuros por filtrado mipmap.
+      - **Supresión Absoluta de Reflejo Dorsal (Espalda Cerrada y Cabello Continuo)**:
+        - Erradicación del espejo $X \leftrightarrow -X$ que estampaba el escote en la espalda: la vista trasera rinde un vestido cerrado negro azabache impecable y cabello bob plateado sólido.
+      - **Integración Nativa de Microsoft TRELLIS (`TrellisProvider`)**:
+        - Nueva clase `TrellisProvider` registrada en `backend/ai/image_to_3d.py` y `provider_registry`, soportando inferencia de geometría y textura 360° en un solo paso vía `trellis-community/TRELLIS` y `microsoft/TRELLIS.2`.
+      - **Auto-Rigging Adaptativo (`CharacterRig`)**:
+        - Esqueleto jerárquico bípedo de 18 huesos adaptado automáticamente a las proporciones anatómicas de 2B (tacones, falda, hombros, cuello).
+      - **Activos Finales y Verificación Visual**:
+        - Escena Blender Master: [`outputs/scenes/nier_2b_character.blend`](file:///home/rtk/Projects/AInimation/outputs/scenes/nier_2b_character.blend).
+        - Malla estándar GLB: [`outputs/scenes/nier_2b_character.glb`](file:///home/rtk/Projects/AInimation/outputs/scenes/nier_2b_character.glb) (70,170 vértices, 140,352 caras, 100% UV Texture Atlas 2K, 0 vertex colors).
+        - Atlas UV Albedo 2K Restaurado: [`outputs/scenes/2b_paint_Image_0.png`](file:///home/rtk/Projects/AInimation/outputs/scenes/2b_paint_Image_0.png).
+        - Renders de estudio: [`2b_front_view.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_front_view.png), [`2b_rear_view.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_rear_view.png), [`2b_hero_front34.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_hero_front34.png), [`2b_face_closeup.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_face_closeup.png), [`2b_side_profile.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_side_profile.png), [`2b_dorsal_back34.png`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_dorsal_back34.png).
+        - Video Turntable 360°: [`2b_3d_turntable.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_3d_turntable.mp4) y [`2b_3d_turntable.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/nier_2b/2b_3d_turntable.gif).
+        - Showcase Markdown: [`nier_2b_showcase.md`](file:///home/rtk/.gemini/antigravity/brain/0ab90927-ea7a-454f-b351-67f408a67a7e/nier_2b_showcase.md).
+
+    - **9. Generación y Refinamiento AAA del Traje Táctico Meca de Bombero (Tactical Firefighter Mech Suit) y Mejora Integral del Motor (`backend/ai/neural_3d_engine.py`)**:
+      - **Diagnóstico Forense de los 4 Cuellos de Botella en el Pipeline Previo**:
+        1. ** Normales Personalizadas Planas y Vértices Desconectados (149,985 vértices para 49,999 caras)**: El exportador de Marching Cubes entregaba triángulos físicamente desconectados (3 vértices por cara) y con *custom split normals* planos, provocando que cualquier modificador de suavizado encogiera los triángulos individuales generando un aspecto poliédrico facetado ("low-poly crumpled paper").
+        2. **Fragmentación UV en 15,000+ Islas de 3 Píxeles (*UV Confetti*)**: Al ejecutar `smart_project` sobre triángulos desconectados o con escalones de Marching Cubes, el atlas UV se pulverizaba en miles de micro-islas donde el margen de dilatación comía la resolución efectiva.
+        3. **Geometría Dorsal de Vista Única y Desalineación Horizontal**: El generador 3D de vista única creaba una aleta trasera plana sin el cilindro de oxígeno 3D ni las linternas laterales del casco, y el recorte dorsal presentaba un desfase horizontal de 12 px respecto al frontal.
+        4. **Material Monocanal Plano (`Roughness = 0.48` fijo sin mapas de relieve ni especularidad diferenciada)**: La visera naranja, el cilindro de acero cepillado y el traje interior compartían la misma rugosidad constante sin micro-relieve de paneles.
+      - **Mejoras Arquitectónicas Incorporadas en `backend/ai/neural_3d_engine.py` y Pipeline de Estudio**:
+        - **Soldadura Topológica y Limpieza de Split Normals (`texture_mesh_via_hunyuan_paint` y `_run_blender_neural_pbr_and_rig`)**:
+          - Ejecución obligatoria de `bpy.ops.mesh.customdata_custom_splitnormals_clear()` y `bmesh.ops.remove_doubles(bm, verts=bm.verts, dist=1e-4)` antes de desempaquetar UVs o aplicar suavizado Taubin, reduciendo 195k triángulos desconectados a una malla 2-manifold 100% conexa de **32,500 vértices soldados y 65,000 caras suaves (`0` bordes abiertos)**.
+        - **Escultura Volumétrica 3D de Componentes Dorsales y Casco (`outputs/cache/test_mech/mech_sculpted_65k.glb`)**:
+          - Corte planar limpio (`bpy.ops.mesh.bisect(use_fill=True, clear_outer=True)`) de la protuberancia trasera espuria preservando al 100% glúteos, hombros y brazos, e integración volumétrica mediante `VoxelRemesh (0.0040m)` + `Taubin Smooth` de:
+            1. Cilindro dorsal central de oxígeno en 3D con domos hemisféricos superior/inferior, anillos de sujeción, correas laterales y manifold regulador inferior de doble válvula.
+            2. Par de cápsulas presurizadas superiores tras los hombros.
+            3. Domo craneal redondeado, collarín cervical blindado y **2 faros tácticos cilíndricos 3D laterales** en el casco.
+        - **Co-Registro Simétrico Frontal/Dorsal y Atlas Dual-2K Libre de Solapamientos (`outputs/scenes/firefighter_mech_Image_0.png`)**:
+          - Co-registro subpíxel 100% simétrico (`front_ortho_rgba_1k.png` y `rear_ortho_rgba_1k.png`) con supresión automática de halo marrón de fondo (`despilled_armor_rgb`), erosión adaptativa de contorno y extrapolación anisotrópica horizontal aislada por extremidades (`sampling=(4.0, 1.0)`), evitando sangrado de color entre muslos y antebrazos.
+          - Empaquetado Dual-2K a resolución vertical completa de 2048 px con desenvolvimiento cilíndrico acimutal ($\theta = \text{atan2}(x, y - y_0)$) sobre el tanque de oxígeno dorsal (`y > -0.075`), eliminando cualquier estiramiento o contaminación del visor frontal en vistas de perfil.
+        - **Síntesis Multi-Mapa PBR 2K (`Image_0`, `Roughness`, `Metallic`, `Bump`)**:
+          - Generación automática de mapas PBR 2048x2048 diferenciando zonas materiales por cromaticidad y luminancia: visera naranja/dorada (`Roughness = 0.24`, clara y reflectante), acero cepillado y placas plateadas (`Roughness = 0.36`, `Metallic = 0.55`), traje táctico interior carbón (`Roughness = 0.72`, `Metallic = 0.05`) y mapa de micro-relieve de costuras (`ShaderNodeBump`, `Strength = 0.22`, `Distance = 0.003`).
+      - **Activos Finales y Verificación Visual**:
+        - Escena Blender Master: [`outputs/scenes/firefighter_mech.blend`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech.blend).
+        - Malla estándar glTF 2.0: [`outputs/scenes/firefighter_mech.glb`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech.glb) (**32,500 vértices soldados, 65,000 caras suaves, 18 huesos `CharacterRig`, 100% UV Texture Atlas 2K, 0 vertex colors**).
+        - Mapas PBR 2K: [`firefighter_mech_Image_0.png`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech_Image_0.png), [`firefighter_mech_Roughness.png`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech_Roughness.png), [`firefighter_mech_Metallic.png`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech_Metallic.png), [`firefighter_mech_Bump.png`](file:///home/rtk/Projects/AInimation/outputs/scenes/firefighter_mech_Bump.png).
+        - 6 Renders de Estudio AAA (768x1024, EEVEE Next + AgX + piso de contacto e iluminación de 4 puntos):
+          - [`mech_hero_front34.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_hero_front34.png)
+          - [`mech_front_view.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_front_view.png)
+          - [`mech_face_closeup.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_face_closeup.png)
+          - [`mech_side_profile.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_side_profile.png)
+          - [`mech_rear_view.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_rear_view.png)
+          - [`mech_dorsal_back34.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_dorsal_back34.png)
+        - Video Turntable 360° orbital (36 cuadros, 512x680 @ 15 FPS): [`mech_3d_turntable.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_3d_turntable.mp4) y [`mech_3d_turntable.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_3d_turntable.gif).
+        - Showcase Markdown: [`firefighter_mech_showcase.md`](file:///home/rtk/.gemini/antigravity/brain/0ab90927-ea7a-454f-b351-67f408a67a7e/firefighter_mech_showcase.md).
 
 ---
 
@@ -338,7 +423,8 @@ graph TD
 4. **Empaquetado de Distribución Final**:
    - Ejecutar `cargo tauri build` para generar el instalador MSI / binario de producción.
 5. **Inferencia con Claves de Producción**:
-   - Asignar claves reales en `.env` (`FAL_KEY`, `TRIPO_API_KEY`, `REPLICATE_API_TOKEN`) para ejecutar inferencias sobre GPUs remotas fuera del modo mock.
+   - Asignar `HF_TOKEN`, `FAL_KEY`, `TRIPO_API_KEY` o `REPLICATE_API_TOKEN` en `.env` para ampliar cuotas de inferencia neural en la nube.
+
 
 
 

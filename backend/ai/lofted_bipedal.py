@@ -271,7 +271,8 @@ def _build_seamless_component_textures(
 
         t_row = np.clip((x_indices - xl) / float(span), 0.0, 1.0)[:, None]
         w_center = 0.5 * (1.0 - np.cos(2.0 * np.pi * t_row))
-        linear_flank = (1.0 - t_row) * c_left[None, :] + t_row * c_right[None, :]
+        c_right_back = c_left if role == "humanoid" else c_right
+        linear_flank = (1.0 - t_row) * c_left[None, :] + t_row * c_right_back[None, :]
         back_tex[y, :] = linear_flank * (1.0 - w_center) + c_mid_back[None, :] * w_center
 
     back_tex = gaussian_filter(back_tex, sigma=(2.5, 2.0, 0.0))
@@ -759,8 +760,8 @@ def decompose_bipedal_lofted(
         px_x(0.676),  # 206 (waist taper right)
         px_x(0.725),  # 216 (hip flare right)
         px_x(0.785),  # 229 (hip holster outer contour)
-        px_x(0.760),  # 224 (lower hip holster)
-        px_x(0.720),  # 215 (pelvic bottom right matching Leg_L socket)
+        px_x(0.772),  # 226 (lower hip holster)
+        px_x(0.755),  # 223 (pelvic bottom right matching Leg_L natural thigh)
     ], dtype=np.float32)
 
     xl_body = gaussian_filter1d(np.interp(y_idx, body_y_knots, body_xl_knots), sigma=2.2)
@@ -1396,23 +1397,13 @@ def decompose_bipedal_lofted(
     y_leg_l_end = int(np.max(ys_right_leg)) if len(ys_right_leg) > 0 else max_y  # 672
 
     xl_leg_l_clip = np.full(h, x_center, dtype=np.float32)
-    leg_l_outer_y = np.array([
-        y_leg_l_start,  # 352: hip socket top matching Subject_Body
-        px_y(0.560),    # 385: upper thigh (clips off protruding holster strap spike!)
-        px_y(0.635),    # 434: mid-lower thigh taper
-        px_y(0.700),    # 476: knee pad
-        px_y(0.740),    # 502: upper boot shaft
-        y_leg_l_end,    # 672: boot sole
-    ], dtype=np.float32)
-    leg_l_outer_x = np.array([
-        px_x(0.718),
-        px_x(0.708),
-        px_x(0.688),
-        px_x(0.712),
-        px_x(0.840),
-        px_x(0.860),
-    ], dtype=np.float32)
-    xr_leg_l_clip = np.interp(y_idx, leg_l_outer_y, leg_l_outer_x)
+    xr_leg_l_clip = np.full(h, float(w - 1), dtype=np.float32)
+    y_holster_end = px_y(0.562)  # ~386 (bottom of protruding hip holster pouch)
+    for y in range(y_leg_l_start, y_holster_end):
+        t_h = (y - y_leg_l_start) / float(max(1, y_holster_end - y_leg_l_start))
+        xr_leg_l_clip[y] = px_x(0.742 + 0.014 * t_h)
+    for y in range(y_holster_end, min(h, y_arm_l_end + 4)):
+        xr_leg_l_clip[y] = px_x(0.835)
 
     xl_leg_l, xr_leg_l = _extract_row_minmax(
         subject_mask,
@@ -1421,8 +1412,8 @@ def decompose_bipedal_lofted(
         x_min_clip=xl_leg_l_clip,
         x_max_clip=xr_leg_l_clip,
         default_xl=px_x(0.52),
-        default_xr=px_x(0.71),
-        sigma=2.0,
+        default_xr=px_x(0.76),
+        sigma=2.2,
     )
 
     # Forward-stepping contrapposto stance on Leg_L (top socket tucked inside Subject_Body)
