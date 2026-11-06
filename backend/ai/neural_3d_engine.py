@@ -37,7 +37,35 @@ from scipy.ndimage import binary_erosion, distance_transform_edt, gaussian_filte
 from scipy.spatial import cKDTree
 
 from backend.ai.defringe import defringe_alpha
+from backend.ai.character_dynamics import (
+    CollisionSphere,
+    DynamicSimulationResult,
+    SecondaryChainConfig,
+    SecondaryChainSimulator,
+    TwistBoneSpec,
+    inject_twist_bones,
+)
+from backend.ai.pbr_baker import (
+    BakeConfig,
+    BakedPBRMaps,
+    bake_high_to_low_pbr,
+    compute_mesh_tangents,
+    compute_surface_curvature_and_ao,
+)
+from backend.ai.quad_remesher import (
+    QuadMesh,
+    QuadTopologyStats,
+    catmull_clark_subdivision,
+    compute_vertex_normals,
+    estimate_principal_curvatures,
+    export_quad_glb,
+    export_quad_obj,
+    pair_triangles_to_quads,
+    retopologize_to_quads,
+)
 from backend.core.models import ImageTo3DResult, MeshFormat, PBRTextureSet
+
+REPO_ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
 
 class ConceptPreprocessMeta(BaseModel):
@@ -1045,16 +1073,14 @@ def _run_blender_neural_pbr_and_rig(
     5. Exports the final rigged character as `.blend` and `.glb` (and `.obj` if requested).
     """
     out_glb_path.parent.mkdir(parents=True, exist_ok=True)
+    repo_root_str = str(REPO_ROOT)
     script_code = f"""
 import sys, gc, types
 from pathlib import Path
 
-repo_root = "/home/rtk/Projects/AInimation"
+repo_root = {repr(repo_root_str)}
 if repo_root not in sys.path:
     sys.path.insert(0, repo_root)
-venv_site = "/home/rtk/Projects/AInimation/.venv/lib/python3.11/site-packages"
-if venv_site not in sys.path:
-    sys.path.insert(0, venv_site)
 
 import bpy
 import bmesh
@@ -1303,6 +1329,9 @@ if do_rig:
         ("Foot_R", (float(leg_x_R), 0.0, float(ankle_z)), (float(leg_x_R), -0.10, 0.02), "LowerLeg_R", True),
     ]
 
+    from backend.ai.character_dynamics import inject_twist_bones
+    bone_defs = inject_twist_bones(bone_defs)
+
     deform_bones = []
     for bname, head, tail, parent_name, is_deform in bone_defs:
         b = eb.new(bname)
@@ -1434,7 +1463,7 @@ def generate_neural_3d_model(
     out_file = Path(output_path).resolve()
     out_file.parent.mkdir(parents=True, exist_ok=True)
 
-    cache_dir = Path("/home/rtk/Projects/AInimation/outputs/cache/neural_3d")
+    cache_dir = REPO_ROOT / "outputs" / "cache" / "neural_3d"
     cache_dir.mkdir(parents=True, exist_ok=True)
 
     try:

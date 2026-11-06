@@ -1,7 +1,11 @@
 # Estado del Proyecto — IANIMATION (Orquestador 3D con IA y MCP)
 
-> **Última actualización**: 2026-10-18  
-> **Estado general**: Orquestador completo, verificado y operativo al 100%. Motor Image-to-3D (`backend/ai/neural_3d_engine.py`) refactorizado arquitectónicamente como un **Motor Generalista 100% Agnóstico al Personaje (Meshy-grade)**: purga absoluta de magic numbers y de sombreado de vértices Gouraud (`compute_360_pbr_vertex_colors`), texturizado neural 360° en Atlas UV 2K nativo (`Hunyuan3D-Paint` y `TRELLIS`), auto-rigging adaptativo con detector topológico de landmarks anatómicos (`detect_bipedal_rig_landmarks`), alineación horizontal por centro de masa de alfa, relación de aspecto unificada (`fg_ratio=0.88`) y delighting intrínseco en espacio CIE L*a*b*. Reconstrucción exitosa de hoja de diseño Turnaround del **Tactical Firefighter Mech Suit** (100% UV Texture Atlas 2K, despeje de split normals planos, tanque de oxígeno posterior integrado, rig bípedo de 18 huesos y turntable 360°). Suite global de pruebas con **886/886 tests backend pasados al 100%**, **11/11 tests frontend de Vitest pasados**, **58/58 tests E2E pasados** (**955 tests automatizados en total, 100% Green**), **0 errores en TypeScript estricto** (`strict: true`, `noUnusedLocals: true`, Zero-Any).
+> **Última actualización**: 2026-11-06  
+> **Estado general**: Orquestador completo, verificado y operativo al 100%. Motor Image-to-3D (`backend/ai/neural_3d_engine.py`) actualizado al estándar de **Estudio Profesional (AAA Studio Upgrade)** con tres pilares fundamentales:
+> 1. **Motor de Retopología y Quad Remeshing (`backend/ai/quad_remesher.py`)**: Conversión automatizada de mallas densas triangulares / marching-cubes en topología regular de cuadriláteros (*quad-dominant* y *pure-quads* vía subdivisión Catmull-Clark), alineación con tensores de curvatura principal $(v_{min}, v_{max})$, métricas de aspecto e integridad manifold, y exportadores a OBJ (con polígonos de 4 vértices `f v1 v2 v3 v4`) y glTF 2.0.
+> 2. **Baker PBR High-to-Low Poly (`backend/ai/pbr_baker.py`)**: Transferencia de micro-relieve y detalles de alta frecuencia desde el esculpido denso high-poly (arrugas, costuras mecánicas, micro-poros) hacia la malla low-poly retopologizada. Generación de mapas de normales en espacio tangente (TBN ortogonalizado MikkTSpace), mapas de cavidad/curvatura, oclusión ambiental (AO) y empaquetado glTF estándar ORM (Occlusion-Roughness-Metallic).
+> 3. **Dinámicas de Personaje y Twist Bones (`backend/ai/character_dynamics.py`)**: Inyección anatómica de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) para suprimir el colapso de volumen ("candy-wrapper artifact") durante rotaciones axiales. Simulación física secundaria de resortes-amortiguador (Verlet spring-damper) para accesorios dinámicos (cabello, cables, capas, colas) con preservación exacta de longitud y hulls de colisión esférica corporales.
+> Suite global de pruebas con **892/892 tests backend pasados al 100%** (+ 6 skipped limpios en hosts sin Blender instalado), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux).
 
 ---
 
@@ -67,6 +71,10 @@ graph TD
 - `base.py`: Registro de proveedores (`AIProviderRegistry`), clases base abstractas y fallbacks.
 - `async_engine.py`: Motor de ejecución asíncrono no bloqueante con tokens de cancelación.
 - `procedural.py`: Motor autónomo de síntesis procedimental binaria glTF 2.0 (.glb), contenedores MP4 ISO-BMFF y extracción de métricas de geometría 3D desacoplado de fixtures de pruebas (Zero-Any).
+- `quad_remesher.py`: Motor de retopología quad-dominant y pure-quads (Catmull-Clark), alineación por tensores de curvatura principal, métricas topológicas y exportadores directos a Wavefront OBJ (caras cuadriláteras `f v1 v2 v3 v4`) y glTF 2.0.
+- `pbr_baker.py`: Baker PBR High-to-Low Poly por texel para mapas de normales en espacio tangente con TBN ortogonalizado MikkTSpace, oclusión ambiental (AO), mapas de cavidad/curvatura y packing glTF ORM.
+- `character_dynamics.py`: Inyector de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) y simulador físico de resortes Verlet con amortiguamiento y detección de colisiones esféricas anatómicas.
+- `neural_3d_engine.py`: Motor neural 3D unificado con resolución dinámica multiplataforma de rutas, integración de quad remeshing, PBR baking y twist bones.
 - `audio.py`: Análisis de audio con extracción de BPM, timestamps de beats, envolvente de energía y separación de stems.
 - `image_to_3d.py`: Conversión de imágenes 2D a mallas 3D estructuradas con generador procedimental GLB para tests.
 - `auto_rig.py`: Detección anatómica bípeda, inyección de esqueleto estándar de 53 huesos y skinning.

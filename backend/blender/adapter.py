@@ -49,6 +49,18 @@ class BlenderAdapter(Base3DEngineAdapter):
         if user_app.is_file() and os.access(user_app, os.X_OK):
             return str(user_app.resolve())
 
+        # Check Windows common install locations
+        win_candidates = [
+            Path("C:/Program Files/Blender Foundation/Blender 4.4/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 4.3/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 4.2/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 4.1/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 4.0/blender.exe"),
+        ]
+        for wc in win_candidates:
+            if wc.is_file() and os.access(wc, os.X_OK):
+                return str(wc.resolve())
+
         return "blender"
 
     def health_check(self) -> bool:
