@@ -5,7 +5,7 @@
 > 1. **Motor de Retopología y Quad Remeshing (`backend/ai/quad_remesher.py`)**: Conversión automatizada de mallas densas triangulares / marching-cubes en topología regular de cuadriláteros (*quad-dominant* y *pure-quads* vía subdivisión Catmull-Clark), alineación con tensores de curvatura principal $(v_{min}, v_{max})$, métricas de aspecto e integridad manifold, y exportadores a OBJ (con polígonos de 4 vértices `f v1 v2 v3 v4`) y glTF 2.0.
 > 2. **Baker PBR High-to-Low Poly (`backend/ai/pbr_baker.py`)**: Transferencia de micro-relieve y detalles de alta frecuencia desde el esculpido denso high-poly (arrugas, costuras mecánicas, micro-poros) hacia la malla low-poly retopologizada. Generación de mapas de normales en espacio tangente (TBN ortogonalizado MikkTSpace), mapas de cavidad/curvatura, oclusión ambiental (AO) y empaquetado glTF estándar ORM (Occlusion-Roughness-Metallic).
 > 3. **Dinámicas de Personaje y Twist Bones (`backend/ai/character_dynamics.py`)**: Inyección anatómica de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) para suprimir el colapso de volumen ("candy-wrapper artifact") durante rotaciones axiales. Simulación física secundaria de resortes-amortiguador (Verlet spring-damper) para accesorios dinámicos (cabello, cables, capas, colas) con preservación exacta de longitud y hulls de colisión esférica corporales.
-> Suite global de pruebas con **892/892 tests backend pasados al 100%** (+ 6 skipped limpios en hosts sin Blender instalado), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux).
+> Suite global de pruebas con **898/898 tests backend pasados al 100%** (incluyendo los 6 tests de integración nativa con Blender 5.2.0 LTS), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux con auto-detección en `E:/Blender/blender.exe`).
 
 ---
 
@@ -417,6 +417,24 @@ graph TD
           - [`mech_dorsal_back34.png`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_dorsal_back34.png)
         - Video Turntable 360° orbital (36 cuadros, 512x680 @ 15 FPS): [`mech_3d_turntable.mp4`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_3d_turntable.mp4) y [`mech_3d_turntable.gif`](file:///home/rtk/Projects/AInimation/outputs/renders/firefighter_mech/mech_3d_turntable.gif).
         - Showcase Markdown: [`firefighter_mech_showcase.md`](file:///home/rtk/.gemini/antigravity/brain/0ab90927-ea7a-454f-b351-67f408a67a7e/firefighter_mech_showcase.md).
+
+    - **10. Integración Nativa de Blender 5.2.0 LTS y Producción Final del Vuelo del Cuervo Rojo (Zero-Any, Zero 2D Fake Warping)**:
+      - **Detección y Compatibilidad de Motor**:
+        - Localizado y vinculado el binario del motor 3D nativo en `E:/Blender/blender.exe` (Blender 5.2.0 LTS).
+        - Actualizados `backend/blender/adapter.py`, `backend/blender/rigging.py`, `backend/blender/scripts/multi_component_rig.py` y `backend/blender/scripts/render_volumetric_raven.py`.
+        - Manejo dinámico de motor EEVEE (`BLENDER_EEVEE` prioritario en Blender 5.2+, fallback a `BLENDER_EEVEE_NEXT` y `CYCLES`) y codificación segura `utf-8` en flujos de subprocesos.
+      - **Rigging y Ensamblado Multi-Componente 100% Nativo en Blender**:
+        - Ensamblado de 4 componentes tridimensionales desacoplados: Torso (`Subject_Torso`), Ala Ventral (`Subject_Wing_Ventral`), Ala Dorsal (`Subject_Wing_Dorsal`) y Rama percha (`Prop_Branch`).
+        - Armature aviar de 5 huesos jerárquicos (`Root`, `Spine`, `Head`, `Wing_Shoulder_L`, `Wing_Shoulder_R`) con enlace de vértices independiente (cero sangrado de pesos ni cizallamiento de texturas).
+        - Red de sombreado PBR en Blender Principled BSDF enlazando texturas de albedo, normales en espacio tangente MikkTSpace, oclusión ambiental y rugosidad.
+        - Rig de iluminación de 3 puntos (Key Light 1200W, Fill Light 400W, Rim Light 800W) y cámara cinemática de 55mm con seguimiento dinámico.
+      - **Activos Finales Generados y Verificados**:
+        - Archivo de escena nativo: [`outputs/scenes/raven_flight_blender_master.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/raven_flight_blender_master.blend) (728 KB).
+        - Contenedor animado glTF 2.0: [`outputs/scenes/raven_flight_blender_master.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/raven_flight_blender_master.glb) (3.04 MB).
+        - Video Master renderizado en Blender EEVEE: [`outputs/renders/raven_flight_blender_master.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.mp4) (316 KB, 24 FPS, 48 cuadros).
+        - Previsualización web GIF: [`outputs/renders/raven_flight_blender_master.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.gif) (934 KB).
+        - Script de automatización: [`scripts/render_raven_flight_blender.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/render_raven_flight_blender.py).
+        - Pruebas unitarias: `tests/backend/test_blender_rigging.py` (**6/6 tests pasados al 100% en 15.24s**).
 
 ---
 

@@ -339,6 +339,11 @@ class BlenderRigger:
 
         # Check Windows common install locations
         win_candidates = [
+            Path("E:/Blender/blender.exe"),
+            Path("D:/Blender/blender.exe"),
+            Path("C:/Blender/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 5.2/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 5.0/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.4/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.3/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.2/blender.exe"),
@@ -439,7 +444,15 @@ class BlenderRigger:
         ]
 
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=240, check=False)
+            res = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=240,
+                check=False,
+            )
             elapsed = round(time.time() - start_time, 2)
             blend_exists = Path(out_blend).is_file()
             glb_exists = Path(out_glb).is_file()
@@ -520,7 +533,15 @@ class BlenderRigger:
         ]
 
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=240, check=False)
+            res = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=240,
+                check=False,
+            )
             elapsed = round(time.time() - start_time, 2)
             blend_exists = out_blend_p.is_file()
             glb_exists = Path(output_glb).is_file() if output_glb else True

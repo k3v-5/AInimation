@@ -616,8 +616,11 @@ def main():
         scene.render.resolution_y = 720
         scene.render.resolution_percentage = 100
 
-        if engine.upper() in ["BLENDER_EEVEE_NEXT", "EEVEE"]:
-            scene.render.engine = "BLENDER_EEVEE_NEXT"
+        if engine.upper() in ["BLENDER_EEVEE_NEXT", "EEVEE", "BLENDER_EEVEE"]:
+            try:
+                scene.render.engine = "BLENDER_EEVEE"
+            except Exception:
+                scene.render.engine = "BLENDER_EEVEE_NEXT"
             if hasattr(scene, "eevee"):
                 if hasattr(scene.eevee, "use_raytracing"):
                     scene.eevee.use_raytracing = True
@@ -645,8 +648,13 @@ def main():
         bpy.ops.render.render(animation=True)
 
         # Encode MP4
+        import shutil
+        ffmpeg_bin = shutil.which("ffmpeg") or r"C:\Users\sasuk\AppData\Roaming\Python\Python314\site-packages\imageio_ffmpeg\binaries\ffmpeg-win-x86_64-v7.1.exe"
+        if not Path(ffmpeg_bin).is_file():
+            ffmpeg_bin = "ffmpeg"
+
         mp4_cmd = [
-            "ffmpeg", "-y",
+            ffmpeg_bin, "-y",
             "-framerate", str(fps),
             "-i", str(frames_dir / "frame_%04d.png"),
             "-c:v", "libx264",
@@ -659,7 +667,7 @@ def main():
         # Encode GIF
         gif_path = out_v.with_suffix(".gif")
         gif_cmd = [
-            "ffmpeg", "-y",
+            ffmpeg_bin, "-y",
             "-framerate", str(fps),
             "-i", str(frames_dir / "frame_%04d.png"),
             "-vf", "fps=24,scale=512:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse",

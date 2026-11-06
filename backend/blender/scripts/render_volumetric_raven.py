@@ -26,7 +26,13 @@ def setup_and_render_volumetric_raven(
     bpy.ops.wm.read_factory_settings(use_empty=True)
 
     scene = bpy.context.scene
-    scene.render.engine = "BLENDER_EEVEE_NEXT"
+    try:
+        scene.render.engine = "BLENDER_EEVEE"
+    except Exception:
+        try:
+            scene.render.engine = "BLENDER_EEVEE_NEXT"
+        except Exception:
+            scene.render.engine = "CYCLES"
     scene.render.resolution_x = resolution[0]
     scene.render.resolution_y = resolution[1]
     scene.render.resolution_percentage = 100

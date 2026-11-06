@@ -51,6 +51,11 @@ class BlenderAdapter(Base3DEngineAdapter):
 
         # Check Windows common install locations
         win_candidates = [
+            Path("E:/Blender/blender.exe"),
+            Path("D:/Blender/blender.exe"),
+            Path("C:/Blender/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 5.2/blender.exe"),
+            Path("C:/Program Files/Blender Foundation/Blender 5.0/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.4/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.3/blender.exe"),
             Path("C:/Program Files/Blender Foundation/Blender 4.2/blender.exe"),
@@ -103,7 +108,15 @@ class BlenderAdapter(Base3DEngineAdapter):
         cmd.extend(["--samples", "16"])  # fast preview quality for scene setup
 
         try:
-            res = subprocess.run(cmd, capture_output=True, text=True, timeout=120, check=False)
+            res = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=120,
+                check=False,
+            )
             success = res.returncode == 0 and output_blend.exists()
             msg = "Blender scene created successfully" if success else f"Build failed: {res.stderr}"
         except Exception as exc:
@@ -157,7 +170,15 @@ class BlenderAdapter(Base3DEngineAdapter):
         if mesh_arg:
             cmd.extend(["--mesh", str(Path(mesh_arg).resolve())])
 
-        res = subprocess.run(cmd, capture_output=True, text=True, timeout=180, check=False)
+        res = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=180,
+            check=False,
+        )
         elapsed = round(max(0.1, time.time() - start_time), 2)
         success = res.returncode == 0 and dest.exists()
         file_size = dest.stat().st_size if success else 0
