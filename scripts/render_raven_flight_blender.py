@@ -101,16 +101,18 @@ def main() -> None:
     out_video = renders_dir / "raven_flight_blender_master.mp4"
     out_gif = renders_dir / "raven_flight_blender_master.gif"
 
-    print("\nExecuting multi-component 3D rigging and rendering inside Blender...")
+    print("\nExecuting multi-component 3D rigging and 360-degree turntable flight rendering inside Blender...")
     res = rigger.rig_multi_component_scene(
         components=components,
         output_blend=str(out_blend),
         output_glb=str(out_glb),
         output_video=str(out_video),
         fps=24,
-        total_frames=48,  # 2.0 seconds full looping flap cycle
+        total_frames=72,  # 3.0 seconds: 3 complete flap cycles + exactly 1 full 360-degree seamless turn
         samples=16,
         render_engine="BLENDER_EEVEE",
+        rotate_360=True,
+        elevate_flight=True,
     )
 
     if not res.success:
@@ -135,6 +137,8 @@ def main() -> None:
         shutil.copy2(out_gif, artifacts_dir / "raven_flight_blender_master.gif")
     if out_glb.exists():
         shutil.copy2(out_glb, artifacts_dir / "raven_flight_blender_master.glb")
+    if out_blend.exists():
+        shutil.copy2(out_blend, artifacts_dir / "raven_flight_blender_master.blend")
 
     total_time = round(time.time() - start_total, 2)
     print(f"\nCompleted in {total_time}s with native Blender 3D engine.")

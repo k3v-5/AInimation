@@ -498,10 +498,13 @@ class BlenderRigger:
         total_frames: int = 36,
         samples: int = 16,
         render_engine: str = "BLENDER_EEVEE_NEXT",
+        rotate_360: bool = False,
+        elevate_flight: bool = False,
     ) -> RiggingResult:
         """
         Assemble and rig a multi-component scene in Blender 4.3+.
         Decouples environmental props and articulates character limbs with zero weight bleed.
+        Supports 360-degree axial rotation turntable and aerodynamic flight elevation.
         """
         start_time = time.time()
         multi_script = Path(__file__).resolve().parent / "scripts" / "multi_component_rig.py"
@@ -519,6 +522,8 @@ class BlenderRigger:
             "total_frames": total_frames,
             "samples": samples,
             "render_engine": render_engine,
+            "rotate_360": rotate_360,
+            "elevate_flight": elevate_flight,
         }
         payload_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 

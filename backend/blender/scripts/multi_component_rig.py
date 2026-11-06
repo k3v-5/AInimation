@@ -184,8 +184,10 @@ def main():
     total_frames = cfg.get("total_frames", 36)
     samples = cfg.get("samples", 16)
     engine = cfg.get("render_engine", "BLENDER_EEVEE_NEXT")
+    rotate_360 = cfg.get("rotate_360", False)
+    elevate_flight = cfg.get("elevate_flight", False)
 
-    print(f"Starting Multi-Component Assembly: {len(components_data)} components")
+    print(f"Starting Multi-Component Assembly: {len(components_data)} components (rotate_360={rotate_360}, elevate_flight={elevate_flight})")
     clean_scene()
 
     imported_components = {}
@@ -491,7 +493,25 @@ def main():
         pb_tail.rotation_euler = (math.radians(-math.sin(phase) * 2.0), 0.0, 0.0)
         pb_tail.keyframe_insert(data_path="rotation_euler", frame=f)
 
+        if rotate_360:
+            # Full 360-degree axial rotation across total_frames ("dale vuelta")
+            turn_phase = ((f - 1) / total_frames) * 2.0 * math.pi
+            bank_roll = math.radians(-3.5 * math.cos(phase))
+            bank_pitch = math.radians(2.0 * math.sin(phase))
+            arm_obj.rotation_mode = 'XYZ'
+            arm_obj.rotation_euler = (bank_pitch, bank_roll, turn_phase)
+            arm_obj.keyframe_insert(data_path="rotation_euler", frame=f)
+
+            heave_z = math.sin(phase) * 0.035
+            base_z = 0.40 if elevate_flight else 0.0
+            arm_obj.location = (0.0, 0.0, base_z + heave_z)
+            arm_obj.keyframe_insert(data_path="location", frame=f)
+
     bpy.ops.object.mode_set(mode='OBJECT')
+
+    if elevate_flight:
+        for p in prop_objects:
+            p.location.z -= 0.35
 
     # 5. Studio Backdrop, Cinematic Lighting and Camera Framing
     # Seamless 360 Studio World Background
@@ -561,7 +581,10 @@ def main():
     cam_dist = max(span_x / 0.36, span_z / 0.28) * 0.90 + 1.2
     cam_dist = max(4.5, min(7.5, cam_dist))
 
-    bpy.ops.object.camera_add(location=(center.x, center.y - cam_dist, center.z + 0.15))
+    target_z = center.z + (0.35 if elevate_flight else 0.0)
+    target_pos = mathutils.Vector((center.x, center.y, target_z))
+
+    bpy.ops.object.camera_add(location=(center.x, center.y - cam_dist, target_z + 0.20))
     cam = bpy.context.active_object
     cam.name = "Cinematic_Camera"
     cam.data.lens = 55.0
@@ -569,7 +592,7 @@ def main():
 
     empty = bpy.data.objects.new("CameraTarget", None)
     bpy.context.scene.collection.objects.link(empty)
-    empty.location = center
+    empty.location = target_pos
 
     constraint = cam.constraints.new(type='TRACK_TO')
     constraint.target = empty

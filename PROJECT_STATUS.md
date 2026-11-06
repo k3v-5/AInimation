@@ -429,12 +429,13 @@ graph TD
         - Red de sombreado PBR en Blender Principled BSDF enlazando texturas de albedo, normales en espacio tangente MikkTSpace, oclusión ambiental y rugosidad.
         - Rig de iluminación de 3 puntos (Key Light 1200W, Fill Light 400W, Rim Light 800W) y cámara cinemática de 55mm con seguimiento dinámico.
       - **Activos Finales Generados y Verificados**:
-        - Archivo de escena nativo: [`outputs/scenes/raven_flight_blender_master.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/raven_flight_blender_master.blend) (728 KB).
+        - Archivo de escena nativo: [`outputs/scenes/raven_flight_blender_master.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/raven_flight_blender_master.blend) (739 KB).
         - Contenedor animado glTF 2.0: [`outputs/scenes/raven_flight_blender_master.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/raven_flight_blender_master.glb) (3.04 MB).
-        - Video Master renderizado en Blender EEVEE: [`outputs/renders/raven_flight_blender_master.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.mp4) (316 KB, 24 FPS, 48 cuadros).
-        - Previsualización web GIF: [`outputs/renders/raven_flight_blender_master.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.gif) (934 KB).
+        - Video Master 360° renderizado en Blender EEVEE: [`outputs/renders/raven_flight_blender_master.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.mp4) (550 KB, 24 FPS, 72 cuadros, giro completo 360° en bucle continuo).
+        - Previsualización web GIF: [`outputs/renders/raven_flight_blender_master.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/raven_flight_blender_master.gif) (1.45 MB).
+        - Stills canónicos de inspección: 0° Frontal (`raven_360_angle_000_front.png`), 90° Perfil (`raven_360_angle_090_profile.png`), 180° Dorsal Espalda (`raven_360_angle_180_dorsal.png`), 270° Columna (`raven_360_angle_270_back.png`).
         - Script de automatización: [`scripts/render_raven_flight_blender.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/render_raven_flight_blender.py).
-        - Pruebas unitarias: `tests/backend/test_blender_rigging.py` (**6/6 tests pasados al 100% en 15.24s**).
+        - Pruebas unitarias: `tests/backend/test_blender_rigging.py` (**6/6 tests pasados al 100% en 14.09s**).
 
 ---
 
