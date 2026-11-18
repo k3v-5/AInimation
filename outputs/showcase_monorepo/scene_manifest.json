@@ -1,0 +1,64 @@
+{
+  "title": "Cross-Dimension Rescue",
+  "resolution": [
+    1280,
+    720
+  ],
+  "fps": 24,
+  "total_frames": 288,
+  "duration_seconds": 12.0,
+  "bpm": 114.8,
+  "engines_used": [
+    "stykanimate-mcp",
+    "blender-procedural-lab",
+    "ianimation-3d",
+    "adobe-animation-mcp",
+    "after-effects-motion-engine"
+  ],
+  "user_design_preferences_compliance": {
+    "style": "Editorial Poster / TIME Style",
+    "crimson_hex": "#FF1424",
+    "pure_white_hex": "#FAFAFA",
+    "motion_blur": true,
+    "justification": "ParagraphJustification.CENTER_JUSTIFY",
+    "serif_fallback": false
+  },
+  "acts": [
+    {
+      "act": 1,
+      "frames": [
+        1,
+        72
+      ],
+      "engine": "stykanimate-mcp",
+      "focus": "2D IK Tactical Pre-Viz & Match Cut"
+    },
+    {
+      "act": 2,
+      "frames": [
+        73,
+        144
+      ],
+      "engine": "blender-procedural-lab + ianimation-3d",
+      "focus": "2K PBR Corridor & SE(3) Ragdoll + Axe"
+    },
+    {
+      "act": 3,
+      "frames": [
+        145,
+        216
+      ],
+      "engine": "adobe-animation-mcp",
+      "focus": "2D Commander Comms PiP & 48kHz Lip-Sync"
+    },
+    {
+      "act": 4,
+      "frames": [
+        217,
+        288
+      ],
+      "engine": "after-effects-motion-engine",
+      "focus": "808 Snap-Zooms, Halation, Flare & TIME Poster"
+    }
+  ]
+}
