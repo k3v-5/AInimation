@@ -68,6 +68,7 @@ ENGINE_NAMES: Tuple[str, ...] = (
     "03 3D-SE(3)",
     "04 ADOBE-CH",
     "05 AE-VFX",
+    "06 AOE-UAF",
 )
 
 
@@ -343,10 +344,10 @@ def emit_after_effects_jsx(
     }}
 
     // 5. Act 4 Hero TIME-Style Poster Titles (9.0s .. 12.0s)
-    addEditorialTextLayer("Tag_Header", "✦ IANIMATION MONOREPO ✦", 26, COL_WHITE, 185, 10.65, 12.0, 32, 100);
-    addEditorialTextLayer("Poster_Title_White", "CROSS-DIMENSION", 92, COL_WHITE, 295, 10.72, 12.0, -15, 135);
-    addEditorialTextLayer("Poster_Title_Crimson", "RESCUE", 156, COL_CRIMSON, 438, 10.80, 12.0, -18, 138);
-    addEditorialTextLayer("Poster_Badge_Footer", "[ 5 ENGINES // 144 MCP TOOLS // 2026 ]", 24, COL_WHITE, 558, 10.90, 12.0, 28, 100);
+    addEditorialTextLayer("Tag_Header", "IANIMATION MONOREPO", 26, COL_WHITE, 110, 10.65, 12.0, 32, 100);
+    addEditorialTextLayer("Poster_Title_White", "CROSS-DIMENSION", 92, COL_WHITE, 244, 10.72, 12.0, -15, 135);
+    addEditorialTextLayer("Poster_Title_Crimson", "RESCUE", 156, COL_CRIMSON, 398, 10.80, 12.0, -18, 138);
+    addEditorialTextLayer("Poster_Badge_Footer", "[ 6 ENGINES // 166 MCP TOOLS // 2026 ]", 24, COL_WHITE, 588, 10.90, 12.0, 28, 100);
 
     app.endUndoGroup();
 }})();
@@ -478,8 +479,14 @@ def render_act1_blueprint_frame(
     return np.array(img_rgba)
 
 
-def add_act2_hud(frame_bgr: np.ndarray, frame_idx: int, fonts: Dict[str, ImageFont.FreeTypeFont]) -> np.ndarray:
-    """Apply subtle PBR contrast vignette & clean 3D SE(3) telemetry overlay for Act 2 (F73..F144)."""
+def add_act2_hud(
+    frame_bgr: np.ndarray,
+    frame_idx: int,
+    aoe_radar_rgba: Optional[np.ndarray],
+    aoe_summary: Dict[str, object],
+    fonts: Dict[str, ImageFont.FreeTypeFont],
+) -> np.ndarray:
+    """Apply PBR contrast HUD + live AOE-UAF Sector 7 Terrain (.r16) & WFC Radar card for Act 2."""
     img_rgba = Image.fromarray(cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGBA), mode="RGBA")
     draw = ImageDraw.Draw(img_rgba)
 
@@ -489,12 +496,37 @@ def add_act2_hud(frame_bgr: np.ndarray, frame_idx: int, fonts: Dict[str, ImageFo
     draw.text((52, 72), "WATERTIGHT RAGDOLL 1.80m // BURLAP R: 0.78", font=fonts["mono"], fill=(245, 248, 255, 240))
     draw.text((52, 98), "HERO_FIREAXE + HEAD SE(3) VAR: < 1.0e-10", font=fonts["mono"], fill=(0, 229, 255, 240))
 
-    # Compact Sector 7 PBR badge on top-right
+    # Top-right AOE-UAF Sector 7 World & WFC Tactical Radar Card
+    card_x0, card_y0, card_x1, card_y1 = 918, 28, 1248, 230
     pulse_on = ((frame_idx // 6) % 2) == 0
     dot_col = (255, 20, 36, 255) if pulse_on else (120, 20, 30, 180)
-    draw.rounded_rectangle((952, 28, 1248, 86), radius=10, fill=(8, 10, 16, 205), outline=(0, 229, 255, 180), width=1)
-    draw.ellipse((970, 48, 984, 62), fill=dot_col)
-    draw.text((996, 44), "SECTOR 07 // CORE UNSTABLE", font=fonts["mono"], fill=(250, 250, 250, 245))
+    draw.rounded_rectangle((card_x0, card_y0, card_x1, card_y1), radius=12, fill=(8, 12, 20, 215), outline=(0, 229, 255, 220), width=2)
+    draw.ellipse((card_x0 + 14, card_y0 + 14, card_x0 + 26, card_y0 + 26), fill=dot_col)
+    draw.text((card_x0 + 34, card_y0 + 12), "AOE-UAF // SECTOR 07 WORLD", font=fonts["mono_sm"], fill=(0, 229, 255, 255))
+
+    if aoe_radar_rgba is not None:
+        arr_out = np.array(img_rgba)
+        rx0, ry0 = card_x0 + 14, card_y0 + 40
+        alpha_blend_rgba(arr_out, aoe_radar_rgba, rx0, ry0)
+        img_rgba = Image.fromarray(arr_out, mode="RGBA")
+        draw = ImageDraw.Draw(img_rgba)
+        # Animated rotating tactical radar sweep ray inside 144x144 radar box
+        rcx, rcy = rx0 + 72, ry0 + 72
+        ang = math.radians((frame_idx - 72) * 8.0)
+        draw.line((rcx, rcy, rcx + int(68 * math.cos(ang)), rcy + int(68 * math.sin(ang))), fill=(0, 229, 255, 215), width=2)
+        draw.rectangle((rx0, ry0, rx0 + 144, ry0 + 144), outline=(0, 229, 255, 210), width=1)
+
+    tx = card_x0 + 170
+    wfc_info = aoe_summary.get("wfc_level", {})
+    land_info = aoe_summary.get("landscape", {})
+    tiles_n = int(wfc_info.get("total_tiles_solved", 49)) if isinstance(wfc_info, dict) else 49
+    r16_kb = int(land_info.get("r16_bytes", 32768)) // 1024 if isinstance(land_info, dict) else 32
+    draw.text((tx, card_y0 + 46), "WFC 2D GRID:", font=fonts["mono_sm"], fill=(160, 178, 200, 235))
+    draw.text((tx, card_y0 + 64), f"7x7 ({tiles_n} TILES)", font=fonts["mono_sm"], fill=(250, 250, 250, 250))
+    draw.text((tx, card_y0 + 92), "UE5 TERRAIN:", font=fonts["mono_sm"], fill=(160, 178, 200, 235))
+    draw.text((tx, card_y0 + 110), f".R16 ({r16_kb} KB)", font=fonts["mono_sm"], fill=(0, 229, 255, 250))
+    draw.text((tx, card_y0 + 138), "EROSION SIM:", font=fonts["mono_sm"], fill=(160, 178, 200, 235))
+    draw.text((tx, card_y0 + 156), "HYDR + THERM", font=fonts["mono_sm"], fill=(255, 184, 0, 250))
 
     return np.array(img_rgba)
 
@@ -684,7 +716,7 @@ def apply_act4_motion_vfx_and_poster(
         stretch_pop = 1.32 + 0.12 * (1.0 - pop_t)
         draw_editorial_text(
             img_rgba,
-            "CORE" if frame_idx < 240 else "5 ENGINES",
+            "CORE" if frame_idx < 240 else "6 ENGINES",
             (215, 210),
             fonts["poster_mid"],
             PURE_WHITE,
@@ -782,7 +814,7 @@ def apply_act4_motion_vfx_and_poster(
         )
         draw_editorial_text(
             img_rgba,
-            "[ 5 ENGINES // 144 MCP TOOLS // 2026 ]",
+            "[ 6 ENGINES // 166 MCP TOOLS // 2026 ]",
             (cx, 588),
             fonts["badge"],
             PURE_WHITE,
@@ -807,17 +839,17 @@ def add_bottom_engine_bar(
     bar_y0, bar_y1 = 668, 708
     draw.rounded_rectangle((28, bar_y0, WIDTH - 28, bar_y1), radius=10, fill=(8, 10, 16, 212), outline=(65, 82, 105, 190), width=1)
 
-    pill_x = 42
+    pill_x = 38
     for idx, label in enumerate(ENGINE_NAMES):
         is_on = idx in active_engines
-        pw = 166
+        pw = 152
         fill_c = (255, 20, 36, 235) if is_on else (22, 28, 40, 180)
         outline_c = (255, 120, 130, 240) if is_on else (55, 68, 86, 160)
         txt_c = (255, 255, 255, 255) if is_on else (130, 145, 165, 210)
         draw.rounded_rectangle((pill_x, bar_y0 + 6, pill_x + pw, bar_y1 - 6), radius=6, fill=fill_c, outline=outline_c, width=1)
         tw = draw.textlength(label, font=fonts["mono_sm"])
         draw.text((pill_x + (pw - tw) / 2, bar_y0 + 12), label, font=fonts["mono_sm"], fill=txt_c)
-        pill_x += pw + 10
+        pill_x += pw + 8
 
     t_sec = (frame_idx - 1) / float(FPS)
     tc_str = f"F{frame_idx:03d}/{TOTAL_FRAMES}  {t_sec:05.2f}s  120 BPM"
@@ -838,6 +870,19 @@ def compose_all() -> None:
         vis_data = json.load(f)
     with (OUT_DIR / "audio_beat_analysis.json").open("r", encoding="utf-8") as f:
         beat_data = json.load(f)
+
+    aoe_summary: Dict[str, object] = {}
+    aoe_summary_path = OUT_DIR / "aoe_sector7_summary.json"
+    if aoe_summary_path.exists():
+        aoe_summary = json.loads(aoe_summary_path.read_text(encoding="utf-8"))
+
+    aoe_radar_rgba: Optional[np.ndarray] = None
+    aoe_radar_path = OUT_DIR / "aoe_sector7_radar.png"
+    if aoe_radar_path.exists():
+        r_bgr = cv2.imread(str(aoe_radar_path), cv2.IMREAD_COLOR)
+        if r_bgr is not None:
+            r_small = cv2.resize(r_bgr, (144, 144), interpolation=cv2.INTER_AREA)
+            aoe_radar_rgba = cv2.cvtColor(r_small, cv2.COLOR_BGR2RGBA)
 
     ik_frames: List[List[Dict[str, object]]] = ik_data["frames"]
     telemetry_rows: List[Dict[str, object]] = ik_data["ik_telemetry"]
@@ -878,7 +923,9 @@ def compose_all() -> None:
             "ianimation-3d",
             "adobe-animation-mcp",
             "after-effects-motion-engine",
+            "aoe-blender-mcp",
         ],
+        "aoe_world_artifacts": aoe_summary,
         "user_design_preferences_compliance": {
             "style": "Editorial Poster / TIME Style",
             "crimson_hex": "#FF1424",
@@ -889,9 +936,9 @@ def compose_all() -> None:
         },
         "acts": [
             {"act": 1, "frames": [1, 72], "engine": "stykanimate-mcp", "focus": "2D IK Tactical Pre-Viz & Match Cut"},
-            {"act": 2, "frames": [73, 144], "engine": "blender-procedural-lab + ianimation-3d", "focus": "2K PBR Corridor & SE(3) Ragdoll + Axe"},
+            {"act": 2, "frames": [73, 144], "engine": "blender-procedural-lab + ianimation-3d + aoe-blender-mcp", "focus": "2K PBR Corridor, SE(3) Ragdoll + Axe & AOE-UAF WFC/.r16 Radar"},
             {"act": 3, "frames": [145, 216], "engine": "adobe-animation-mcp", "focus": "2D Commander Comms PiP & 48kHz Lip-Sync"},
-            {"act": 4, "frames": [217, 288], "engine": "after-effects-motion-engine", "focus": "808 Snap-Zooms, Halation, Flare & TIME Poster"},
+            {"act": 4, "frames": [217, 288], "engine": "after-effects-motion-engine", "focus": "808 Snap-Zooms, Halation, Flare & TIME Poster (6 Engines / 166 MCP Tools)"},
         ],
     }
     (OUT_DIR / "scene_manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
@@ -916,8 +963,8 @@ def compose_all() -> None:
                 frame_idx, ik_frames[frame_idx - 1], telemetry_rows, frame_3d_bgr, fonts
             )
         elif frame_idx <= 144:
-            active = [1, 2]
-            arr_rgba = add_act2_hud(frame_3d_bgr, frame_idx, fonts)
+            active = [1, 2, 5]
+            arr_rgba = add_act2_hud(frame_3d_bgr, frame_idx, aoe_radar_rgba, aoe_summary, fonts)
         elif frame_idx <= 216:
             active = [2, 3]
             arr_rgba = add_act3_adobe_comms_hud(
@@ -930,7 +977,7 @@ def compose_all() -> None:
                 fonts,
             )
         else:
-            active = [0, 1, 2, 3, 4] if frame_idx >= 258 else [2, 4]
+            active = [0, 1, 2, 3, 4, 5] if frame_idx >= 258 else [2, 4, 5]
             arr_rgba = apply_act4_motion_vfx_and_poster(frame_3d_bgr, frame_idx, beat_timestamps, fonts)
 
         arr_rgba = add_bottom_engine_bar(arr_rgba, frame_idx, active, fonts)

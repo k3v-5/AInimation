@@ -186,10 +186,10 @@
     }
 
     // 5. Act 4 Hero TIME-Style Poster Titles (9.0s .. 12.0s)
-    addEditorialTextLayer("Tag_Header", "✦ IANIMATION MONOREPO ✦", 26, COL_WHITE, 185, 10.65, 12.0, 32, 100);
-    addEditorialTextLayer("Poster_Title_White", "CROSS-DIMENSION", 92, COL_WHITE, 295, 10.72, 12.0, -15, 135);
-    addEditorialTextLayer("Poster_Title_Crimson", "RESCUE", 156, COL_CRIMSON, 438, 10.80, 12.0, -18, 138);
-    addEditorialTextLayer("Poster_Badge_Footer", "[ 5 ENGINES // 144 MCP TOOLS // 2026 ]", 24, COL_WHITE, 558, 10.90, 12.0, 28, 100);
+    addEditorialTextLayer("Tag_Header", "IANIMATION MONOREPO", 26, COL_WHITE, 110, 10.65, 12.0, 32, 100);
+    addEditorialTextLayer("Poster_Title_White", "CROSS-DIMENSION", 92, COL_WHITE, 244, 10.72, 12.0, -15, 135);
+    addEditorialTextLayer("Poster_Title_Crimson", "RESCUE", 156, COL_CRIMSON, 398, 10.80, 12.0, -18, 138);
+    addEditorialTextLayer("Poster_Badge_Footer", "[ 6 ENGINES // 166 MCP TOOLS // 2026 ]", 24, COL_WHITE, 588, 10.90, 12.0, 28, 100);
 
     app.endUndoGroup();
 })();

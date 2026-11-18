@@ -60,6 +60,10 @@ def test_showcase_deliverables_exist_and_non_empty() -> None:
         "act3_adobe_comms_lipsync.png",
         "act4_motion_vfx_climax.png",
         "showcase_4acts_contact_sheet.png",
+        "aoe_sector7_wfc_level.json",
+        "aoe_sector7_radar.png",
+        "aoe_sector7_summary.json",
+        "aoe_world/Sector7_ThermalBasin_heightmap.r16",
         "textures/corridor_basecolor.png",
         "textures/corridor_normal.png",
         "textures/corridor_orm.png",
@@ -155,8 +159,24 @@ def test_after_effects_jsx_enforces_user_design_preferences() -> None:
     assert "[1.0, 0.08, 0.14]" in jsx_text
     assert '"Impact"' in jsx_text
     assert "135" in jsx_text
+    assert "6 ENGINES // 166 MCP TOOLS" in jsx_text
     assert "Times New Roman" not in jsx_text
     assert "Minion Pro" not in jsx_text
+
+
+def test_aoe_uaf_world_r16_and_wfc_level_artifacts() -> None:
+    """Asset Orchestration Engine (AOE + UAF) showcase terrain .r16 and WFC 7x7 level must be valid."""
+    r16_path = SHOWCASE_DIR / "aoe_world" / "Sector7_ThermalBasin_heightmap.r16"
+    assert r16_path.stat().st_size == 128 * 128 * 2
+
+    summary = json.loads((SHOWCASE_DIR / "aoe_sector7_summary.json").read_text(encoding="utf-8"))
+    assert summary["engine"] == "aoe-blender-mcp"
+    assert summary["wfc_level"]["total_tiles_solved"] == 49
+    assert summary["landscape"]["r16_bytes"] == 32768
+
+    manifest = json.loads((SHOWCASE_DIR / "scene_manifest.json").read_text(encoding="utf-8"))
+    assert len(manifest["engines_used"]) == 6
+    assert "aoe-blender-mcp" in manifest["engines_used"]
 
 
 def test_stills_contact_sheet_and_master_mp4_streams() -> None:

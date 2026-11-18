@@ -1,0 +1,21 @@
+{
+  "landscape_name": "Sector7_ThermalBasin",
+  "width": 128,
+  "height": 128,
+  "meters_per_cell": 4.0,
+  "min_elevation_meters": -20.0,
+  "max_elevation_meters": 420.0,
+  "z_scale_unreal": 85.9375,
+  "heightmap_raw_filename": "Sector7_ThermalBasin_heightmap.r16",
+  "weightmap_filenames": {
+    "Grass": "Sector7_ThermalBasin_Layer_Grass.r8",
+    "Rock": "Sector7_ThermalBasin_Layer_Rock.r8",
+    "Dirt": "Sector7_ThermalBasin_Layer_Dirt.r8",
+    "Snow": "Sector7_ThermalBasin_Layer_Snow.r8",
+    "Sand": "Sector7_ThermalBasin_Layer_Sand.r8"
+  },
+  "roads": [],
+  "rivers": [],
+  "foliage_count": 0,
+  "foliage_manifest_filename": null
+}

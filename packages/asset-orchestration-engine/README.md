@@ -30,9 +30,26 @@ Motor industrial autónomo y determinista de **Orquestación de Activos 3D, Comp
 
 ---
 
-## Ejecución Rápida
+## Ejecución Rápida e Imports desde Python
+
+Para importar tanto el núcleo `src.production_orchestration` como los módulos de la Universal Asset Factory (`src.uaf.landscape`, `src.uaf.level_design`, `src.uaf.universal_ai`, `src.uaf.macro_orchestrator`), añade la raíz del paquete y su subcarpeta `src/` al `PYTHONPATH`:
+
+```python
+import sys
+from pathlib import Path
+
+aoe_root = Path("packages/asset-orchestration-engine").resolve()
+sys.path.insert(0, str(aoe_root))
+sys.path.insert(1, str(aoe_root / "src"))
+
+from src.uaf.landscape import Heightfield2D, MacroTerrainGenerator, HydraulicErosionSimulator, UE5LandscapeExporter
+from src.uaf.level_design import WaveFunctionCollapse2D, create_scifi_interior_catalog_2d
+```
 
 ```powershell
 # Ejecutar runner de pruebas del motor AOE
 C:\Python314\python.exe packages\asset-orchestration-engine\runner.py
+
+# Ejecutar generador showcase Sector 7 (Terreno .r16 + Nivel WFC 7x7 + Radar)
+C:\Python314\python.exe scripts\produce_showcase_aoe_world.py
 ```

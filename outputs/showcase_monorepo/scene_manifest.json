@@ -13,8 +13,38 @@
     "blender-procedural-lab",
     "ianimation-3d",
     "adobe-animation-mcp",
-    "after-effects-motion-engine"
+    "after-effects-motion-engine",
+    "aoe-blender-mcp"
   ],
+  "aoe_world_artifacts": {
+    "engine": "aoe-blender-mcp",
+    "package": "packages/asset-orchestration-engine",
+    "landscape": {
+      "name": "Sector7_ThermalBasin",
+      "resolution": [
+        128,
+        128
+      ],
+      "meters_per_cell": 4.0,
+      "hydraulic_droplets": 3500,
+      "thermal_iterations": 6,
+      "r16_path": "outputs/showcase_monorepo/aoe_world/Sector7_ThermalBasin_heightmap.r16",
+      "r16_bytes": 32768,
+      "manifest_path": "outputs/showcase_monorepo/aoe_world/Sector7_ThermalBasin_manifest.json",
+      "elevation_u16_min": 13298,
+      "elevation_u16_max": 33515
+    },
+    "wfc_level": {
+      "grid": [
+        7,
+        7
+      ],
+      "total_tiles_solved": 49,
+      "unique_tile_types": 15,
+      "manifest_path": "outputs/showcase_monorepo/aoe_sector7_wfc_level.json"
+    },
+    "radar_preview": "outputs/showcase_monorepo/aoe_sector7_radar.png"
+  },
   "user_design_preferences_compliance": {
     "style": "Editorial Poster / TIME Style",
     "crimson_hex": "#FF1424",
@@ -39,8 +69,8 @@
         73,
         144
       ],
-      "engine": "blender-procedural-lab + ianimation-3d",
-      "focus": "2K PBR Corridor & SE(3) Ragdoll + Axe"
+      "engine": "blender-procedural-lab + ianimation-3d + aoe-blender-mcp",
+      "focus": "2K PBR Corridor, SE(3) Ragdoll + Axe & AOE-UAF WFC/.r16 Radar"
     },
     {
       "act": 3,
@@ -58,7 +88,7 @@
         288
       ],
       "engine": "after-effects-motion-engine",
-      "focus": "808 Snap-Zooms, Halation, Flare & TIME Poster"
+      "focus": "808 Snap-Zooms, Halation, Flare & TIME Poster (6 Engines / 166 MCP Tools)"
     }
   ]
 }

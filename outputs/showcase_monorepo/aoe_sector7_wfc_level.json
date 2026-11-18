@@ -1,0 +1,1188 @@
+{
+  "level_name": "L_ProceduralFacility",
+  "generator_version": "UAF-81.90",
+  "tile_size_cm": 400.0,
+  "floor_height_cm": 350.0,
+  "tiles": [
+    {
+      "actor_id": "Tile_corridor_corner_ne_0_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NE.SM_Corridor_Corner_NE",
+      "location_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_ne"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_south_0_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_South.SM_DeadEnd_South",
+      "location_cm": [
+        0.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_south"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_ne_0_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NE.SM_Corridor_Corner_NE",
+      "location_cm": [
+        0.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_ne"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ns_0_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_NS.SM_Corridor_Straight_NS",
+      "location_cm": [
+        0.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ns"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ns_0_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_NS.SM_Corridor_Straight_NS",
+      "location_cm": [
+        0.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ns"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_se_0_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_SE.SM_Corridor_Corner_SE",
+      "location_cm": [
+        0.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_se"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_east_0_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_East.SM_DeadEnd_East",
+      "location_cm": [
+        0.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_east"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_nw_1_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NW.SM_Corridor_Corner_NW",
+      "location_cm": [
+        400.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_nw"
+      }
+    },
+    {
+      "actor_id": "Tile_room_arena_1_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Room_Arena.SM_Room_Arena",
+      "location_cm": [
+        400.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ARENA",
+        "tile_id": "room_arena"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_t_south_1_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_T_South.SM_Corridor_T_South",
+      "location_cm": [
+        400.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_t_south"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_east_1_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_East.SM_DeadEnd_East",
+      "location_cm": [
+        400.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_east"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_north_1_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_North.SM_DeadEnd_North",
+      "location_cm": [
+        400.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_north"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_t_south_1_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_T_South.SM_Corridor_T_South",
+      "location_cm": [
+        400.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_t_south"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_west_1_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_West.SM_DeadEnd_West",
+      "location_cm": [
+        400.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_west"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_ne_2_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NE.SM_Corridor_Corner_NE",
+      "location_cm": [
+        800.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_ne"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_se_2_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_SE.SM_Corridor_Corner_SE",
+      "location_cm": [
+        800.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_se"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_2_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        800.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_t_north_2_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_T_North.SM_Corridor_T_North",
+      "location_cm": [
+        800.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_t_north"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_south_2_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_South.SM_DeadEnd_South",
+      "location_cm": [
+        800.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_south"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_2_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        800.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_2_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        800.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_3_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        1200.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_3_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        1200.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_west_3_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_West.SM_DeadEnd_West",
+      "location_cm": [
+        1200.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_west"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_3_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        1200.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_east_3_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_East.SM_DeadEnd_East",
+      "location_cm": [
+        1200.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_east"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_3_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        1200.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_3_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        1200.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ew_4_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_EW.SM_Corridor_Straight_EW",
+      "location_cm": [
+        1600.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ew"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_t_north_4_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_T_North.SM_Corridor_T_North",
+      "location_cm": [
+        1600.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_t_north"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ns_4_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_NS.SM_Corridor_Straight_NS",
+      "location_cm": [
+        1600.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ns"
+      }
+    },
+    {
+      "actor_id": "Tile_room_hub_4_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Room_Hub.SM_Room_Hub",
+      "location_cm": [
+        1600.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "HUB",
+        "tile_id": "room_hub"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_sw_4_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_SW.SM_Corridor_Corner_SW",
+      "location_cm": [
+        1600.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_sw"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_west_4_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_West.SM_DeadEnd_West",
+      "location_cm": [
+        1600.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_west"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_4_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        1600.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_nw_5_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NW.SM_Corridor_Corner_NW",
+      "location_cm": [
+        2000.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_nw"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_sw_5_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_SW.SM_Corridor_Corner_SW",
+      "location_cm": [
+        2000.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_sw"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_5_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        2000.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_nw_5_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_NW.SM_Corridor_Corner_NW",
+      "location_cm": [
+        2000.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_nw"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ns_5_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_NS.SM_Corridor_Straight_NS",
+      "location_cm": [
+        2000.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ns"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_corner_se_5_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Corner_SE.SM_Corridor_Corner_SE",
+      "location_cm": [
+        2000.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_corner_se"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_5_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        2000.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_6_0",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        2400.0,
+        0.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_north_6_1",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_North.SM_DeadEnd_North",
+      "location_cm": [
+        2400.0,
+        400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_north"
+      }
+    },
+    {
+      "actor_id": "Tile_corridor_ns_6_2",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Corridor_Straight_NS.SM_Corridor_Straight_NS",
+      "location_cm": [
+        2400.0,
+        800.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "CORRIDOR",
+        "tile_id": "corridor_ns"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_south_6_3",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_South.SM_DeadEnd_South",
+      "location_cm": [
+        2400.0,
+        1200.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_south"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_6_4",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        2400.0,
+        1600.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    },
+    {
+      "actor_id": "Tile_dead_end_west_6_5",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_DeadEnd_West.SM_DeadEnd_West",
+      "location_cm": [
+        2400.0,
+        2000.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "DEAD_END",
+        "tile_id": "dead_end_west"
+      }
+    },
+    {
+      "actor_id": "Tile_solid_wall_6_6",
+      "actor_class": "StaticMeshActor",
+      "mesh_path": "/Game/ModularSciFi/Meshes/SM_Wall_Solid.SM_Wall_Solid",
+      "location_cm": [
+        2400.0,
+        2400.0,
+        0.0
+      ],
+      "rotation_deg": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "properties": {
+        "room_type": "ROOM",
+        "tile_id": "solid_wall"
+      }
+    }
+  ],
+  "doors": [],
+  "keys": [],
+  "spawn_points": [],
+  "mission": null
+}
