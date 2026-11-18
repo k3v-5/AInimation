@@ -1,0 +1,57 @@
+from enum import Enum
+
+class NodeType(str, Enum):
+    PROJECT = "PROJECT"
+    WORLD = "WORLD"
+    LEVEL = "LEVEL"
+    ASSET = "ASSET"
+    COMPONENT = "COMPONENT"
+    MATERIAL = "MATERIAL"
+    TEXTURE = "TEXTURE"
+    BLUEPRINT = "BLUEPRINT"
+    ACTOR = "ACTOR"
+    INSTANCE = "INSTANCE"
+    COLLISION = "COLLISION"
+    LOD = "LOD"
+    LIGHT = "LIGHT"
+    NAVIGATION = "NAVIGATION"
+    GAMEPLAY_REFERENCE = "GAMEPLAY_REFERENCE"
+    PROP = "PROP"
+
+class EdgeType(str, Enum):
+    USES = "USES"
+    INSTANCE_OF = "INSTANCE_OF"
+    DEPENDS_ON = "DEPENDS_ON"
+    ATTACHED_TO = "ATTACHED_TO"
+    GENERATED_FROM = "GENERATED_FROM"
+    REFERENCES = "REFERENCES"
+    OVERRIDES = "OVERRIDES"
+    DERIVED_FROM = "DERIVED_FROM"
+    CONTAINS = "CONTAINS"
+    AFFECTS = "AFFECTS"
+    REQUIRES = "REQUIRES"
+    CONFLICTS_WITH = "CONFLICTS_WITH"
+
+class DependencyStrength(str, Enum):
+    HARD = "HARD"
+    SOFT = "SOFT"
+    OPTIONAL = "OPTIONAL"
+
+class DirtyState(str, Enum):
+    CLEAN = "CLEAN"
+    DIRTY = "DIRTY"
+    STALE = "STALE"
+    INVALID = "INVALID"
+
+class ImpactLevel(str, Enum):
+    DIRECT = "DIRECT"
+    INDIRECT = "INDIRECT"
+    POTENTIAL = "POTENTIAL"
+    NONE = "NONE"
+
+class ChangeCategory(str, Enum):
+    STRUCTURAL = "STRUCTURAL"
+    MATERIAL = "MATERIAL"
+    TRANSFORM = "TRANSFORM"
+    GAMEPLAY = "GAMEPLAY"
+    METADATA = "METADATA"

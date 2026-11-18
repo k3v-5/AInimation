@@ -1,0 +1,68 @@
+from enum import Enum
+
+class ReferenceType(str, Enum):
+    IMAGE = "IMAGE"
+    VIDEO_FRAME = "VIDEO_FRAME"
+    CONCEPT_ART = "CONCEPT_ART"
+    PHOTO = "PHOTO"
+    SCREENSHOT = "SCREENSHOT"
+    BLUEPRINT = "BLUEPRINT"
+    TURNAROUND = "TURNAROUND"
+    USER_SKETCH = "USER_SKETCH"
+
+class ReferenceRole(str, Enum):
+    PRIMARY = "PRIMARY"
+    SECONDARY = "SECONDARY"
+    STYLE = "STYLE"
+    MATERIAL = "MATERIAL"
+    SILHOUETTE = "SILHOUETTE"
+    DETAIL = "DETAIL"
+    PROPORTION = "PROPORTION"
+
+class GeometricPrimitiveType(str, Enum):
+    BOX = "BOX"
+    CYLINDER = "CYLINDER"
+    SPHERE = "SPHERE"
+    PLANE = "PLANE"
+    EXTRUSION = "EXTRUSION"
+    PROFILE = "PROFILE"
+    SWEEP = "SWEEP"
+
+class SpatialRelationType(str, Enum):
+    ABOVE = "ABOVE"
+    BELOW = "BELOW"
+    LEFT = "LEFT"
+    RIGHT = "RIGHT"
+    INSIDE = "INSIDE"
+    ATTACHED_TO = "ATTACHED_TO"
+    ALIGNED = "ALIGNED"
+    CENTERED = "CENTERED"
+
+class UncertaintyType(str, Enum):
+    SCALE_UNKNOWN = "SCALE_UNKNOWN"
+    DEPTH_UNKNOWN = "DEPTH_UNKNOWN"
+    MATERIAL_UNKNOWN = "MATERIAL_UNKNOWN"
+    BACKSIDE_UNKNOWN = "BACKSIDE_UNKNOWN"
+    STRUCTURE_UNKNOWN = "STRUCTURE_UNKNOWN"
+
+class SpecificationPriority(int, Enum):
+    USER_EXPLICIT = 100
+    REFERENCE_OBSERVED = 80
+    PROJECT_RULE = 60
+    KNOWLEDGE_DEFAULT = 40
+    AI_INFERENCE = 20
+
+class TargetProfileType(str, Enum):
+    GAMEPLAY = "GAMEPLAY"
+    CINEMATIC = "CINEMATIC"
+    CONCEPT = "CONCEPT"
+    LOW_POLY = "LOW_POLY"
+    REALISTIC = "REALISTIC"
+
+class DetailTreatmentType(str, Enum):
+    GEOMETRY = "GEOMETRY"
+    MATERIAL = "MATERIAL"
+    TEXTURE = "TEXTURE"
+    NORMAL = "NORMAL"
+    DECAL = "DECAL"
+    IGNORE = "IGNORE"

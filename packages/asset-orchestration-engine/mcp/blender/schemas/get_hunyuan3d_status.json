@@ -1,0 +1,1 @@
+{"name":"get_hunyuan3d_status","description":"\nCheck if Hunyuan3D integration is enabled in Blender.\nReturns a message indicating whether Hunyuan3D features are available.\n","parameters":{"properties":{"user_prompt":{"default":"","title":"User Prompt","type":"string"}},"title":"get_hunyuan3d_statusArguments","type":"object"}}

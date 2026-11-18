@@ -1,6 +1,6 @@
 # Catálogo Maestro de Herramientas MCP y Generadores Procedurales (`MCP_CATALOG.md`)
 
-> **Índice Verificado en Tiempo Real**: **144 herramientas MCP** distribuidas en 4 servidores activos + **123 scripts generadores/exportadores en Blender 5.2 LTS** (`blender-procedural-lab`).
+> **Índice Verificado en Tiempo Real**: **166 herramientas MCP** distribuidas en 5 servidores activos + **123 scripts generadores/exportadores en Blender 5.2 LTS** (`blender-procedural-lab`).
 > Configuración unificada lista para clientes MCP: [`mcp_servers.config.json`](../mcp_servers.config.json).
 
 ---
@@ -14,6 +14,7 @@
 | **After Effects Motion Graphics & VFX Engine** | `after-effects-motion-engine` | `node` | **72 tools MCP** | [`packages/motion-vfx/README.md`](../packages/motion-vfx/README.md) |
 | **StykAnimate 2D Stick-Figure IK Engine** | `stykanimate-mcp` | `node` | **26 tools MCP** | [`packages/stick-animator/README.md`](../packages/stick-animator/README.md) |
 | **Blender 5.2 Procedural 3D & PBR Texture Lab** | `blender-procedural-lab` | `blender-python` | **123 scripts `.py`** | [`packages/blender-procedural-lab/README.md`](../packages/blender-procedural-lab/README.md) |
+| **Asset Orchestration Engine (AOE) & Universal Asset Factory** | `aoe-blender-mcp` | `python` | **22 tools MCP** | [`packages/asset-orchestration-engine/README.md`](../packages/asset-orchestration-engine/README.md) |
 
 ---
 
@@ -342,4 +343,36 @@ Ejecución estándar headless: `E:\Blender\blender.exe --factory-startup -b -P <
 - [`exportar_90_activos_modulares_fbx.py`](../packages/blender-procedural-lab/exporters/exportar_90_activos_modulares_fbx.py)
 - [`exportar_bestiario_fbx.py`](../packages/blender-procedural-lab/exporters/exportar_bestiario_fbx.py)
 - [`regenerar_portales_abiertos_fbx.py`](../packages/blender-procedural-lab/exporters/regenerar_portales_abiertos_fbx.py)
+
+---
+
+## 6. `aoe-blender-mcp` — Asset Orchestration Engine (AOE) & Universal Asset Factory (22 Tools MCP)
+
+- **Comando**: `python packages/asset-orchestration-engine/runner.py`
+- **Addon & Schemas MCP**: [`packages/asset-orchestration-engine/mcp/blender/blender_mcp_addon.py`](../packages/asset-orchestration-engine/mcp/blender/blender_mcp_addon.py) y [`packages/asset-orchestration-engine/mcp/blender/schemas/`](../packages/asset-orchestration-engine/mcp/blender/schemas/)
+
+| # | Herramienta MCP | Categoría | Descripción |
+| :---: | :--- | :--- | :--- |
+| 1 | `execute_blender_code` | `blender-live-control` | Execute arbitrary Python (bpy) code inside the live Blender MCP socket server. |
+| 2 | `get_scene_info` | `blender-live-control` | Get detailed information about the current Blender scene, objects, and materials. |
+| 3 | `get_object_info` | `blender-live-control` | Retrieve transform, mesh topology, bounding box, and material slots for a Blender object. |
+| 4 | `get_viewport_screenshot` | `blender-live-control` | Capture and save a 3D viewport screenshot from the active Blender session. |
+| 5 | `set_texture` | `blender-live-control` | Apply downloaded or generated PBR texture maps onto a target Blender object material. |
+| 6 | `generate_hunyuan3d_model` | `hunyuan3d-generation` | Generate a 3D textured mesh asset via Tencent Hunyuan3D from text or reference image. |
+| 7 | `get_hunyuan3d_status` | `hunyuan3d-generation` | Check whether Hunyuan3D integration is enabled and configured in Blender MCP. |
+| 8 | `poll_hunyuan_job_status` | `hunyuan3d-generation` | Poll asynchronous Hunyuan3D generation job status until completion. |
+| 9 | `import_generated_asset_hunyuan` | `hunyuan3d-generation` | Import completed Hunyuan3D 3D model directly into the active Blender scene. |
+| 10 | `generate_hyper3d_model_via_text` | `hyper3d-rodin-generation` | Generate a 3D asset via Hyper3D Rodin from a natural language text prompt. |
+| 11 | `generate_hyper3d_model_via_images` | `hyper3d-rodin-generation` | Generate a 3D asset via Hyper3D Rodin from single or multi-view reference images. |
+| 12 | `get_hyper3d_status` | `hyper3d-rodin-generation` | Check Hyper3D Rodin API availability and quota status in Blender MCP. |
+| 13 | `poll_rodin_job_status` | `hyper3d-rodin-generation` | Poll Hyper3D Rodin asynchronous generation task status. |
+| 14 | `import_generated_asset` | `hyper3d-rodin-generation` | Import completed Hyper3D Rodin 3D mesh into the active Blender scene. |
+| 15 | `get_polyhaven_status` | `polyhaven-assets` | Verify PolyHaven API integration status in Blender MCP. |
+| 16 | `get_polyhaven_categories` | `polyhaven-assets` | List available PolyHaven asset categories for HDRIs, textures, or models. |
+| 17 | `search_polyhaven_assets` | `polyhaven-assets` | Search PolyHaven catalog for CC0 HDRIs, PBR texture sets, and 3D models. |
+| 18 | `download_polyhaven_asset` | `polyhaven-assets` | Download and import a PolyHaven HDRI, PBR texture set, or 3D model into Blender. |
+| 19 | `get_sketchfab_status` | `sketchfab-repository` | Check Sketchfab API authentication and integration status in Blender MCP. |
+| 20 | `search_sketchfab_models` | `sketchfab-repository` | Search downloadable 3D models in Sketchfab by keyword, category, and face count. |
+| 21 | `get_sketchfab_model_preview` | `sketchfab-repository` | Fetch thumbnail preview of a Sketchfab model before downloading. |
+| 22 | `download_sketchfab_model` | `sketchfab-repository` | Download and import a glTF/Blender model from Sketchfab into the active scene. |
 

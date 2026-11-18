@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "asset-orchestration-engine"
+version = "1.0.0"
+authors = [
+  { name="DarX Core Architecture Team" },
+]
+description = "Autonomous, Deterministic 3D and Audio Asset Generation and Optimization Engine for Game Production"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Graphics :: 3D Modeling",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+]
+dependencies = [
+    "pydantic>=2.0.0",
+    "pillow>=9.0.0",
+    "numpy>=1.20.0",
+    "pyyaml>=6.0",
+    "requests>=2.28.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/YourOrg/AssetOrchestrationEngine"
+"Bug Tracker" = "https://github.com/YourOrg/AssetOrchestrationEngine/issues"
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q"
+pythonpath = [
+    "src",
+]
+testpaths = [
+    "tests",
+]
+

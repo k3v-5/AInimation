@@ -1,0 +1,78 @@
+"""
+Universal Build, Packaging, Dependency, Content Addressing, Asset Registry,
+Installation, Patching, Update, DLC, Modular Content & Runtime Deployment System (UAF-81.63).
+Authoritative deployment orchestration framework for the Asset Orchestration Engine.
+"""
+
+from .models import (
+    AssetType,
+    ContentType,
+    DependencyType,
+    ConflictPolicy,
+    BuildState,
+    ArtifactLifecycle,
+    PackageType,
+    DownloadState,
+    InstallState,
+    UninstallState,
+    TrustPolicy,
+    RepairAction,
+    AssetRecord,
+    ContentPackage,
+    DependencyEdge,
+    DependencyGraph,
+    BuildNode,
+    BuildGraph,
+    BuildCacheEntry,
+    BuildArtifact,
+    FileManifestEntry,
+    PackageManifest,
+    ChunkDescriptor,
+    DeploymentPackage,
+    DownloadRequest,
+    InstallationRecord,
+    PatchDescriptor,
+    SigningCertificate,
+    DeploymentDiagnosticReport,
+)
+
+from .engine import UniversalDeploymentFabricator
+from .validation import UniversalDeploymentValidator, DeploymentValidationReport
+from .package import UniversalDeploymentPackager, ProductionReadyDeployment
+
+__all__ = [
+    "AssetType",
+    "ContentType",
+    "DependencyType",
+    "ConflictPolicy",
+    "BuildState",
+    "ArtifactLifecycle",
+    "PackageType",
+    "DownloadState",
+    "InstallState",
+    "UninstallState",
+    "TrustPolicy",
+    "RepairAction",
+    "AssetRecord",
+    "ContentPackage",
+    "DependencyEdge",
+    "DependencyGraph",
+    "BuildNode",
+    "BuildGraph",
+    "BuildCacheEntry",
+    "BuildArtifact",
+    "FileManifestEntry",
+    "PackageManifest",
+    "ChunkDescriptor",
+    "DeploymentPackage",
+    "DownloadRequest",
+    "InstallationRecord",
+    "PatchDescriptor",
+    "SigningCertificate",
+    "DeploymentDiagnosticReport",
+    "UniversalDeploymentFabricator",
+    "UniversalDeploymentValidator",
+    "DeploymentValidationReport",
+    "UniversalDeploymentPackager",
+    "ProductionReadyDeployment",
+]

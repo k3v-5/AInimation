@@ -1,0 +1,51 @@
+from enum import Enum
+
+class TaskState(str, Enum):
+    CREATED = "CREATED"
+    PLANNED = "PLANNED"
+    READY = "READY"
+    RUNNING = "RUNNING"
+    WAITING = "WAITING"
+    BLOCKED = "BLOCKED"
+    VALIDATING = "VALIDATING"
+    COMPLETED = "COMPLETED"
+    FAILED = "FAILED"
+    CANCELLED = "CANCELLED"
+    ROLLED_BACK = "ROLLED_BACK"
+
+class AgentRole(str, Enum):
+    PLANNER = "PLANNER"
+    SPECIFICATION = "SPECIFICATION"
+    BLENDER = "BLENDER"
+    UNREAL = "UNREAL"
+    VALIDATION = "VALIDATION"
+    CRITIC = "CRITIC"
+    DEPENDENCY = "DEPENDENCY"
+    RECOVERY = "RECOVERY"
+
+class ToolEffect(str, Enum):
+    READ_ONLY = "READ_ONLY"
+    MUTATING = "MUTATING"
+    DESTRUCTIVE = "DESTRUCTIVE"
+    EXTERNAL = "EXTERNAL"
+
+class LockType(str, Enum):
+    PROJECT = "PROJECT"
+    WORLD = "WORLD"
+    ASSET = "ASSET"
+    BLENDER = "BLENDER"
+    UNREAL = "UNREAL"
+    FILESYSTEM = "FILESYSTEM"
+
+class DecisionAction(str, Enum):
+    ACCEPT = "ACCEPT"
+    REFINE = "REFINE"
+    REGENERATE = "REGENERATE"
+    ABORT = "ABORT"
+    ESCALATE = "ESCALATE"
+
+class ApprovalStatus(str, Enum):
+    PENDING = "PENDING"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    BYPASSED = "BYPASSED"

@@ -1,12 +1,12 @@
 # AGENTS.md — Manual Operativo Maestro del Monorepo `IANIMATION` para Agentes de IA
 
-> **Propósito**: Este documento es la guía de entrada principal para cualquier modelo de lenguaje o agente autónomo (Antigravity, Claude Code, Cursor, Gemini CLI) que opere sobre el monorepo unificado **`IANIMATION`**. Define la anatomía exacta de los **5 subsistemas unificados**, la matriz de enrutamiento de intenciones, los comandos de ejecución y las reglas inquebrantables de ingeniería y calidad visual.
+> **Propósito**: Este documento es la guía de entrada principal para cualquier modelo de lenguaje o agente autónomo (Antigravity, Claude Code, Cursor, Gemini CLI) que opere sobre el monorepo unificado **`IANIMATION`**. Define la anatomía exacta de los **6 subsistemas unificados**, la matriz de enrutamiento de intenciones, los comandos de ejecución y las reglas inquebrantables de ingeniería y calidad visual.
 
 ---
 
 ## 1. Mapa del Monorepo Unificado
 
-El repositorio consolida **5 dominios especializados** bajo una estructura modular estandarizada, conectando **144 herramientas MCP verificadas** y **123 generadores procedurales 3D/PBR en Blender 5.2 LTS**:
+El repositorio consolida **6 dominios especializados** bajo una estructura modular estandarizada, conectando **166 herramientas MCP verificadas** y **123 generadores procedurales 3D/PBR en Blender 5.2 LTS**:
 
 | Paquete (`packages/`) | ID MCP / Motor | Runtime | Capacidad Principal | Documentación Propia |
 | :--- | :--- | :--- | :--- | :--- |
@@ -15,6 +15,7 @@ El repositorio consolida **5 dominios especializados** bajo una estructura modul
 | [`packages/motion-vfx/`](packages/motion-vfx/) | `after-effects-motion-engine` | Node.js / TypeScript | Motion Graphics, VFX y Editorial para After Effects: óptica, temporal/speed-ramps, emulación fílmica Kodak, ritmo, tipografía cinética brutalista, Snorricam, fotónica, FLIR, mixed-media, vlog CLI y data-viz. **72 tools MCP**. | [`packages/motion-vfx/README.md`](packages/motion-vfx/README.md) |
 | [`packages/stick-animator/`](packages/stick-animator/) | `stykanimate-mcp` | Node.js >=20 + Códec Python | Animación 2D rápida headless de figuras articuladas (*stick figures*) con Cinemática Inversa (IK), timeline por keyframes, soporte `.styk`/`.piv`/`.stk`, HTML5 Canvas y MP4. **26 tools MCP**. | [`packages/stick-animator/README.md`](packages/stick-animator/README.md) |
 | [`packages/blender-procedural-lab/`](packages/blender-procedural-lab/) | `blender-procedural-lab` | Blender 5.2 LTS (`--factory-startup -b -P`) | Laboratorio masivo de generación 3D procedural: personajes riggeados, solvers IK bimanuales, Material Test Bench Pro V5, Trim Sheets 2K, 90 activos modulares, 50 props, bestiario 3D, 20 armas y exportadores FBX UE5. **123 scripts `.py`**. | [`packages/blender-procedural-lab/README.md`](packages/blender-procedural-lab/README.md) |
+| [`packages/asset-orchestration-engine/`](packages/asset-orchestration-engine/) | `aoe-blender-mcp` | Python >=3.10 + Blender MCP + UE5 | Asset Orchestration Engine (Fases F1–F80) + Universal Asset Factory (`UAF-81.0–81.92`): compilador determinista de intenciones 3D, niveles WFC 2D/3D, terrenos `.r16` con erosión hidráulica, IA GOAP de escuadrones NPC, Hunyuan3D, Hyper3D Rodin, PolyHaven y Sketchfab. **22 tools MCP**. | [`packages/asset-orchestration-engine/README.md`](packages/asset-orchestration-engine/README.md) |
 
 > **Nota de Auditoría e Integridad**: Ver el reporte generado por el pipeline de ingestión en [`packages/INGESTION_MANIFEST.json`](packages/INGESTION_MANIFEST.json). Todos los paquetes han sido filtrados para garantizar **0 archivos vacíos o corruptos** dentro de `packages/` y `backend/`.
 
@@ -32,6 +33,7 @@ Antes de escribir código o invocar herramientas, el agente **debe** seleccionar
 | Editar video, crear **Motion Graphics**, tipografía cinética brutalista, VFX óptico/fílmico, beat-sync o Data-Viz en **After Effects** | `after-effects-motion-engine` ([`packages/motion-vfx/`](packages/motion-vfx/)) | `create_video_from_script`, `vlog_produce`, `editorial_compile_data_visualization`, `apply_brutalist_kinetic_title`, `export_to_after_effects_jsx`, `run-script` |
 | Prototipar coreografías de acción o animaciones 2D ligeras con **stick figures + IK** sin GPU | `stykanimate-mcp` ([`packages/stick-animator/`](packages/stick-animator/)) | `project_open`, `figure_add`, `pose_ik_set`, `keyframe_edit`, [`packages/stick-animator/cli/render_mp4.py`](packages/stick-animator/cli/render_mp4.py) |
 | Generar proceduralmente **texturas PBR 2K, shader balls, kits modulares 3D, bestiario o props** en Blender 5.2 | `blender-procedural-lab` ([`packages/blender-procedural-lab/`](packages/blender-procedural-lab/)) | `generar_material_test_bench_v5.py`, `procesar_mapas_pbr_cinematograficos.py`, `generar_catalogo_modular_90_master_oficial.py`, `exportar_*_fbx.py` |
+| Compilar intenciones 3D deterministas, niveles **WFC 2D/3D**, terrenos **`.r16` con erosión hidráulica**, IA **GOAP** de escuadrones NPC o usar **Hunyuan3D / Hyper3D Rodin / PolyHaven / Sketchfab** en Blender | `aoe-blender-mcp` ([`packages/asset-orchestration-engine/`](packages/asset-orchestration-engine/)) | `ProductionOrchestrator`, `LandscapeGenerator`, `ProceduralLevelDirector`, `SquadCoordinator`, `generate_hunyuan3d_model`, `download_polyhaven_asset` |
 | Descubrir herramientas o validar salud del monorepo programáticamente desde Python/MCP | `backend.mcp.unified_registry` | `list_monorepo_subsystems()`, `search_monorepo_tools(query, domain)` |
 
 ---
@@ -54,7 +56,7 @@ Las siguientes normas combinan [`GEMINI.md`](GEMINI.md) y los estándares espec�
 ## 4. Descubrimiento Programático y Servidores MCP
 
 ### Configuración Lista para Clientes MCP
-El archivo [`mcp_servers.config.json`](mcp_servers.config.json) en la raíz contiene los 4 servidores MCP listos para conectar (`ianimation-3d`, `adobe-animation-mcp`, `after-effects-motion-engine`, `stykanimate-mcp`).
+El archivo [`mcp_servers.config.json`](mcp_servers.config.json) en la raíz contiene los 5 servidores MCP listos para conectar (`ianimation-3d`, `adobe-animation-mcp`, `after-effects-motion-engine`, `stykanimate-mcp`, `aoe-blender-mcp`).
 
 ### Consultas en Python desde el Orquestador
 

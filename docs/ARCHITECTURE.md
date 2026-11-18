@@ -1,12 +1,12 @@
 # Arquitectura Unificada del Monorepo `IANIMATION`
 
-> **Versión del Monorepo**: 1.0.0 Unificado · **Subsistemas**: 5 dominios desacoplados · **Herramientas MCP**: 144 · **Generadores Procedurales Blender**: 123.
+> **Versión del Monorepo**: 1.1.0 Unificado · **Subsistemas**: 6 dominios desacoplados · **Herramientas MCP**: 166 · **Generadores Procedurales Blender**: 123.
 
 ---
 
 ## 1. Visión Arquitectónica por Dominios
 
-El monorepo **`IANIMATION`** aplica **Arquitectura Hexagonal + Principios SOLID** para unificar cinco motores complementarios de animación, renderizado 3D, post-producción VFX y rigging 2D bajo una sola capa de descubrimiento y contratos estrictos:
+El monorepo **`IANIMATION`** aplica **Arquitectura Hexagonal + Principios SOLID** para unificar seis motores complementarios de animación, renderizado 3D, orquestación determinista de mundos/activos, post-producción VFX y rigging 2D bajo una sola capa de descubrimiento y contratos estrictos:
 
 ```mermaid
 flowchart TB
@@ -17,12 +17,13 @@ flowchart TB
     IA -->|"MCP stdio / Python"| REG
     GUI -->|"IPC / WebSocket / Telemetry"| P1
 
-    subgraph PACKAGES["5 Subsistemas Especializados"]
+    subgraph PACKAGES["6 Subsistemas Especializados"]
         P1["1. ianimation-3d\nbackend/ + packages/3d-ai-engine/\n8 Tools MCP"]
         P2["2. adobe-animation-mcp\npackages/adobe-suite/\n38 Tools MCP"]
         P3["3. after-effects-motion-engine\npackages/motion-vfx/\n72 Tools MCP"]
         P4["4. stykanimate-mcp\npackages/stick-animator/\n26 Tools MCP"]
         P5["5. blender-procedural-lab\npackages/blender-procedural-lab/\n123 Scripts Blender 5.2"]
+        P6["6. aoe-blender-mcp\npackages/asset-orchestration-engine/\n22 Tools MCP + UAF"]
     end
 
     REG --> P1
@@ -30,9 +31,11 @@ flowchart TB
     REG --> P3
     REG --> P4
     REG --> P5
+    REG --> P6
 
     P1 -->|"Blender CLI / UE5 RC REST 30010"| R3D["GLB · FBX · Blend · MP4"]
     P5 -->|"FBX · Mapas 2K BaseColor/Normal/ORM"| P1
+    P6 -->|"Hunyuan3D · Rodin · WFC · .r16 · GOAP · UE5 Bundle"| P1
     P1 -->|"Pases RGBA / Depth / MP4"| P3
     P2 -->|"PSD Marionetas · WAV 48kHz · JSX 2.5D"| P3
     P4 -->|"Frames JSON · Styk · MP4"| P3
@@ -79,6 +82,15 @@ Banco de ingeniería 3D y materiales PBR basado en **Blender 5.2 LTS (`bpy` / `b
 - **Materiales y Texturas ([`generators/pbr_textures_and_benches/`](../packages/blender-procedural-lab/generators/pbr_textures_and_benches/))**: Generadores de mapas PBR 2048x2048 (`BaseColor`, `Normal` DirectX/OpenGL y canales empaquetados `ORM` — Occlusion/Roughness/Metallic) y *Material Test Bench Pro V5* con Shader Balls y placa identificadora 3D.
 - **Personajes y Solvers IK ([`generators/characters_and_rigs/`](../packages/blender-procedural-lab/generators/characters_and_rigs/), [`generators/animations_and_ik/`](../packages/blender-procedural-lab/generators/animations_and_ik/))**: Generadores A-Pose UE5, riggeo BMesh determinista, ciclos de locomoción/combate 3D y solvers bimanuales.
 - **Arquitectura Modular y Catálogos ([`generators/modular_kits_and_props/`](../packages/blender-procedural-lab/generators/modular_kits_and_props/), [`exporters/`](../packages/blender-procedural-lab/exporters/))**: Kit de 90 activos modulares en 5 temáticas, 50 props maestros, bestiario de 10 entidades, arsenal de 20 armas y exportadores por lote a FBX UE5.
+
+### 2.6 Dominio 6: `aoe-blender-mcp` (`packages/asset-orchestration-engine/`)
+Motor **Python >=3.10 + Blender MCP + Unreal Engine 5** que integra el **Asset Orchestration Engine (Fases F1–F80)** y la **Universal Asset Factory (`UAF-81.0–81.92`)**:
+- **Orquestador Determinista de Producción (`src/production_orchestration`)**: Pipeline de 19 etapas que compila intenciones en lenguaje natural a especificaciones geométricas (`SemanticMeshSpec`, sockets, grafos PBR), evalúa presupuesto poligonal y ejecuta crítica/auto-reparación booleana y manifold.
+- **Universal Asset Factory (`src/uaf/`)**:
+  - `procedural_level` (`UAF-81.90`): Wave Function Collapse 2D/3D con entropía de Shannon, ciclos Lock-and-Key sin softlocks, Mission DAG y AI Pacing Director.
+  - `macro_landscape` (`UAF-81.91`): Terrenos multi-octava con erosión hidráulica y térmica dual, biomas de Whittaker, splines de ríos/caminos y exportación binaria `.r16` de 16 bits para Unreal Engine 5 Landscape.
+  - `multi_agent_npc` (`UAF-81.92`): IA cognitiva GOAP ($A^*$), maniobras tácticas de escuadrón (Bounding Overwatch, Flanking, Breach & Clear), percepción sensorial dual y exportación a StateTree/BehaviorTree de UE5.
+- **Blender MCP Bridge (`mcp/blender/blender_mcp_addon.py` + 22 JSON Schemas)**: Control en vivo de Blender por socket y generación/descarga directa desde **Tencent Hunyuan3D**, **Hyper3D Rodin**, **PolyHaven** y **Sketchfab**.
 
 ---
 

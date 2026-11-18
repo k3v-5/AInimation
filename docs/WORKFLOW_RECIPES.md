@@ -1,6 +1,6 @@
 # Recetas de Flujo de Trabajo Multi-Motor (`WORKFLOW_RECIPES.md`)
 
-Esta guía describe **5 flujos de producción end-to-end** diseñados para ser ejecutados directamente por agentes de IA combinando los distintos subsistemas del monorepo `IANIMATION`.
+Esta guía describe **6 flujos de producción end-to-end** diseñados para ser ejecutados directamente por agentes de IA combinando los distintos subsistemas del monorepo `IANIMATION`.
 
 ---
 
@@ -84,3 +84,22 @@ Esta guía describe **5 flujos de producción end-to-end** diseñados para ser e
 2. **Inspección Visual en Estudio Shader Ball**: Ejecutar `generar_material_test_bench_v5.py` vía `E:\Blender\blender.exe --factory-startup -b -P ...` y revisar el render con `read_file`.
 3. **Generación de Geometría Modular y Exportación FBX**: Ejecutar el generador de kit correspondiente (p. ej. `generar_catalogo_modular_90_master_oficial.py`) y su exportador FBX en [`packages/blender-procedural-lab/exporters/`](../packages/blender-procedural-lab/exporters/).
 4. **Montaje y Render en Unreal Engine 5**: Usar `build_ue5_scene` y `render_video` desde `ianimation-3d` (o verificar conectividad con [`backend/ue5/companion.py`](../backend/ue5/companion.py)).
+
+---
+
+## Receta 6: Orquestación Determinista de Activos 3D, Terrenos `.r16`, Niveles WFC e IA GOAP (`AOE + UAF`)
+
+**Objetivo**: Compilar intenciones de lenguaje natural a activos 3D listos para producción, generar mundos procedurales (terrenos con erosión hidráulica `.r16` y niveles WFC 2D/3D sin softlocks), o importar activos desde Hunyuan3D / Hyper3D Rodin / PolyHaven / Sketchfab en Blender y Unreal Engine 5.
+
+**Subsistema**: `aoe-blender-mcp` ([`packages/asset-orchestration-engine/`](../packages/asset-orchestration-engine/))
+
+1. **Orquestación de Activo 3D (19 etapas, Fases F1–F80)**:
+   - Importar `ProductionOrchestrator` y `ProductionRequest` desde `packages/asset-orchestration-engine/src/production_orchestration` para compilar una intención natural a `SemanticMeshSpec`, grafo PBR, evaluación del crítico geométrico/visual y exportación FBX.
+2. **Puente Live con Blender MCP (22 Tools)**:
+   - Usar `generate_hunyuan3d_model` o `generate_hyper3d_model_via_text` / `generate_hyper3d_model_via_images` para síntesis neural 3D.
+   - Descargar HDRIs/texturas CC0 con `search_polyhaven_assets` + `download_polyhaven_asset` o modelos de `search_sketchfab_models` + `download_sketchfab_model`.
+   - Inspeccionar la escena con `get_scene_info`, `get_object_info`, `execute_blender_code` y `get_viewport_screenshot`.
+3. **Generación de Mundos Next-Gen (`Universal Asset Factory — src/uaf/`)**:
+   - **Terreno Macro (`UAF-81.91`)**: `LandscapeGenerator(LandscapeConfig(...)).generate_full_landscape(...)` $\to$ heightmap binario `.r16` de 16 bits + biomas Whittaker + splines.
+   - **Niveles Procedurales (`UAF-81.90`)**: `ProceduralLevelDirector(LevelDirectorConfig(...)).generate_complete_level(...)` $\to$ WFC 2D/3D + Mission DAG Lock-and-Key.
+   - **IA Cognitiva de Escuadrones (`UAF-81.92`)**: `SquadCoordinator` + GOAP $A^*$ exportable a StateTree de Unreal Engine 5.

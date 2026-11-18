@@ -45,6 +45,7 @@ def test_monorepo_packages_and_readmes_exist() -> None:
         "motion-vfx",
         "stick-animator",
         "blender-procedural-lab",
+        "asset-orchestration-engine",
     ]
     for pkg in expected_packages:
         pkg_dir = PACKAGES_DIR / pkg
@@ -62,10 +63,14 @@ def test_zero_corrupt_or_blank_files_in_packages() -> None:
     for item in PACKAGES_DIR.rglob("*"):
         if item.is_file():
             scanned += 1
-            raw = item.read_bytes()
-            if len(raw.strip(b" \t\r\n\x00")) == 0:
+            if item.stat().st_size == 0:
                 corrupt_files.append(str(item.relative_to(MONOREPO_ROOT)))
-    assert scanned > 2000, f"Expected >2000 migrated clean files, scanned {scanned}"
+                continue
+            with item.open("rb") as fh:
+                head = fh.read(4096)
+                if len(head.strip(b" \t\r\n\x00")) == 0 and len(fh.read().strip(b" \t\r\n\x00")) == 0:
+                    corrupt_files.append(str(item.relative_to(MONOREPO_ROOT)))
+    assert scanned > 6000, f"Expected >6000 migrated clean files, scanned {scanned}"
     assert corrupt_files == [], f"Detected blank/corrupt files: {corrupt_files[:20]}"
 
 
@@ -77,8 +82,8 @@ def test_unified_registry_integrity_report() -> None:
     report = registry.validate_monorepo_integrity()
     assert isinstance(report, MonorepoIntegrityReport)
     assert report.is_valid is True, f"Integrity errors: {report.missing_paths}"
-    assert report.total_subsystems == 5
-    assert report.total_mcp_tools == 144
+    assert report.total_subsystems == 6
+    assert report.total_mcp_tools == 166
     assert report.total_procedural_generators == 123
     assert report.corrupt_files_detected == 0
     assert report.missing_paths == []
@@ -94,6 +99,8 @@ def test_unified_registry_integrity_report() -> None:
         ("stick", "stykanimate-mcp"),
         ("pbr", "blender-procedural-lab"),
         ("ue5", "ianimation-3d"),
+        ("hunyuan", "aoe-blender-mcp"),
+        ("polyhaven", "aoe-blender-mcp"),
     ],
 )
 def test_cross_domain_tool_search(query: str, expected_subsystem: str) -> None:
@@ -128,7 +135,7 @@ def test_mcp_server_invocation_parity() -> None:
     assert rep.is_valid is True
 
     direct_rep = list_monorepo_subsystems()
-    assert direct_rep.total_mcp_tools == rep.total_mcp_tools == 144
+    assert direct_rep.total_mcp_tools == rep.total_mcp_tools == 166
 
     search_res = unified_mcp_server.call_tool("search_monorepo_tools", query="viseme")
     assert isinstance(search_res, MonorepoToolSearchResult)
@@ -158,11 +165,12 @@ def test_ai_documentation_and_mcp_config_files() -> None:
         "adobe-animation-mcp",
         "after-effects-motion-engine",
         "stykanimate-mcp",
+        "aoe-blender-mcp",
     }
 
     manifest = json.loads((PACKAGES_DIR / "INGESTION_MANIFEST.json").read_text(encoding="utf-8"))
-    assert manifest["total_valid_files_copied"] > 2000
-    assert len(manifest["packages"]) == 5
+    assert manifest["total_valid_files_copied"] > 5000
+    assert len(manifest["packages"]) == 6
 
 
 def test_path_traversal_protection() -> None:

@@ -1,0 +1,62 @@
+from enum import Enum
+
+class ParamType(str, Enum):
+    FLOAT = "FLOAT"
+    INTEGER = "INTEGER"
+    BOOLEAN = "BOOLEAN"
+    STRING = "STRING"
+    ENUM = "ENUM"
+    VECTOR2 = "VECTOR2"
+    VECTOR3 = "VECTOR3"
+    COLOR = "COLOR"
+    MATERIAL_REF = "MATERIAL_REF"
+
+class UnitType(str, Enum):
+    METERS = "METERS"
+    CENTIMETERS = "CENTIMETERS"
+    DEGREES = "DEGREES"
+    RADIANS = "RADIANS"
+    RATIO = "RATIO"
+    COUNT = "COUNT"
+    NONE = "NONE"
+
+class RoofType(str, Enum):
+    GABLE = "GABLE"
+    HIP = "HIP"
+    FLAT = "FLAT"
+    SHED = "SHED"
+    MANSARD = "MANSARD"
+    CUSTOM_PARAMETRIC = "CUSTOM_PARAMETRIC"
+
+class ComponentState(str, Enum):
+    CLEAN = "CLEAN"
+    DIRTY = "DIRTY"
+    BUILDING = "BUILDING"
+    VALID = "VALID"
+    INVALID = "INVALID"
+    ERROR = "ERROR"
+
+class PivotType(str, Enum):
+    CENTER = "CENTER"
+    BASE = "BASE"
+    TOP = "TOP"
+    LEFT = "LEFT"
+    RIGHT = "RIGHT"
+    CUSTOM = "CUSTOM"
+
+class GenerationStrategy(str, Enum):
+    PROCEDURAL = "PROCEDURAL"
+    PARAMETRIC = "PARAMETRIC"
+    MANUAL_LIKE = "MANUAL_LIKE"
+    HYBRID = "HYBRID"
+    REFERENCE_DRIVEN = "REFERENCE_DRIVEN"
+
+class ParametricErrorType(str, Enum):
+    PARAMETER_ERROR = "PARAMETER_ERROR"
+    CONSTRAINT_ERROR = "CONSTRAINT_ERROR"
+    GENERATOR_ERROR = "GENERATOR_ERROR"
+    BLENDER_ERROR = "BLENDER_ERROR"
+    MCP_ERROR = "MCP_ERROR"
+    VALIDATION_ERROR = "VALIDATION_ERROR"
+    UNSUPPORTED_COMPONENT = "UNSUPPORTED_COMPONENT"
+    EXTERNAL_MODIFICATION = "EXTERNAL_MODIFICATION"

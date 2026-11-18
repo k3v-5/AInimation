@@ -1,0 +1,1 @@
+{"name":"get_sketchfab_status","description":"\nCheck if Sketchfab integration is enabled in Blender.\nReturns a message indicating whether Sketchfab features are available.\n","parameters":{"properties":{"user_prompt":{"default":"","title":"User Prompt","type":"string"}},"title":"get_sketchfab_statusArguments","type":"object"}}

@@ -1,7 +1,10 @@
 # Estado del Proyecto — IANIMATION (Monorepo Unificado de Animación, Render y VFX para IA)
 
-> **Última actualización**: 2026-11-18 (Film Showcase Multi-Motor *"Cross-Dimension Rescue"* Completado + Unificación de 5 Subsistemas y Gateway MCP)  
-> **Estado general**: Monorepo unificado y validado al 100% con **0 archivos corruptos/vacíos**, consolidando **5 paquetes especializados**, **144 herramientas MCP**, **123 generadores/exportadores procedurales en Blender 5.2 LTS** y un cortometraje de demostración multi-motor end-to-end verificable.
+> **Última actualización**: 2026-11-18 (Integración del 6.º Subsistema `Asset Orchestration Engine (AOE + UAF)` + Film Showcase Multi-Motor *"Cross-Dimension Rescue"* Completado)  
+> **Estado general**: Monorepo unificado y validado al 100% con **0 archivos corruptos/vacíos**, consolidando **6 paquetes especializados (`6,217` archivos validados)**, **166 herramientas MCP**, **123 generadores/exportadores procedurales en Blender 5.2 LTS** y un cortometraje de demostración multi-motor end-to-end verificable.
+> - **Integración de `packages/asset-orchestration-engine/` (`aoe-blender-mcp`)**:
+>   - **3,799 archivos válidos** migrados desde `E:\AssetOrchestrationEngine` (omitido `gen_script.py` de 0 bytes y `AssetOrchestrationEngine.rar` de 42.6 MB).
+>   - **22 tools MCP** (`execute_blender_code`, `get_scene_info`, `get_object_info`, `get_viewport_screenshot`, `set_texture`, `generate_hunyuan3d_model`, `generate_hyper3d_model_via_text`, `generate_hyper3d_model_via_images`, `download_polyhaven_asset`, `download_sketchfab_model`, etc.) + **Core AOE (Fases F1–F80)** + **Universal Asset Factory (`src/uaf/`, UAF-81.0–81.92: WFC 2D/3D, Erosión Hidráulica `.r16`, IA GOAP NPC, `ue5_plugin`)**.
 > - **Hito Reciente — Cortometraje Showcase *"Cross-Dimension Rescue"* (`12.0s` / `288 frames` @ `24 FPS`, `1280x720`, `120 BPM`)**:
 >   - **Pipeline ejecutable multi-motor**:
 >     - [`scripts/generate_act1_styk_previz.mjs`](scripts/generate_act1_styk_previz.mjs): Pre-viz 2D con Two-Bone IK sobre [`packages/stick-animator/`](packages/stick-animator/) (`act1_tactical_previz.styk` + `act1_ik_frames.json`, `72` frames).

@@ -1,0 +1,51 @@
+"""
+UAF-81.68: Universal Inspector Models Module.
+"""
+
+from uaf.universal_inspector.models.definition import (
+    PropertyType,
+    PropertyFlags,
+    ValidationSeverity,
+    ValidationTiming,
+    ConflictPolicy,
+    EditorHint,
+    MultiEditMode,
+    InspectorTargetType,
+    MIXED_VALUE,
+    PropertyPath,
+    PropertyMetadata,
+    PropertyDescriptor,
+    PropertyValidationMessage,
+    PropertyDependency,
+    PropertySchema,
+    PropertyClipboard,
+    InspectorEditTransaction,
+    InspectorState,
+    InspectorSnapshot,
+    InspectorTelemetry,
+    InspectorDiagnosticBundle,
+)
+
+__all__ = [
+    "PropertyType",
+    "PropertyFlags",
+    "ValidationSeverity",
+    "ValidationTiming",
+    "ConflictPolicy",
+    "EditorHint",
+    "MultiEditMode",
+    "InspectorTargetType",
+    "MIXED_VALUE",
+    "PropertyPath",
+    "PropertyMetadata",
+    "PropertyDescriptor",
+    "PropertyValidationMessage",
+    "PropertyDependency",
+    "PropertySchema",
+    "PropertyClipboard",
+    "InspectorEditTransaction",
+    "InspectorState",
+    "InspectorSnapshot",
+    "InspectorTelemetry",
+    "InspectorDiagnosticBundle",
+]

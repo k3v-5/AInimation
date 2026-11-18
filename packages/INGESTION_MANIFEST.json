@@ -97,8 +97,19 @@
       "corrupt_or_blank_skipped": 0,
       "excluded_dirs_or_large_skipped": 0,
       "sample_skipped_corrupt": []
+    },
+    {
+      "package_id": "asset-orchestration-engine",
+      "source_path": "E:\\AssetOrchestrationEngine",
+      "target_path": "E:\\Disco F\\Dev\\IANIMATION\\packages\\asset-orchestration-engine",
+      "valid_files_copied": 3799,
+      "corrupt_or_blank_skipped": 1,
+      "excluded_dirs_or_large_skipped": 1166,
+      "sample_skipped_corrupt": [
+        "gen_script.py"
+      ]
     }
   ],
-  "total_valid_files_copied": 2418,
-  "total_corrupt_or_blank_skipped": 691
+  "total_valid_files_copied": 6217,
+  "total_corrupt_or_blank_skipped": 692
 }

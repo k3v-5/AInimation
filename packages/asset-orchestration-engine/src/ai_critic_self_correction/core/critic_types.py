@@ -1,0 +1,54 @@
+from enum import Enum
+
+class CriticStatus(str, Enum):
+    PASS = "PASS"
+    CORRECT = "CORRECT"
+    REBUILD_COMPONENT = "REBUILD_COMPONENT"
+    REBUILD_ASSET = "REBUILD_ASSET"
+    HUMAN_REVIEW = "HUMAN_REVIEW"
+    BLOCKED = "BLOCKED"
+    FAILED = "FAILED"
+    STOP = "STOP"
+    DEADLOCK = "DEADLOCK"
+
+class ModificationLevel(str, Enum):
+    PROPERTY = "PROPERTY"
+    COMPONENT = "COMPONENT"
+    SUBTREE = "SUBTREE"
+    ASSET = "ASSET"
+
+class CorrectionOperationType(str, Enum):
+    SET_PROPERTY = "SET_PROPERTY"
+    MODIFY_PROPERTY = "MODIFY_PROPERTY"
+    MOVE_COMPONENT = "MOVE_COMPONENT"
+    SCALE_COMPONENT = "SCALE_COMPONENT"
+    ROTATE_COMPONENT = "ROTATE_COMPONENT"
+    REBUILD_COMPONENT = "REBUILD_COMPONENT"
+    REBUILD_SUBTREE = "REBUILD_SUBTREE"
+    REBUILD_ASSET = "REBUILD_ASSET"
+    CHANGE_MATERIAL = "CHANGE_MATERIAL"
+    ADD_COMPONENT = "ADD_COMPONENT"
+    REMOVE_COMPONENT = "REMOVE_COMPONENT"
+
+class RootCauseSeverity(str, Enum):
+    CRITICAL = "CRITICAL"
+    HIGH = "HIGH"
+    MEDIUM = "MEDIUM"
+    LOW = "LOW"
+
+class CriticRiskLevel(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+class BudgetStatus(str, Enum):
+    OK = "OK"
+    BUDGET_EXCEEDED = "BUDGET_EXCEEDED"
+    TIMEOUT = "TIMEOUT"
+
+class StrategyResult(str, Enum):
+    SUCCESS = "SUCCESS"
+    FAILED = "FAILED"
+    REGRESSED = "REGRESSED"
+    STALLED = "STALLED"

@@ -30,6 +30,7 @@ class SubsystemDomain(StrEnum):
     AFTER_EFFECTS_VFX = "after_effects_vfx"
     STICK_2D_IK = "stick_2d_ik"
     BLENDER_PROCEDURAL_LAB = "blender_procedural_lab"
+    ASSET_ORCHESTRATION_ENGINE = "asset_orchestration_engine"
 
 
 RuntimeKind = Literal["python", "node", "blender-python"]
@@ -103,7 +104,11 @@ def _is_non_blank_file(path: Path) -> bool:
     """Return True if file exists and contains non-whitespace, non-null bytes."""
     if not path.is_file() or path.stat().st_size == 0:
         return False
-    return len(path.read_bytes().strip(b" \t\r\n\x00")) > 0
+    with path.open("rb") as fh:
+        head = fh.read(4096)
+        if len(head.strip(b" \t\r\n\x00")) > 0:
+            return True
+        return len(fh.read().strip(b" \t\r\n\x00")) > 0
 
 
 def _build_tools(
@@ -444,8 +449,64 @@ def _blender_lab_tools() -> List[MCPToolSummary]:
     )
 
 
+def _aoe_blender_mcp_tools() -> List[MCPToolSummary]:
+    return _build_tools(
+        "aoe-blender-mcp",
+        SubsystemDomain.ASSET_ORCHESTRATION_ENGINE,
+        [
+            (
+                "blender-live-control",
+                [
+                    ("execute_blender_code", "Execute arbitrary Python (bpy) code inside the live Blender MCP socket server."),
+                    ("get_scene_info", "Get detailed information about the current Blender scene, objects, and materials."),
+                    ("get_object_info", "Retrieve transform, mesh topology, bounding box, and material slots for a Blender object."),
+                    ("get_viewport_screenshot", "Capture and save a 3D viewport screenshot from the active Blender session."),
+                    ("set_texture", "Apply downloaded or generated PBR texture maps onto a target Blender object material."),
+                ],
+            ),
+            (
+                "hunyuan3d-generation",
+                [
+                    ("generate_hunyuan3d_model", "Generate a 3D textured mesh asset via Tencent Hunyuan3D from text or reference image."),
+                    ("get_hunyuan3d_status", "Check whether Hunyuan3D integration is enabled and configured in Blender MCP."),
+                    ("poll_hunyuan_job_status", "Poll asynchronous Hunyuan3D generation job status until completion."),
+                    ("import_generated_asset_hunyuan", "Import completed Hunyuan3D 3D model directly into the active Blender scene."),
+                ],
+            ),
+            (
+                "hyper3d-rodin-generation",
+                [
+                    ("generate_hyper3d_model_via_text", "Generate a 3D asset via Hyper3D Rodin from a natural language text prompt."),
+                    ("generate_hyper3d_model_via_images", "Generate a 3D asset via Hyper3D Rodin from single or multi-view reference images."),
+                    ("get_hyper3d_status", "Check Hyper3D Rodin API availability and quota status in Blender MCP."),
+                    ("poll_rodin_job_status", "Poll Hyper3D Rodin asynchronous generation task status."),
+                    ("import_generated_asset", "Import completed Hyper3D Rodin 3D mesh into the active Blender scene."),
+                ],
+            ),
+            (
+                "polyhaven-assets",
+                [
+                    ("get_polyhaven_status", "Verify PolyHaven API integration status in Blender MCP."),
+                    ("get_polyhaven_categories", "List available PolyHaven asset categories for HDRIs, textures, or models."),
+                    ("search_polyhaven_assets", "Search PolyHaven catalog for CC0 HDRIs, PBR texture sets, and 3D models."),
+                    ("download_polyhaven_asset", "Download and import a PolyHaven HDRI, PBR texture set, or 3D model into Blender."),
+                ],
+            ),
+            (
+                "sketchfab-repository",
+                [
+                    ("get_sketchfab_status", "Check Sketchfab API authentication and integration status in Blender MCP."),
+                    ("search_sketchfab_models", "Search downloadable 3D models in Sketchfab by keyword, category, and face count."),
+                    ("get_sketchfab_model_preview", "Fetch thumbnail preview of a Sketchfab model before downloading."),
+                    ("download_sketchfab_model", "Download and import a glTF/Blender model from Sketchfab into the active scene."),
+                ],
+            ),
+        ],
+    )
+
+
 class UnifiedAnimationRegistry:
-    """Central discovery and validation gateway across all 5 unified animation subsystems."""
+    """Central discovery and validation gateway across all 6 unified animation subsystems."""
 
     def __init__(self, monorepo_root: Optional[Path] = None) -> None:
         self.root: Path = (monorepo_root or DEFAULT_MONOREPO_ROOT).resolve()
@@ -579,6 +640,31 @@ class UnifiedAnimationRegistry:
                 ],
                 tools=_blender_lab_tools(),
             ),
+            SubsystemDescriptor(
+                id="aoe-blender-mcp",
+                name="Asset Orchestration Engine (AOE) & Universal Asset Factory",
+                domain=SubsystemDomain.ASSET_ORCHESTRATION_ENGINE,
+                version="1.0.0",
+                runtime="python",
+                root_dir="packages/asset-orchestration-engine",
+                entrypoint="packages/asset-orchestration-engine/mcp/blender/blender_mcp_addon.py",
+                readme_path="packages/asset-orchestration-engine/README.md",
+                command="python",
+                args=["packages/asset-orchestration-engine/runner.py"],
+                tool_count=len(_aoe_blender_mcp_tools()),
+                verified_files_count=self._count_verified_files("packages/asset-orchestration-engine"),
+                capabilities=[
+                    "deterministic-intent-compiler-f1-f80",
+                    "universal-asset-factory-uaf",
+                    "wfc-2d-3d-procedural-levels",
+                    "macro-landscape-hydraulic-erosion-r16",
+                    "goap-multi-agent-npc-ai",
+                    "hunyuan3d-and-hyper3d-rodin",
+                    "polyhaven-and-sketchfab-bridge",
+                    "ue5-portable-asset-bundling",
+                ],
+                tools=_aoe_blender_mcp_tools(),
+            ),
         ]
         self._subsystems = {item.id: item for item in defs}
 
@@ -653,7 +739,7 @@ class UnifiedAnimationRegistry:
             all(subsystems_status.values())
             and len(missing_paths) == 0
             and corrupt_files_detected == 0
-            and len(self._subsystems) == 5
+            and len(self._subsystems) == 6
         )
 
         return MonorepoIntegrityReport(

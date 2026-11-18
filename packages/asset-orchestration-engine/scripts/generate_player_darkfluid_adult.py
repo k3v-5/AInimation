@@ -1,0 +1,154 @@
+﻿import bpy
+import os
+import sys
+from mathutils import Vector, Euler
+from math import radians as R
+
+def main():
+    blend_path = r"E:\Darx_Proyect\Saved\Player_Skin_Workspace\DarX_Player_DarkFluid_V10.blend"
+    bpy.ops.wm.open_mainfile(filepath=blend_path)
+    scene = bpy.context.scene
+
+    char = bpy.data.objects.get("SK_DarX_LatexHuman_Eyeless")
+    arm = bpy.data.objects.get("Armature")
+    pb = arm.pose.bones
+
+    # 1. Aplicar Canon Anatómico Adulto Heroico (8 Cabezas de Altura)
+    # Cabeza a proporción canónica adulta (0.75)
+    if 'head 1' in pb:
+        pb['head 1'].scale = (0.75, 0.75, 0.75)
+    if 'neck' in pb:
+        pb['neck'].scale = (0.90, 0.90, 1.0)
+
+    # Torso V-Taper y Hombros Anchos Atléticos
+    if 'chest' in pb:
+        pb['chest'].scale = (1.25, 1.15, 1.05)
+    if 'shoulder.L' in pb:
+        pb['shoulder.L'].scale = (1.18, 1.10, 1.10)
+        pb['shoulder.L'].location = (0.025, 0.0, 0.0)
+    if 'shoulder.R' in pb:
+        pb['shoulder.R'].scale = (1.18, 1.10, 1.10)
+        pb['shoulder.R'].location = (-0.025, 0.0, 0.0)
+
+    # Cintura delgada y atlética
+    if 'spine' in pb:
+        pb['spine'].scale = (0.96, 0.95, 1.10)
+    if 'hips' in pb:
+        pb['hips'].scale = (1.02, 1.0, 1.05)
+
+    # Piernas alargadas y musculosas
+    for b_name in ['thigh.L', 'thigh.R']:
+        if b_name in pb:
+            pb[b_name].scale = (1.04, 1.04, 1.15)
+    for b_name in ['shin.L', 'shin.R']:
+        if b_name in pb:
+            pb[b_name].scale = (1.02, 1.02, 1.15)
+
+    # Escala global para 1.82m de estatura adulta
+    arm.scale = (1.16, 1.16, 1.16)
+
+    # 2. Calibrar Iluminación de Estudio de Alta Definición
+    for obj in list(scene.collection.objects):
+        if obj.type == 'LIGHT':
+            bpy.data.objects.remove(obj, do_unlink=True)
+
+    # Key Area Light (Frontal Derecha)
+    l1_data = bpy.data.lights.new("LGT_Key", 'AREA')
+    l1_data.energy = 175.0
+    l1_data.size = 2.0
+    l1_data.color = (1.0, 0.98, 0.95)
+    l1 = bpy.data.objects.new("LGT_Key", l1_data)
+    l1.location = (1.6, -2.6, 2.1)
+    l1.rotation_euler = (R(50), R(15), R(35))
+    scene.collection.objects.link(l1)
+
+    # Fill Area Light (Frontal Izquierda)
+    l2_data = bpy.data.lights.new("LGT_Fill", 'AREA')
+    l2_data.energy = 85.0
+    l2_data.size = 2.5
+    l2_data.color = (0.75, 0.85, 1.0)
+    l2 = bpy.data.objects.new("LGT_Fill", l2_data)
+    l2.location = (-1.8, -2.0, 1.5)
+    l2.rotation_euler = (R(55), R(-20), R(-40))
+    scene.collection.objects.link(l2)
+
+    # Rim Area Light Derecho
+    l3_data = bpy.data.lights.new("LGT_RimR", 'AREA')
+    l3_data.energy = 140.0
+    l3_data.size = 1.8
+    l3_data.color = (0.90, 0.95, 1.0)
+    l3 = bpy.data.objects.new("LGT_RimR", l3_data)
+    l3.location = (1.8, 1.8, 1.8)
+    l3.rotation_euler = (R(-45), R(20), R(-135))
+    scene.collection.objects.link(l3)
+
+    # Rim Area Light Izquierdo (Violeta Neón de Acento)
+    l4_data = bpy.data.lights.new("LGT_RimL", 'AREA')
+    l4_data.energy = 190.0
+    l4_data.size = 1.8
+    l4_data.color = (0.70, 0.15, 1.0)
+    l4 = bpy.data.objects.new("LGT_RimL", l4_data)
+    l4.location = (-1.8, 1.8, 1.8)
+    l4.rotation_euler = (R(-45), R(-20), R(135))
+    scene.collection.objects.link(l4)
+
+    # Top Light Cenital
+    l5_data = bpy.data.lights.new("LGT_Top", 'AREA')
+    l5_data.energy = 55.0
+    l5_data.size = 2.5
+    l5_data.color = (0.95, 0.98, 1.0)
+    l5 = bpy.data.objects.new("LGT_Top", l5_data)
+    l5.location = (0.0, -0.2, 3.4)
+    l5.rotation_euler = (R(-15), 0, 0)
+    scene.collection.objects.link(l5)
+
+    # 3. Configurar Cámara Maestra
+    cam_obj = bpy.data.objects.get("Cam_RenderMaster")
+    if not cam_obj:
+        cam_data = bpy.data.cameras.new("Cam_RenderMaster")
+        cam_obj = bpy.data.objects.new("Cam_RenderMaster", cam_data)
+        scene.collection.objects.link(cam_obj)
+    scene.camera = cam_obj
+
+    scene.render.resolution_x = 1080
+    scene.render.resolution_y = 1080
+    scene.render.engine = 'BLENDER_EEVEE'
+
+    out_dir = r"C:\Users\sasuk\.gemini\antigravity\brain\695523dc-0f49-434f-b134-d3298443b0f2\renders_latex_human"
+    os.makedirs(out_dir, exist_ok=True)
+
+    def render_shot(loc, target, fov, fname):
+        cam_obj.location = Vector(loc)
+        dir_vec = Vector(target) - cam_obj.location
+        cam_obj.rotation_euler = dir_vec.to_track_quat('-Z', 'Y').to_euler()
+        cam_obj.data.angle = R(fov)
+        p = os.path.join(out_dir, fname)
+        scene.render.filepath = p
+        bpy.ops.render.render(write_still=True)
+        print(f"RENDERED: {fname}")
+        return p
+
+    # Renderizar las 5 Vistas Canónicas con Proporciones Adultas
+    print("Renderizando Hero View (3/4 Acción)...")
+    render_shot((1.8, -3.2, 1.30), (0, 0, 0.95), 40, "darkfluid_hero_action.png")
+
+    print("Renderizando Vista Frontal (Cuerpo Adulto 1.82m)...")
+    render_shot((0, -3.4, 0.95), (0, 0, 0.95), 40, "darkfluid_view_front.png")
+
+    print("Renderizando Vista Trasera (Espalda V-Taper y Piernas)...")
+    render_shot((0, 3.4, 0.95), (0, 0, 0.95), 40, "darkfluid_view_back.png")
+
+    print("Renderizando Vista FPS (Mano 5 Dedos y Antebrazo Adulto)...")
+    render_shot((0.18, -0.15, 1.50), (0.50, -0.55, 1.14), 65, "darkfluid_view_fps.png")
+
+    print("Renderizando Primer Plano Rostro Eyeless...")
+    render_shot((0.12, -0.70, 1.62), (0, 0, 1.60), 26, "darkfluid_face_closeup.png")
+
+    # Guardar Blends Maestros
+    bpy.ops.wm.save_mainfile(filepath=blend_path)
+    adult_master_path = r"E:\Darx_Proyect\Saved\Player_Skin_Workspace\DarX_Player_DarkFluid_Adult_Master.blend"
+    bpy.ops.wm.save_as_mainfile(filepath=adult_master_path)
+    print(f"BLENDS_SAVED: {blend_path} and {adult_master_path}")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,90 @@
+from enum import Enum
+
+class ArchetypeCategory(str, Enum):
+    RESIDENTIAL = "RESIDENTIAL"
+    MILITARY = "MILITARY"
+    COMMERCIAL = "COMMERCIAL"
+    RELIGIOUS = "RELIGIOUS"
+    INDUSTRIAL = "INDUSTRIAL"
+    INFRASTRUCTURE = "INFRASTRUCTURE"
+    VEHICLE = "VEHICLE"
+    PROP = "PROP"
+    ENVIRONMENT = "ENVIRONMENT"
+    CHARACTER = "CHARACTER"
+    FOLIAGE = "FOLIAGE"
+    WEAPON = "WEAPON"
+    FURNITURE = "FURNITURE"
+    MECHANICAL = "MECHANICAL"
+    TERRAIN = "TERRAIN"
+
+class ComponentNecessity(str, Enum):
+    MANDATORY = "MANDATORY"
+    RECOMMENDED = "RECOMMENDED"
+    OPTIONAL = "OPTIONAL"
+    FORBIDDEN = "FORBIDDEN"
+
+class DependencyType(str, Enum):
+    REQUIRED = "REQUIRED"
+    OPTIONAL = "OPTIONAL"
+    CONDITIONAL = "CONDITIONAL"
+    SOFT = "SOFT"
+
+class DesignRuleSeverity(str, Enum):
+    INFO = "INFO"
+    WARNING = "WARNING"
+    ERROR = "ERROR"
+    CRITICAL = "CRITICAL"
+
+class StyleEra(str, Enum):
+    MEDIEVAL = "MEDIEVAL"
+    NORDIC = "NORDIC"
+    ANCIENT = "ANCIENT"
+    RENAISSANCE = "RENAISSANCE"
+    VICTORIAN = "VICTORIAN"
+    MODERN = "MODERN"
+    SCI_FI = "SCI_FI"
+    STYLIZED = "STYLIZED"
+
+class DefectPatternType(str, Enum):
+    ROOF_TOO_HIGH = "ROOF_TOO_HIGH"
+    ROOF_TOO_FLAT = "ROOF_TOO_FLAT"
+    FACADE_TOO_WIDE = "FACADE_TOO_WIDE"
+    DOOR_TOO_TALL = "DOOR_TOO_TALL"
+    WINDOW_OVERFLOW = "WINDOW_OVERFLOW"
+    INSUFFICIENT_OVERHANG = "INSUFFICIENT_OVERHANG"
+    MATERIAL_MISMATCH = "MATERIAL_MISMATCH"
+
+class ValidationProfileType(str, Enum):
+    BASIC = "BASIC"
+    STANDARD = "STANDARD"
+    STRICT = "STRICT"
+    PRODUCTION = "PRODUCTION"
+
+class QualityProfileType(str, Enum):
+    MOBILE = "MOBILE"
+    PC = "PC"
+    CONSOLE = "CONSOLE"
+    CINEMATIC = "CINEMATIC"
+
+class AssetLifecycleState(str, Enum):
+    DRAFT = "DRAFT"
+    GENERATING = "GENERATING"
+    VALIDATING = "VALIDATING"
+    APPROVED = "APPROVED"
+    PUBLISHED = "PUBLISHED"
+    DEPRECATED = "DEPRECATED"
+
+class KnowledgeStatus(str, Enum):
+    PROPOSED = "PROPOSED"
+    REVIEW = "REVIEW"
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
+    DEPRECATED = "DEPRECATED"
+
+class ConflictPriority(str, Enum):
+    SAFETY = "SAFETY"
+    PLATFORM = "PLATFORM"
+    PROJECT = "PROJECT"
+    ASSET = "ASSET"
+    STYLE = "STYLE"
+    PREFERENCE = "PREFERENCE"

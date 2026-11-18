@@ -1,0 +1,1 @@
+{"name":"get_polyhaven_status","description":"\nCheck if PolyHaven integration is enabled in Blender.\nReturns a message indicating whether PolyHaven features are available.\n","parameters":{"properties":{"user_prompt":{"default":"","title":"User Prompt","type":"string"}},"title":"get_polyhaven_statusArguments","type":"object"}}

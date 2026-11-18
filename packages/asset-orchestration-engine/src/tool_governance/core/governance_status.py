@@ -1,0 +1,44 @@
+from enum import Enum
+
+class ToolRisk(str, Enum):
+    READ_ONLY = "READ_ONLY"
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+class PermissionType(str, Enum):
+    READ_SCENE = "READ_SCENE"
+    CREATE_ASSET = "CREATE_ASSET"
+    MODIFY_ASSET = "MODIFY_ASSET"
+    DELETE_ASSET = "DELETE_ASSET"
+    REBUILD_ASSET = "REBUILD_ASSET"
+    MODIFY_MATERIAL = "MODIFY_MATERIAL"
+    MASS_OPERATION = "MASS_OPERATION"
+
+class ActionScope(str, Enum):
+    PARAMETER = "PARAMETER"
+    COMPONENT = "COMPONENT"
+    ASSET = "ASSET"
+    GROUP = "GROUP"
+    REGION = "REGION"
+    SCENE = "SCENE"
+    PROJECT = "PROJECT"
+
+class ActionLifecycle(str, Enum):
+    PROPOSED = "PROPOSED"
+    VALIDATING = "VALIDATING"
+    AUTHORIZED = "AUTHORIZED"
+    EXECUTING = "EXECUTING"
+    VERIFYING = "VERIFYING"
+    COMMITTED = "COMMITTED"
+    FAILED = "FAILED"
+    ROLLED_BACK = "ROLLED_BACK"
+    REJECTED = "REJECTED"
+
+class ExecutionMode(str, Enum):
+    DRY_RUN = "DRY_RUN"
+    SAFE = "SAFE"
+    NORMAL = "NORMAL"
+    AUTONOMOUS = "AUTONOMOUS"
+    STRICT = "STRICT"

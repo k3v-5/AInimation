@@ -1,0 +1,44 @@
+from enum import Enum
+
+class AssetType(str, Enum):
+    MEDIEVAL_HOUSE = "MEDIEVAL_HOUSE"
+    SCI_FI_BUILDING = "SCI_FI_BUILDING"
+    SWORD = "SWORD"
+    SHIELD = "SHIELD"
+    BARREL = "BARREL"
+    TOWER = "TOWER"
+    CUSTOM = "CUSTOM"
+
+class ParameterType(str, Enum):
+    FLOAT = "FLOAT"
+    INTEGER = "INTEGER"
+    BOOLEAN = "BOOLEAN"
+    ENUM = "ENUM"
+    VECTOR3 = "VECTOR3"
+    RATIO = "RATIO"
+    ANGLE = "ANGLE"
+    DISTANCE = "DISTANCE"
+
+class ParameterCategory(str, Enum):
+    DIMENSION = "DIMENSION"
+    PROPORTION = "PROPORTION"
+    STRUCTURE = "STRUCTURE"
+    STYLE = "STYLE"
+    MATERIAL = "MATERIAL"
+    VARIATION = "VARIATION"
+
+class BuildStage(str, Enum):
+    BLOCKOUT = "BLOCKOUT"
+    PRIMARY = "PRIMARY"
+    SECONDARY = "SECONDARY"
+    DETAIL = "DETAIL"
+    MATERIAL = "MATERIAL"
+    VARIATION = "VARIATION"
+    COMPLETED = "COMPLETED"
+
+class BuildState(str, Enum):
+    PLANNED = "PLANNED"
+    EXECUTING = "EXECUTING"
+    COMPLETED = "COMPLETED"
+    ROLLED_BACK = "ROLLED_BACK"
+    FAILED = "FAILED"

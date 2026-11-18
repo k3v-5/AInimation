@@ -1,8 +1,8 @@
 # IANIMATION — Monorepo Maestro Unificado de Animación, Render y VFX para IA
 
-> **Manual Operativo para Agentes de IA**: Lee primero [`AGENTS.md`](AGENTS.md) · **Arquitectura Global**: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · **Catálogo de 144 Tools MCP + 123 Scripts Blender**: [`docs/MCP_CATALOG.md`](docs/MCP_CATALOG.md) · **Recetas Multi-Motor**: [`docs/WORKFLOW_RECIPES.md`](docs/WORKFLOW_RECIPES.md) · **Configuración MCP**: [`mcp_servers.config.json`](mcp_servers.config.json)
+> **Manual Operativo para Agentes de IA**: Lee primero [`AGENTS.md`](AGENTS.md) · **Arquitectura Global**: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · **Catálogo de 166 Tools MCP + 123 Scripts Blender**: [`docs/MCP_CATALOG.md`](docs/MCP_CATALOG.md) · **Recetas Multi-Motor**: [`docs/WORKFLOW_RECIPES.md`](docs/WORKFLOW_RECIPES.md) · **Configuración MCP**: [`mcp_servers.config.json`](mcp_servers.config.json)
 
-`IANIMATION` unifica en un único repositorio estandarizado **5 subsistemas especializados** en animación 3D/2D, rigging, captura de movimiento, renderizado cinematográfico, texturizado PBR y Motion Graphics/VFX para ser orquestados tanto por ingenieros humanos como por agentes de IA vía **Model Context Protocol (MCP)**:
+`IANIMATION` unifica en un único repositorio estandarizado **6 subsistemas especializados** en animación 3D/2D, rigging, captura de movimiento, renderizado cinematográfico, texturizado PBR, orquestación determinista de mundos/activos 3D y Motion Graphics/VFX para ser orquestados tanto por ingenieros humanos como por agentes de IA vía **Model Context Protocol (MCP)**:
 
 ---
 
@@ -15,6 +15,7 @@
 | **[`packages/motion-vfx/`](packages/motion-vfx/)** | `after-effects-mcp` *(copia verificada)* | `after-effects-motion-engine` (Node/TS) | Motor **After Effects** VFX, óptica, speed-ramps, emulación fílmica, tipografía brutalista, Snorricam, fotónica, FLIR, mixed-media, vlog autónomo y Data-Viz. **72 tools MCP**. | [`README.md`](packages/motion-vfx/README.md) |
 | **[`packages/stick-animator/`](packages/stick-animator/)** | `StictAnimator` *(copia verificada)* | `stykanimate-mcp` (Node.js >=20 + Python codec) | Animación 2D headless de **stick figures con IK**, línea de tiempo, soporte `.styk`/`.piv`/`.stk` y exportadores HTML5/MP4. **26 tools MCP**. | [`README.md`](packages/stick-animator/README.md) |
 | **[`packages/blender-procedural-lab/`](packages/blender-procedural-lab/)** | `Game/Art` *(copia verificada)* | `blender-procedural-lab` (Blender 5.2 Headless) | **123 generadores/exportadores Python** (Shader Balls V5, 40 mapas PBR 2K, Trim Sheets, personajes riggeados, solvers IK, kits modulares 90 activos, props, bestiario y FBX UE5). | [`README.md`](packages/blender-procedural-lab/README.md) |
+| **[`packages/asset-orchestration-engine/`](packages/asset-orchestration-engine/)** | `AssetOrchestrationEngine` *(copia verificada)* | `aoe-blender-mcp` (Python + Blender MCP + UE5) | **Asset Orchestration Engine (F1–F80) + Universal Asset Factory (`UAF-81.0–81.92`)**: compilación determinista 3D, niveles WFC 2D/3D, terrenos `.r16`, IA GOAP NPC, Hunyuan3D, Hyper3D Rodin, PolyHaven y Sketchfab. **22 tools MCP**. | [`README.md`](packages/asset-orchestration-engine/README.md) |
 
 ---
 

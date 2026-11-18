@@ -1,0 +1,31 @@
+from enum import Enum
+
+class AssetStatus(str, Enum):
+    DRAFT = "DRAFT"
+    GENERATED = "GENERATED"
+    VALIDATED = "VALIDATED"
+    APPROVED = "APPROVED"
+    ARCHIVED = "ARCHIVED"
+    DEPRECATED = "DEPRECATED"
+    FAILED = "FAILED"
+
+class PatternStatus(str, Enum):
+    CANDIDATE = "CANDIDATE"
+    VALIDATED = "VALIDATED"
+    PROMOTED = "PROMOTED"
+    DEPRECATED = "DEPRECATED"
+    REJECTED = "REJECTED"
+
+class PatternScope(str, Enum):
+    ASSET_ONLY = "ASSET_ONLY"
+    TEMPLATE = "TEMPLATE"
+    STYLE = "STYLE"
+    ASSET_TYPE = "ASSET_TYPE"
+    GLOBAL = "GLOBAL"
+
+class ReproductionStatus(str, Enum):
+    EXACT = "EXACT"
+    FUNCTIONALLY_EQUIVALENT = "FUNCTIONALLY_EQUIVALENT"
+    VISUALLY_EQUIVALENT = "VISUALLY_EQUIVALENT"
+    DIFFERENT = "DIFFERENT"
+    FAILED = "FAILED"

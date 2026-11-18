@@ -1,0 +1,56 @@
+from enum import Enum
+
+class AcceptanceStatus(str, Enum):
+    ACCEPTED = "ACCEPTED"
+    CONDITIONAL = "CONDITIONAL"
+    REJECTED = "REJECTED"
+    INVALID = "INVALID"
+    ERROR = "ERROR"
+
+class QualityLevel(str, Enum):
+    EXCEPTIONAL = "EXCEPTIONAL" # 90-100
+    PRODUCTION = "PRODUCTION"   # 80-89
+    ACCEPTABLE = "ACCEPTABLE"   # 70-79
+    MARGINAL = "MARGINAL"       # 60-69
+    POOR = "POOR"               # 0-59
+    INVALID = "INVALID"
+
+class MetricCategory(str, Enum):
+    VISUAL = "VISUAL"
+    GEOMETRY = "GEOMETRY"
+    TOPOLOGY = "TOPOLOGY"
+    MATERIAL = "MATERIAL"
+    UV = "UV"
+    SEMANTIC = "SEMANTIC"
+    REFERENCE_MATCH = "REFERENCE_MATCH"
+    PERFORMANCE = "PERFORMANCE"
+    UNREAL_READINESS = "UNREAL_READINESS"
+    PIPELINE = "PIPELINE"
+    TECHNICAL = "TECHNICAL"
+
+class ConstraintSeverity(str, Enum):
+    INFO = "INFO"
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+    CRITICAL = "CRITICAL"
+
+class QualityTrend(str, Enum):
+    IMPROVING = "IMPROVING"
+    STABLE = "STABLE"
+    DECLINING = "DECLINING"
+    OSCILLATING = "OSCILLATING"
+    UNKNOWN = "UNKNOWN"
+
+class DirectionType(str, Enum):
+    HIGHER_IS_BETTER = "HIGHER_IS_BETTER"
+    LOWER_IS_BETTER = "LOWER_IS_BETTER"
+    BOOLEAN = "BOOLEAN"
+    RANGE_TARGET = "RANGE_TARGET"
+
+class MetricStatus(str, Enum):
+    VALID = "VALID"
+    MISSING = "MISSING"
+    NOT_APPLICABLE = "NOT_APPLICABLE"
+    NOT_EVALUATED = "NOT_EVALUATED"
+    ERROR = "ERROR"
