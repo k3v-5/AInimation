@@ -1,0 +1,12 @@
+{
+  "id": "chronology-basic",
+  "input": [
+    { "id": "e1", "date": "1998", "label": "Foundation" },
+    { "id": "e2", "date": "2005", "label": "Global Expansion" },
+    { "id": "e3", "date": "2012", "label": "IPO Milestone", "importance": "PEAK" },
+    { "id": "e4", "date": "2026", "label": "Autonomous Sovereignty" }
+  ],
+  "expectedType": "CHRONOLOGY",
+  "expectedElementCount": 9,
+  "expectedAnimationCount": 8
+}

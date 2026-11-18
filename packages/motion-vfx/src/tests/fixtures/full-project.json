@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "0.2.0",
+  "composition": {
+    "id": "comp_full_project",
+    "name": "Canonical Full Motion Project",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 10
+  },
+  "assets": [
+    {
+      "id": "brand_logo_asset",
+      "type": "image",
+      "source": { "path": "assets/logo.png" },
+      "metadata": { "width": 512, "height": 512 }
+    },
+    {
+      "id": "bg_video_asset",
+      "type": "video",
+      "source": { "path": "assets/bg.mp4" },
+      "metadata": { "width": 1080, "height": 1920, "duration": 20, "fps": 30 }
+    },
+    {
+      "id": "soundtrack_asset",
+      "type": "audio",
+      "source": { "path": "assets/music.mp3" },
+      "metadata": { "duration": 60, "sampleRate": 48000 }
+    }
+  ],
+  "elements": [
+    {
+      "id": "bg_solid",
+      "name": "Background",
+      "type": "shape",
+      "startTime": 0,
+      "duration": 10,
+      "visible": true,
+      "shapeType": "rectangle",
+      "shapeData": { "width": 1080, "height": 1920 },
+      "style": { "fill": { "r": 0.05, "g": 0.05, "b": 0.1, "a": 1 } }
+    },
+    {
+      "id": "bg_video",
+      "name": "Video BG",
+      "type": "video",
+      "startTime": 0,
+      "duration": 10,
+      "visible": true,
+      "assetId": "bg_video_asset",
+      "sourceStartTime": 0,
+      "transform": {
+        "opacity": {
+          "type": "number",
+          "baseValue": 0.7,
+          "keyframes": []
+        }
+      }
+    },
+    {
+      "id": "title_group",
+      "name": "Title Group",
+      "type": "group",
+      "startTime": 0,
+      "duration": 8,
+      "visible": true,
+      "transform": {
+        "position": {
+          "type": "vector2",
+          "baseValue": { "x": 540, "y": 960 },
+          "keyframes": []
+        },
+        "scale": {
+          "type": "vector2",
+          "baseValue": { "x": 0.8, "y": 0.8 },
+          "keyframes": [
+            { "time": 0, "value": { "x": 0.8, "y": 0.8 }, "easing": "easeOut" },
+            { "time": 1, "value": { "x": 1.0, "y": 1.0 } }
+          ]
+        }
+      },
+      "children": [
+        {
+          "id": "brand_logo",
+          "name": "Logo",
+          "type": "image",
+          "startTime": 0,
+          "duration": 8,
+          "visible": true,
+          "parentId": "title_group",
+          "assetId": "brand_logo_asset",
+          "transform": {
+            "position": {
+              "type": "vector2",
+              "baseValue": { "x": 0, "y": -120 },
+              "keyframes": []
+            },
+            "scale": {
+              "type": "vector2",
+              "baseValue": { "x": 0.6, "y": 0.6 },
+              "keyframes": []
+            }
+          }
+        },
+        {
+          "id": "brand_text",
+          "name": "Text",
+          "type": "text",
+          "startTime": 0,
+          "duration": 8,
+          "visible": true,
+          "parentId": "title_group",
+          "text": "MOTION GRAPHICS",
+          "style": {
+            "fontFamily": "Inter",
+            "fontSize": 56,
+            "fontWeight": 800,
+            "color": { "r": 1, "g": 1, "b": 1, "a": 1 },
+            "lineHeight": 1.2,
+            "letterSpacing": 0,
+            "textAlign": "center"
+          },
+          "transform": {
+            "position": {
+              "type": "vector2",
+              "baseValue": { "x": 0, "y": 60 },
+              "keyframes": []
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "soundtrack",
+      "name": "Music",
+      "type": "audio",
+      "startTime": 0,
+      "duration": 10,
+      "visible": true,
+      "assetId": "soundtrack_asset",
+      "sourceStartTime": 0,
+      "volume": 1,
+      "properties": {
+        "volume": {
+          "type": "number",
+          "baseValue": 1,
+          "keyframes": [
+            { "time": 0, "value": 0, "easing": "linear" },
+            { "time": 2, "value": 1 }
+          ]
+        }
+      }
+    }
+  ]
+}

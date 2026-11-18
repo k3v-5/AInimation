@@ -1,0 +1,62 @@
+{
+  "dataset": {
+    "id": "ds_investigative_economy_2024",
+    "title": "Central Bank Policy Rates 2022-2024",
+    "description": "Historical interest rate decisions during global inflationary shock",
+    "columns": [
+      { "key": "date", "label": "Date", "type": "DATE" },
+      { "key": "central_bank", "label": "Central Bank", "type": "STRING" },
+      { "key": "rate", "label": "Policy Rate %", "type": "NUMBER" }
+    ],
+    "rows": [
+      { "date": "2022-03-01", "central_bank": "Federal Reserve", "rate": 0.5 },
+      { "date": "2022-07-01", "central_bank": "Federal Reserve", "rate": 2.5 },
+      { "date": "2022-12-01", "central_bank": "Federal Reserve", "rate": 4.5 },
+      { "date": "2023-07-01", "central_bank": "Federal Reserve", "rate": 5.5 },
+      { "date": "2024-03-01", "central_bank": "Federal Reserve", "rate": 5.5 }
+    ]
+  },
+  "spec": {
+    "id": "vis_golden_fed_rates",
+    "type": "TREND_LINE",
+    "datasetId": "ds_investigative_economy_2024",
+    "xColumn": "date",
+    "yColumn": "rate",
+    "showPoints": true,
+    "showLabels": true,
+    "showGrid": true,
+    "interpolation": "LINEAR",
+    "highlightExtremes": true,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 5.0,
+    "startTimeSeconds": 0.5,
+    "safeZone": {
+      "top": 54,
+      "right": 96,
+      "bottom": 54,
+      "left": 96,
+      "unit": "PX"
+    },
+    "style": {
+      "backgroundColor": "#000000",
+      "primaryColor": "#FFFFFF",
+      "secondaryColor": "#888888",
+      "accentColor": "#FF1424",
+      "textColor": "#FFFFFF",
+      "fontFamily": "Impact",
+      "fontWeight": 900,
+      "titleFontSize": 48,
+      "labelFontSize": 24,
+      "valueFontSize": 36,
+      "tracking": -1,
+      "gridOpacity": 0.25,
+      "borderWidth": 2
+    },
+    "animation": {
+      "entranceDurationSeconds": 1.5,
+      "exitDurationSeconds": 0.5,
+      "easing": "EASE_OUT"
+    }
+  }
+}

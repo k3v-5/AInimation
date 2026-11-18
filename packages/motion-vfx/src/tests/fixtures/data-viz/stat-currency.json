@@ -1,0 +1,12 @@
+{
+  "id": "ds_stat_currency",
+  "title": "Total Venture Capital Raised",
+  "unit": "USD",
+  "source": {
+    "type": "EVIDENCE",
+    "citationId": "sec_filing_form_d_2024"
+  },
+  "values": [
+    { "label": "SERIES A CLOSING", "value": 45000000 }
+  ]
+}

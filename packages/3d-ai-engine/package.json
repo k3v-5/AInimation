@@ -1,0 +1,22 @@
+{
+  "name": "@ianimation/3d-ai-engine",
+  "version": "1.0.0",
+  "description": "AI-First 3D Animation Orchestrator, Image-to-3D, Quad Remeshing, PBR Baking, Rigid SE(3) Articulation, Blender 5.2 LTS & UE5 Bridge",
+  "private": true,
+  "runtime": "python>=3.10",
+  "rootLinks": {
+    "backend": "../../backend",
+    "scripts": "../../scripts",
+    "tests": "../../tests",
+    "frontend": "../../src",
+    "tauri": "../../src-tauri"
+  },
+  "mcpServer": {
+    "id": "ianimation-3d",
+    "command": "python",
+    "args": [
+      "-m",
+      "backend.main"
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+node_modules
+dist/
+logs/
+models/
+*.pt
+*.pth
+*.whl
+*.raw
+*.bin
+*.onnx
+showcase_animation/test_*.png
+tests/fixtures/

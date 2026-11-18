@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "golden_production_qa_project",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "metadata": {
+    "title": "Golden Production QA Project",
+    "profile": "DOCUMENTARY",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "sampleRate": 44100,
+    "targetDialogueLufs": -16
+  },
+  "tracks": [
+    {
+      "id": "v_primary",
+      "name": "Video Primary",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "isMuted": false,
+      "isLocked": false,
+      "clips": [
+        {
+          "id": "shot_01",
+          "assetId": "asset_master_01",
+          "label": "Opening Master",
+          "sourceRange": { "startSeconds": 0, "durationSeconds": 5.0 },
+          "timelineRange": { "startSeconds": 0, "durationSeconds": 5.0 },
+          "speed": 1.0,
+          "volumeDb": 0.0,
+          "pan": 0.0,
+          "scale": 1.0
+        },
+        {
+          "id": "shot_02",
+          "assetId": "asset_broll_01",
+          "label": "B-Roll Cutaway",
+          "sourceRange": { "startSeconds": 0, "durationSeconds": 5.0 },
+          "timelineRange": { "startSeconds": 5.0, "durationSeconds": 5.0 },
+          "speed": 1.0,
+          "volumeDb": 0.0,
+          "pan": 0.0,
+          "scale": 1.0
+        }
+      ]
+    }
+  ],
+  "transitions": [],
+  "markers": [],
+  "beats": [
+    { "id": "b1", "type": "HOOK" },
+    { "id": "b2", "type": "EVIDENCE" },
+    { "id": "b3", "type": "REVELATION" },
+    { "id": "b4", "type": "RESOLUTION" }
+  ],
+  "claims": [
+    { "id": "c1", "statement": "Verified report", "evidenceId": "ev_01", "isVerified": true }
+  ]
+}

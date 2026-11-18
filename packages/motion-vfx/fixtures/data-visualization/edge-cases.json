@@ -1,0 +1,34 @@
+{
+  "constantDataset": {
+    "id": "ds-edge-constant",
+    "title": "Constant Value Series",
+    "points": [
+      { "id": "c1", "label": "Q1", "value": 50.0 },
+      { "id": "c2", "label": "Q2", "value": 50.0 },
+      { "id": "c3", "label": "Q3", "value": 50.0 }
+    ]
+  },
+  "singlePointDataset": {
+    "id": "ds-edge-single",
+    "title": "Single Point Anomaly",
+    "points": [
+      { "id": "s1", "label": "Benchmark", "value": 100.0 }
+    ]
+  },
+  "extremeValuesDataset": {
+    "id": "ds-edge-extreme",
+    "title": "Extreme Dynamic Range",
+    "points": [
+      { "id": "ex1", "label": "Sub-atomic", "value": 0.000001 },
+      { "id": "ex2", "label": "Macro", "value": 999999999.0 }
+    ]
+  },
+  "zeroBaselineDataset": {
+    "id": "ds-edge-zero-crossing",
+    "title": "Symmetric Zero Crossing",
+    "points": [
+      { "id": "z1", "label": "Loss", "value": -100.0 },
+      { "id": "z2", "label": "Gain", "value": 100.0 }
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "proj_continuity_failure",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "5555555555555555555555555555555555555555555555555555555555555555",
+  "metadata": {
+    "title": "Continuity Inconsistency",
+    "profile": "DOCUMENTARY",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 10.0
+  },
+  "tracks": [
+    {
+      "id": "v1",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "clips": [
+        { "id": "clip_cam_a", "assetId": "media_a", "timelineRange": { "startSeconds": 0, "durationSeconds": 5.0 } },
+        { "id": "clip_cam_b", "assetId": "media_b", "timelineRange": { "startSeconds": 5.0, "durationSeconds": 5.0 } }
+      ]
+    }
+  ],
+  "continuityReport": {
+    "violations": [
+      {
+        "type": "AXIS_180_CROSSING",
+        "severity": "WARNING",
+        "shotBefore": "clip_cam_a",
+        "shotAfter": "clip_cam_b",
+        "angleDeltaDegrees": 195.0,
+        "description": "Camera jumped across the 180 degree eyeline axis"
+      }
+    ]
+  }
+}

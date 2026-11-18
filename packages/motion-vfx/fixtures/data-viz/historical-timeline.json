@@ -1,0 +1,35 @@
+{
+  "spec": {
+    "type": "CHRONOLOGY",
+    "spec": {
+      "orientation": "HORIZONTAL",
+      "animationDurationSeconds": 2.8,
+      "events": [
+        {
+          "date": "1969-07-20",
+          "title": "Apollo 11 Moon Landing",
+          "description": "Neil Armstrong steps onto the lunar surface.",
+          "category": "SPACE_EXPLORATION"
+        },
+        {
+          "date": "1977-09-05",
+          "title": "Voyager 1 Launch",
+          "description": "Mission to interstellar space initiated.",
+          "category": "SPACE_EXPLORATION"
+        },
+        {
+          "date": "1990-04-24",
+          "title": "Hubble Space Telescope",
+          "description": "Deployment into low Earth orbit.",
+          "category": "ASTRONOMY"
+        },
+        {
+          "date": "2021-12-25",
+          "title": "James Webb Telescope",
+          "description": "Ariane 5 launch to Sun-Earth L2.",
+          "category": "ASTRONOMY"
+        }
+      ]
+    }
+  }
+}

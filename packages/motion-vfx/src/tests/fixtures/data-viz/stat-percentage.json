@@ -1,0 +1,8 @@
+{
+  "id": "ds_stat_percentage",
+  "title": "Customer Retention Rate",
+  "unit": "%",
+  "values": [
+    { "label": "OF USERS RETURNED", "value": 73.5 }
+  ]
+}

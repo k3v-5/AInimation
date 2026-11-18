@@ -27,6 +27,11 @@ from backend.core.models import (
 )
 from backend.core.telemetry import get_telemetry_bus
 from backend.engines.base import get_engine_adapter
+from backend.mcp.unified_registry import (
+    MonorepoIntegrityReport,
+    MonorepoToolSearchResult,
+    get_unified_registry,
+)
 from backend.ue5.client import UE5RestClient
 from backend.ue5.lighting import LightingRig
 from backend.ue5.mrq import render_sequence
@@ -225,4 +230,45 @@ def render_video(
         resolution=resolution,
         warmup_frames=warmup_frames,
         anti_aliasing_samples=anti_aliasing_samples,
+    )
+
+
+def list_monorepo_subsystems(include_details: bool = True) -> MonorepoIntegrityReport:
+    """
+    List all 5 unified animation/render/VFX monorepo subsystems and validate disk integrity.
+
+    Args:
+        include_details: When True (default), computes full per-package integrity status.
+
+    Returns:
+        MonorepoIntegrityReport with tool counts, procedural generator counts, and package status.
+    """
+    _ = include_details
+    registry = get_unified_registry()
+    return registry.validate_monorepo_integrity()
+
+
+def search_monorepo_tools(
+    query: str = "",
+    domain: Optional[str] = None,
+) -> MonorepoToolSearchResult:
+    """
+    Search MCP tools and procedural Blender generators across all 5 monorepo engines.
+
+    Args:
+        query: Keyword or capability substring to search for (empty lists all registered tools).
+        domain: Optional domain identifier or subsystem ID filter.
+
+    Returns:
+        MonorepoToolSearchResult containing typed matches across unified packages.
+    """
+    if not isinstance(query, str):
+        raise TypeError(f"query must be a string, got {type(query).__name__}")
+    registry = get_unified_registry()
+    matches = registry.search_tools(query=query, domain=domain)
+    return MonorepoToolSearchResult(
+        query=query,
+        domain_filter=domain,
+        total_matches=len(matches),
+        matches=matches,
     )

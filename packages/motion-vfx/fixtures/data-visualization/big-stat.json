@@ -1,0 +1,14 @@
+{
+  "config": {
+    "value": 91.4,
+    "label": "Peak Energy Independence Index",
+    "unit": "%",
+    "prefix": "",
+    "suffix": "%",
+    "animationDurationSeconds": 2.0,
+    "showDivider": true
+  },
+  "context": {
+    "editorialProfile": "TIME_EDITORIAL"
+  }
+}

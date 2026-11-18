@@ -1,0 +1,12 @@
+{
+  "id": "big-stat-basic",
+  "input": {
+    "value": 1800000,
+    "label": "personas afectadas",
+    "unit": "COUNT"
+  },
+  "expectedType": "BIG_STAT",
+  "expectedDisplayValue": "1.8M",
+  "expectedElementCount": 3,
+  "expectedAnimationCount": 3
+}

@@ -1,0 +1,16 @@
+{
+  "id": "bar-chart-negative",
+  "input": {
+    "id": "ds_budget_balance",
+    "title": "Fiscal Balance",
+    "unit": "B",
+    "points": [
+      { "id": "p1", "label": "Surplus A", "value": 15.2 },
+      { "id": "p2", "label": "Deficit B", "value": -28.4 },
+      { "id": "p3", "label": "Deficit C", "value": -10.5 }
+    ]
+  },
+  "expectedType": "BAR_CHART",
+  "expectedElementCount": 10,
+  "expectedAnimationCount": 6
+}

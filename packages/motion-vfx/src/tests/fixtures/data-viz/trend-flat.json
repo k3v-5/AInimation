@@ -1,0 +1,11 @@
+{
+  "id": "ds_trend_flat",
+  "title": "Regulated Interest Rate Plateau",
+  "unit": "%",
+  "values": [
+    { "label": "Month 1", "value": 5.0, "timestamp": 100 },
+    { "label": "Month 2", "value": 5.0, "timestamp": 200 },
+    { "label": "Month 3", "value": 5.0, "timestamp": 300 },
+    { "label": "Month 4", "value": 5.0, "timestamp": 400 }
+  ]
+}

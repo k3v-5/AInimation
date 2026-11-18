@@ -69,12 +69,60 @@ outputs/cache/
 *_frames/
 *.tmp
 
-# Temporary test scenes and intermediate renders
+# Temporary test scenes, diagnostic artifacts, and intermediate scratch assets
 outputs/scenes/test_*
+outputs/scenes/orient_*
+outputs/scenes/neural_preview_*
+outputs/scenes/_run_*
+outputs/ragdoll_firefighter/
 outputs/renders/test_*
 outputs/renders/hunyuan2_*
 outputs/renders/clay_*
 outputs/renders/neural_*
+outputs/renders/inspect_*
+outputs/renders/clean_*
+outputs/renders/cleaned_*
+outputs/renders/exact_*
+outputs/renders/_*
+outputs/renders/axe_*
+outputs/renders/dilated_*
+outputs/renders/full_axe_*
+outputs/renders/jacket_*
+outputs/renders/mask_*
+outputs/renders/master_clean_*
+outputs/renders/modular_test_*
+outputs/renders/overlap_modular_*
+outputs/renders/perfect_clean_*
+outputs/renders/puppet_modular_*
+outputs/renders/surgical_*
+outputs/renders/texture_grid_*
+outputs/renders/crop_*
+outputs/renders/coat_*
+outputs/renders/extracted_*
+outputs/renders/hero_axe_*
+!outputs/renders/clean_firefighter_albedo_healed.png
+inputs/ragdoll_firefighter_grabcut.png
+
+# Intermediate scratch scripts from iterative debugging
+scripts/test_*.py
+scripts/inspect_*.py
+scripts/debug_*.py
+scripts/inpaint_*.py
+scripts/erase_*.py
+scripts/clean_*.py
+scripts/find_jacket_uvs.py
+scripts/generate_axe_uv_mask.py
+scripts/mirror_clean_jacket_uvs.py
+scripts/align_hero_axe_exact.py
+scripts/create_fire_axe_prop.py
+scripts/build_hero_fire_axe*.py
+scripts/build_and_render_perfect_axe.py
+scripts/build_master_hero_fire_axe.py
+scripts/build_modular_puppet_walk_production.py
+scripts/build_neural_ragdoll_firefighter_production.py
+scripts/build_overlap_modular_doll.py
+scripts/build_puppet_modular_doll.py
+scripts/build_separated_modular_doll.py
 
 # Standalone 3D tools and binaries
 /blender

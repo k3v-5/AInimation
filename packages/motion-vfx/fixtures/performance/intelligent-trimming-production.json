@@ -1,0 +1,100 @@
+{
+  "projectId": "golden_intelligent_trimming_project",
+  "version": "4.0.0",
+  "sourceDurationSeconds": 60.0,
+  "profile": "DOCUMENTARY_INVESTIGATIVE",
+  "segments": [
+    {
+      "id": "seg_01_hook",
+      "sourceClipId": "clip_main",
+      "startSeconds": 0.0,
+      "endSeconds": 6.5,
+      "transcript": "La investigación revela que más de 50 millones fueron desviados en 2024.",
+      "confidence": 0.95,
+      "markers": [],
+      "evidenceProtection": true,
+      "beatId": "HOOK",
+      "narrativeRole": "NARRATOR"
+    },
+    {
+      "id": "seg_02_false_start",
+      "sourceClipId": "clip_interview",
+      "startSeconds": 7.0,
+      "endSeconds": 9.2,
+      "transcript": "Bueno, nosotros... o sea, cuando nosotros empezamos...",
+      "confidence": 0.88,
+      "markers": ["FALSE_START", "STUTTER"],
+      "evidenceProtection": false,
+      "narrativeRole": "WITNESS"
+    },
+    {
+      "id": "seg_03_interview_core",
+      "sourceClipId": "clip_interview",
+      "startSeconds": 9.5,
+      "endSeconds": 16.0,
+      "transcript": "Cuando comenzamos la auditoría en enero de 2024, descubrimos discrepancias críticas.",
+      "confidence": 0.94,
+      "markers": ["BREATH", "REFLECTIVE_PAUSE"],
+      "evidenceProtection": true,
+      "beatId": "EVIDENCE",
+      "narrativeRole": "WITNESS"
+    },
+    {
+      "id": "seg_04_laugh_moment",
+      "sourceClipId": "clip_interview",
+      "startSeconds": 16.2,
+      "endSeconds": 19.0,
+      "transcript": "Nadie quería firmar los balances, era increíble.",
+      "confidence": 0.92,
+      "markers": ["LAUGH"],
+      "evidenceProtection": false,
+      "beatId": "CONTEXT",
+      "narrativeRole": "WITNESS"
+    },
+    {
+      "id": "seg_05_redundant_explanation",
+      "sourceClipId": "clip_main",
+      "startSeconds": 19.5,
+      "endSeconds": 24.0,
+      "transcript": "La investigación descubrió que el dinero fue desviado.",
+      "confidence": 0.9,
+      "markers": [],
+      "evidenceProtection": false,
+      "narrativeRole": "NARRATOR"
+    }
+  ],
+  "takeGroups": {
+    "group_conclusion": [
+      {
+        "id": "take_01_nervous",
+        "transcript": "Y por eso la fiscalía intervino la institución.",
+        "sourceClipId": "clip_interview",
+        "startSeconds": 25.0,
+        "endSeconds": 30.0,
+        "semanticIntegrity": 0.85,
+        "phoneticClarity": 0.78,
+        "vocalEnergy": 0.65,
+        "visualStability": 0.7,
+        "eyeContact": 0.72,
+        "naturalPerformance": 0.75,
+        "continuity": 0.8,
+        "audioQuality": 0.82
+      },
+      {
+        "id": "take_02_master",
+        "transcript": "Y por eso la fiscalía intervino formalmente la institución en marzo.",
+        "sourceClipId": "clip_interview",
+        "startSeconds": 31.0,
+        "endSeconds": 36.5,
+        "semanticIntegrity": 0.98,
+        "phoneticClarity": 0.95,
+        "vocalEnergy": 0.92,
+        "visualStability": 0.9,
+        "eyeContact": 0.94,
+        "naturalPerformance": 0.92,
+        "continuity": 0.91,
+        "audioQuality": 0.95
+      }
+    ]
+  }
+}

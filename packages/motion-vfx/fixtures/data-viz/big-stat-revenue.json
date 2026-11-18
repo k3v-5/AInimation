@@ -1,0 +1,13 @@
+{
+  "spec": {
+    "type": "BIG_STAT",
+    "spec": {
+      "staticValue": 4820000000,
+      "label": "Total Market Capitalization",
+      "prefix": "$",
+      "unit": "CURRENCY",
+      "sourceLabel": "Bloomberg Terminal Q4 2025",
+      "animationDurationSeconds": 2.0
+    }
+  }
+}

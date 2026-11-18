@@ -1,0 +1,144 @@
+/**
+ * Reading and writing StykAnimate project files.
+ *
+ * Native containers (`.styk`, `.stkz`, `.stykmov`) are handled entirely in
+ * JavaScript, so a session that never touches a Pivot file never starts
+ * Python. Pivot files (`.piv`, `.stk`) go through the codec service, which
+ * owns the authoritative grammar.
+ */
+import { readFile, writeFile, mkdir, rename, stat } from 'node:fs/promises';
+import path from 'node:path';
+import { buildContainerV2, decodeDocument, nativeFigureDocument, normalizeDecodedDocument } from './core.js';
+import { ToolError } from './errors.js';
+
+const NATIVE_KINDS = new Set(['styk', 'stkz', 'stykmov']);
+const PIVOT_KINDS = new Set(['piv', 'stk']);
+
+/** The file kind implied by a name, or null. */
+export function detectKind(filename) {
+  const extension = path.extname(String(filename ?? '')).toLowerCase().replace('.', '');
+  if (NATIVE_KINDS.has(extension)) return extension;
+  if (PIVOT_KINDS.has(extension)) return extension;
+  if (extension === 'json') return 'json';
+  return null;
+}
+
+/**
+ * Decode a file into an editable document.
+ *
+ * @param {object} options
+ * @param {Uint8Array} options.bytes The file content.
+ * @param {string} options.filename The name, used to pick the decoder.
+ * @param {import('./codec.js').CodecService} [options.codec] Started on demand for Pivot files.
+ * @returns {Promise<{document: object, kind: string, sourceId: string|null}>}
+ */
+export async function readDocument({ bytes, filename, codec }) {
+  const kind = detectKind(filename);
+  if (!kind) {
+    throw new ToolError(
+      `Unsupported file type. Open a .styk, .stkz, .stykmov, .piv or .stk file, or a .json project.`,
+      { code: 'unsupported_file' },
+    );
+  }
+  if (NATIVE_KINDS.has(kind)) {
+    const decoded = await decodeDocument(bytes, kind);
+    const document = normalizeDecodedDocument(decoded.document, kind);
+    return { document, kind, sourceId: null };
+  }
+  if (kind === 'json') {
+    const document = JSON.parse(new TextDecoder().decode(bytes));
+    if (!document || typeof document !== 'object') {
+      throw new ToolError('That file does not contain a StykAnimate project.', { code: 'invalid_document' });
+    }
+    return { document, kind, sourceId: null };
+  }
+  if (!codec) {
+    throw new ToolError('Reading Pivot files needs the Python codec service, which is unavailable.', {
+      code: 'codec_unavailable',
+    });
+  }
+  const result = await codec.importFile(bytes, path.basename(filename));
+  return { document: result.document, kind: result.kind ?? kind, sourceId: result.sourceId ?? null };
+}
+
+/**
+ * Build the bytes of a project file.
+ *
+ * @param {object} options
+ * @param {object} options.document The editable document.
+ * @param {string} options.format One of {@link WRITE_FORMATS}.
+ * @param {string} [options.name] The project name used in the file name.
+ * @param {number} [options.figureTypeId] The figure to export as `.stkz` or `.stk`.
+ * @param {number} [options.figureUid] The figure instance to export as `.stkz`.
+ * @param {string|null} [options.sourceId] The codec's source id, for byte-identical exports.
+ * @param {import('./codec.js').CodecService} [options.codec] Required for `.piv` and `.stk`.
+ * @returns {Promise<{bytes: Uint8Array, filename: string}>}
+ */
+export async function writeDocument({ document, format, name, figureTypeId, figureUid, sourceId, codec }) {
+  if (format === 'styk') {
+    const bytes = await buildContainerV2(document, 'styk');
+    return { bytes, filename: `${safeName(name)}.styk` };
+  }
+  if (format === 'stkz' || format === 'stykmov') {
+    const options = { figureTypeId, figureUid };
+    if (figureTypeId === undefined && figureUid === undefined) {
+      // A figure file holds one figure; default to the first one in the project.
+      const first = document.keyframes?.[0]?.objects?.[0];
+      if (first) options.figureUid = first.unique_id;
+    }
+    const figure = nativeFigureDocument(document, options);
+    const bytes = await buildContainerV2(figure, format);
+    return { bytes, filename: `${safeName(name)}.${format}` };
+  }
+  if (!codec) {
+    throw new ToolError('Writing Pivot files needs the Python codec service, which is unavailable.', {
+      code: 'codec_unavailable',
+    });
+  }
+  const exported = await codec.exportDocument(document, format, { sourceId, filename: safeName(name), figureTypeId });
+  return { bytes: exported.bytes, filename: exported.filename };
+}
+
+/**
+ * Write bytes to disk, replacing the destination only once the whole file is
+ * on disk. A failed write leaves the previous file intact.
+ */
+export async function writeFileAtomic(destination, bytes) {
+  const folder = path.dirname(destination);
+  await mkdir(folder, { recursive: true });
+  const temporary = path.join(folder, `.${path.basename(destination)}.${process.pid}.${Date.now()}.tmp`);
+  try {
+    await writeFile(temporary, bytes);
+    await rename(temporary, destination);
+  } catch (error) {
+    await import('node:fs/promises').then(fs => fs.rm(temporary, { force: true }));
+    throw error;
+  }
+  const info = await stat(destination);
+  return { path: destination, bytes: info.size };
+}
+
+/** Read a file from disk, reporting a missing file as a tool error. */
+export async function readSourceFile(filePath) {
+  const resolved = path.resolve(filePath);
+  try {
+    const bytes = await readFile(resolved);
+    return { path: resolved, bytes: new Uint8Array(bytes) };
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new ToolError(`No file at ${resolved}.`, { code: 'file_not_found' });
+    }
+    throw error;
+  }
+}
+
+function safeName(name) {
+  const cleaned = String(name ?? 'Untitled animation')
+    .replace(/[\u0000-\u001f\u007f]/g, '')
+    .replace(/[\\/:*?"<>|]/g, '_')
+    .trim()
+    .replace(/^\.+/, '')
+    .slice(0, 120);
+  return cleaned || 'Untitled animation';
+}
+

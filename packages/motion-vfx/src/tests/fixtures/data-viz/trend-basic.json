@@ -1,0 +1,12 @@
+{
+  "id": "ds_trend_basic",
+  "title": "Monthly Active Subscribers",
+  "unit": "users",
+  "values": [
+    { "label": "Jan", "value": 10000, "timestamp": 1704067200000 },
+    { "label": "Feb", "value": 12500, "timestamp": 1706745600000 },
+    { "label": "Mar", "value": 11800, "timestamp": 1709251200000 },
+    { "label": "Apr", "value": 15400, "timestamp": 1711929600000 },
+    { "label": "May", "value": 18200, "timestamp": 1714521600000 }
+  ]
+}

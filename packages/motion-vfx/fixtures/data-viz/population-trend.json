@@ -1,0 +1,36 @@
+{
+  "dataset": {
+    "id": "global_population_growth",
+    "title": "Global Urban Population Share",
+    "unit": "PERCENT",
+    "source": {
+      "id": "src_world_bank_2025",
+      "title": "World Bank Urbanization Indicators",
+      "publisher": "World Bank Group"
+    },
+    "columns": [
+      { "key": "year", "label": "Year", "type": "NUMBER" },
+      { "key": "urban_pct", "label": "Urban Share", "type": "NUMBER" }
+    ],
+    "rows": [
+      { "year": 1990, "urban_pct": 43.0 },
+      { "year": 2000, "urban_pct": 46.7 },
+      { "year": 2010, "urban_pct": 51.7 },
+      { "year": 2020, "urban_pct": 56.2 },
+      { "year": 2025, "urban_pct": 58.5 }
+    ]
+  },
+  "spec": {
+    "type": "TREND_LINE",
+    "spec": {
+      "xColumn": "year",
+      "yColumn": "urban_pct",
+      "showPoints": true,
+      "showLabels": true,
+      "showAxis": true,
+      "showGrid": true,
+      "highlightExtrema": true,
+      "animationDurationSeconds": 2.2
+    }
+  }
+}

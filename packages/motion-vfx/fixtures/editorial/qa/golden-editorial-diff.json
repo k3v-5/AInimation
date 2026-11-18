@@ -1,0 +1,52 @@
+{
+  "before": {
+    "schemaVersion": "4.0.0",
+    "projectId": "proj_diff_base",
+    "createdAt": "2026-09-02T00:00:00.000Z",
+    "checksum": "7777777777777777777777777777777777777777777777777777777777777777",
+    "metadata": {
+      "title": "Timeline Base Version",
+      "profile": "DOCUMENTARY",
+      "frameRate": 30,
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 10.0
+    },
+    "tracks": [
+      {
+        "id": "v1",
+        "type": "VIDEO_PRIMARY",
+        "index": 0,
+        "clips": [
+          { "id": "clip_01", "assetId": "media_01", "timelineRange": { "startSeconds": 0, "durationSeconds": 5.0 } },
+          { "id": "clip_02", "assetId": "media_02", "timelineRange": { "startSeconds": 5.0, "durationSeconds": 5.0 } }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "schemaVersion": "4.0.0",
+    "projectId": "proj_diff_base",
+    "createdAt": "2026-09-02T00:00:00.000Z",
+    "checksum": "8888888888888888888888888888888888888888888888888888888888888888",
+    "metadata": {
+      "title": "Timeline Modified Version",
+      "profile": "DOCUMENTARY",
+      "frameRate": 30,
+      "width": 1920,
+      "height": 1080,
+      "durationSeconds": 12.0
+    },
+    "tracks": [
+      {
+        "id": "v1",
+        "type": "VIDEO_PRIMARY",
+        "index": 0,
+        "clips": [
+          { "id": "clip_01", "assetId": "media_01", "timelineRange": { "startSeconds": 0, "durationSeconds": 5.0 } },
+          { "id": "clip_02", "assetId": "media_02", "timelineRange": { "startSeconds": 5.0, "durationSeconds": 7.0 } }
+        ]
+      }
+    ]
+  }
+}

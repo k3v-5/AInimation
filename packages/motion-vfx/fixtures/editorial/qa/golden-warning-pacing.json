@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "proj_warning_pacing",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "2222222222222222222222222222222222222222222222222222222222222222",
+  "metadata": {
+    "title": "Pacing Misaligned Sequence",
+    "profile": "INVESTIGATIVE",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 12.0,
+    "sampleRate": 44100
+  },
+  "tracks": [
+    {
+      "id": "track_v1",
+      "name": "Video Primary",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "clips": [
+        {
+          "id": "c_pace_01",
+          "assetId": "asset_slow_01",
+          "label": "Overextended Shot",
+          "timelineRange": { "startSeconds": 0, "durationSeconds": 12.0 },
+          "sourceRange": { "startSeconds": 0, "durationSeconds": 12.0 }
+        }
+      ]
+    }
+  ],
+  "pacingAnalysis": {
+    "alignmentScore": 0.42,
+    "targetPacing": "FAST",
+    "actualPacing": "VERY_SLOW"
+  }
+}

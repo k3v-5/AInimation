@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "1.0.0",
+  "engineVersion": "4.0.0",
+  "documentId": "golden_production_qa_project",
+  "projectId": "golden_production_qa_project",
+  "inputChecksumSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "generatedAtDeterministic": "v4.0.0-editorial-master",
+  "status": "PASSED",
+  "score": 100,
+  "overallScore": 100,
+  "issues": [],
+  "summary": {
+    "blocking": 0,
+    "warnings": 0,
+    "suggestions": 0,
+    "total": 0
+  },
+  "categories": {
+    "TIMELINE": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "CONTINUITY": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "NARRATIVE": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "EVIDENCE": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "COGNITIVE": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "PACING": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "VISUAL": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "AUDIO": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "EXPORT": {
+      "score": 100,
+      "issuesCount": 0
+    },
+    "SAFETY": {
+      "score": 100,
+      "issuesCount": 0
+    }
+  },
+  "categorySummary": {
+    "STRUCTURE": 0,
+    "TIMING": 0,
+    "MEDIA": 0,
+    "AUDIO": 0,
+    "VISUAL_CONTINUITY": 0,
+    "SAFE_ZONE": 0,
+    "NARRATIVE": 0,
+    "EVIDENCE": 0,
+    "ATTENTION": 0,
+    "COGNITIVE_LOAD": 0,
+    "CONTRAST": 0,
+    "PACING": 0,
+    "STYLE": 0,
+    "EXPORT": 0,
+    "CONFIDENCE": 0,
+    "INTEGRITY": 0
+  },
+  "confidenceSummary": {
+    "average": 1,
+    "minimum": 1,
+    "belowHumanReviewThreshold": 0
+  },
+  "humanReviewRequired": false,
+  "humanReviewCount": 0,
+  "exportReadiness": {
+    "ready": true,
+    "blockers": []
+  },
+  "humanReview": {
+    "pendingCount": 0,
+    "approvedCount": 0,
+    "rejectedCount": 0,
+    "deferredCount": 0,
+    "items": []
+  },
+  "integrity": {
+    "deterministic": true,
+    "algorithm": "SHA-256",
+    "canonicalizationVersion": "1.0.0",
+    "timestampDeterministic": true
+  },
+  "blockingCount": 0,
+  "warningCount": 0,
+  "suggestionCount": 0,
+  "canExport": true,
+  "confidenceScore": 1,
+  "findings": [],
+  "reviewQueue": [],
+  "checksumSha256": "031dbc874a09ed000968615d945efa51c5aed5f23911ba3b88455966c45eac5b"
+}

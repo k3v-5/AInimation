@@ -1,0 +1,32 @@
+export * from "./editorial-qa-severity.js";
+export * from "./editorial-qa-types.js";
+export * from "./editorial-diff-types.js";
+export * from "./qa-hash.js";
+export * from "./confidence-policy.js";
+export * from "./editorial-qa-registry.js";
+export * from "./editorial-qa-rules.js";
+export { EditorialRulesRegistry } from "./editorial-rules.js";
+export * from "./editorial-findings.js";
+export * from "./editorial-remediation.js";
+export * from "./impact-calculator.js";
+export * from "./human-review-queue.js";
+export * from "./editorial-diff-engine.js";
+export * from "./editorial-qa-linter.js";
+export * from "./editorial-audit-engine.js";
+export * from "./qa-severity.js";
+export * from "./qa-id.js";
+export * from "./qa-normalizer.js";
+export * from "./qa-report-builder.js";
+export * from "./qa-rules.js";
+export * from "./impact-analyzer.js";
+export * from "./rules/index.js";
+export * from "./editorial-qa-engine.js";
+export * from "./editorial-qa-profile.js";
+export * from "./editorial-qa-errors.js";
+export * from "./editorial-qa-orchestrator.js";
+export * from "./editorial-impact-analyzer.js";
+export { EditorialQAReportBuilder } from "./editorial-qa-report.js";
+export * from "./review-ui/index.js";
+
+// Re-export audit-engine as fallback
+export { EditorialAuditEngine as LegacyAuditEngine } from "./audit-engine.js";

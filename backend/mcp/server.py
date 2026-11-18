@@ -27,7 +27,13 @@ from backend.mcp.tools import (
     build_ue5_scene,
     extract_mocap,
     image_to_3d,
+    list_monorepo_subsystems,
     render_video,
+    search_monorepo_tools,
+)
+from backend.mcp.unified_registry import (
+    MonorepoIntegrityReport,
+    MonorepoToolSearchResult,
 )
 
 logger = logging.getLogger("ianimation.mcp.server")
@@ -40,6 +46,8 @@ MCPToolResult = Union[
     MocapResult,
     SceneBuildResult,
     RenderResult,
+    MonorepoIntegrityReport,
+    MonorepoToolSearchResult,
     StrictBaseModel,
 ]
 MCPToolCallable = Callable[..., MCPToolResult]
@@ -59,18 +67,25 @@ class FastMCPServer:
     Model Context Protocol Server implementation for IANIMATION orchestrator tools.
     """
 
-    def __init__(self, server_name: str = "ianimation-orchestrator") -> None:
+    def __init__(
+        self,
+        server_name: str = "ianimation-orchestrator",
+        include_monorepo_discovery: bool = False,
+    ) -> None:
         self.server_name: str = server_name
         self.tools: Dict[str, MCPToolCallable] = {}
-        self._register_default_tools()
+        self._register_default_tools(include_monorepo_discovery=include_monorepo_discovery)
 
-    def _register_default_tools(self) -> None:
+    def _register_default_tools(self, include_monorepo_discovery: bool = False) -> None:
         self.register_tool("analyze_audio", analyze_audio)
         self.register_tool("image_to_3d", image_to_3d)
         self.register_tool("auto_rig", auto_rig)
         self.register_tool("extract_mocap", extract_mocap)
         self.register_tool("build_ue5_scene", build_ue5_scene)
         self.register_tool("render_video", render_video)
+        if include_monorepo_discovery:
+            self.register_tool("list_monorepo_subsystems", list_monorepo_subsystems)
+            self.register_tool("search_monorepo_tools", search_monorepo_tools)
 
     def register_tool(self, name: str, func: MCPToolCallable) -> None:
         """Register a callable tool by name."""
@@ -87,5 +102,9 @@ class FastMCPServer:
         return list(self.tools.keys())
 
 
-# Global default instance
+# Global default instances (preserving exact 6-tool default contract on mcp_server)
 mcp_server = FastMCPServer()
+unified_mcp_server = FastMCPServer(
+    server_name="ianimation-unified-gateway",
+    include_monorepo_discovery=True,
+)

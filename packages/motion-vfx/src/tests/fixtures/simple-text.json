@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "0.2.0",
+  "composition": {
+    "id": "comp_simple_text",
+    "name": "Simple Text Project",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 5
+  },
+  "assets": [],
+  "elements": [
+    {
+      "id": "text_static",
+      "name": "Static Headline",
+      "type": "text",
+      "startTime": 0,
+      "duration": 5,
+      "visible": true,
+      "text": "Hello Motion",
+      "style": {
+        "fontFamily": "Inter",
+        "fontSize": 64,
+        "fontWeight": 700,
+        "color": { "r": 1, "g": 1, "b": 1, "a": 1 },
+        "lineHeight": 1.2,
+        "letterSpacing": 0,
+        "textAlign": "center"
+      },
+      "transform": {
+        "position": {
+          "type": "vector2",
+          "baseValue": { "x": 540, "y": 960 },
+          "keyframes": []
+        }
+      }
+    }
+  ]
+}

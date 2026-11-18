@@ -1,0 +1,22 @@
+{
+  "dataset": {
+    "id": "ds-chronology-ai",
+    "title": "Milestones in Autonomous Artificial Intelligence",
+    "description": "Chronological emergence of frontier generative architectures",
+    "points": [
+      { "id": "e1", "label": "Transformers Paper", "value": 1.0, "timestamp": 1497225600 },
+      { "id": "e2", "label": "GPT-3 Released", "value": 1.0, "timestamp": 1591833600 },
+      { "id": "e3", "label": "ChatGPT Public Launch", "value": 1.0, "timestamp": 1669766400 },
+      { "id": "e4", "label": "GPT-4 Multimodal Reasoning", "value": 1.0, "timestamp": 1678752000 },
+      { "id": "e5", "label": "Autonomous Editorial Agents", "value": 1.0, "timestamp": 1718064000 }
+    ]
+  },
+  "config": {
+    "orientation": "HORIZONTAL",
+    "showDates": true,
+    "showLabels": true,
+    "showConnectors": true,
+    "animationDurationSeconds": 3.0,
+    "markerStyle": "CIRCLE"
+  }
+}

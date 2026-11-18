@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "proj_human_review_required",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "6666666666666666666666666666666666666666666666666666666666666666",
+  "metadata": {
+    "title": "Low Confidence Editorial Decision",
+    "profile": "DOCUMENTARY",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 6.0
+  },
+  "tracks": [
+    {
+      "id": "v1",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "clips": [
+        {
+          "id": "clip_ambiguous_cut",
+          "assetId": "media_ambiguous",
+          "timelineRange": { "startSeconds": 0, "durationSeconds": 6.0 }
+        }
+      ]
+    }
+  ],
+  "humanReviewCandidates": [
+    {
+      "id": "f_ambiguous_pacing",
+      "ruleId": "QA-PACE-002",
+      "severity": "WARNING",
+      "title": "Ambiguous Rhythm Modulation",
+      "message": "Model has low confidence (0.58 < 0.70) in whether this long pause is artistic or dead air.",
+      "confidence": 0.58,
+      "affectedNodeIds": ["clip_ambiguous_cut"],
+      "remediation": {
+        "action": "REVIEW",
+        "parameters": { "suggestedTrimSeconds": 1.5 },
+        "confidence": 0.58,
+        "requiresHumanApproval": true
+      }
+    }
+  ]
+}

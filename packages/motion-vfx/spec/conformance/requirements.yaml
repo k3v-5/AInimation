@@ -1,0 +1,300 @@
+version: "1.0.0"
+standard: "Autonomous After Effects MCP Formal Normative Standard"
+frozen_date: "2026-08-27"
+maintainer: "DeepMind / Antigravity Autonomous Systems"
+
+requirements:
+  # =========================================================================
+  # 1. IR & SINGLE SOURCE OF TRUTH
+  # =========================================================================
+  - id: "REQ-001"
+    title: "Canonical IR as Single Source of Truth"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "The Canonical IR is the immutable source of truth. After Effects is only an execution runtime."
+    invariant: "Evaluate(IR, t) -> FrameState is pure and free of side effects."
+    input_schema: "CanonicalProjectIRSchema"
+    output_schema: "FrameStateSchema"
+    failure_modes: ["MUTATION_ATTEMPT_ERROR", "INVALID_SCHEMA_ERROR"]
+    verification_tests:
+      - "src/tests/core/Composition.test.ts"
+      - "src/tests/schema/Serialization.test.ts"
+
+  - id: "REQ-002"
+    title: "Deterministic Reconstructibility"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "A valid project can be fully reconstructed from IR + Assets + Config producing identical structure."
+    invariant: "Reconstruct(Serialize(IR)) === IR"
+    input_schema: "SerializedProjectJSON"
+    output_schema: "CanonicalProjectIR"
+    failure_modes: ["DESERIALIZATION_ERROR", "MISSING_ASSET_ERROR"]
+    verification_tests:
+      - "src/tests/schema/ProjectValidator.test.ts"
+      - "src/tests/serialization/RoundTrip.test.ts"
+
+  - id: "REQ-003"
+    title: "Cryptographic Project Hashing"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Generates SHA-256 project and manifest hashes deterministically."
+    invariant: "SHA256(IR_1) == SHA256(IR_2) if and only if IR_1 === IR_2"
+    input_schema: "CanonicalProjectIR"
+    output_schema: "SHA256HexString"
+    failure_modes: ["HASH_COMPUTATION_ERROR"]
+    verification_tests:
+      - "src/tests/core/ProjectHash.test.ts"
+
+  - id: "REQ-004"
+    title: "Immutable Stable Object Identifiers"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "All compositions, layers, assets and keyframes use immutable UUIDs, never volatile layer indices."
+    invariant: "Layer.id remains constant across layer moves, reordering and recompilations."
+    input_schema: "ObjectCreationIntent"
+    output_schema: "UUIDString"
+    failure_modes: ["INVALID_UUID_ERROR", "DUPLICATE_ID_ERROR"]
+    verification_tests:
+      - "src/tests/core/StableIds.test.ts"
+
+  # =========================================================================
+  # 2. MULTI-LEVEL DETERMINISM
+  # =========================================================================
+  - id: "REQ-005"
+    title: "Level A: Logical Determinism"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Same IR produces exact same project hash, same plan and same operations."
+    invariant: "Plan(IR, Brief) is pure and deterministic."
+    input_schema: "ProductionBriefSchema"
+    output_schema: "ProductionPlanSchema"
+    failure_modes: ["NON_DETERMINISTIC_PLAN_ERROR"]
+    verification_tests:
+      - "src/tests/ai-planner/DeterministicPlan.test.ts"
+
+  - id: "REQ-006"
+    title: "Level B: Structural Determinism"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Layer ordering, properties, timing and affine matrices evaluate within float tolerance <= 1e-10."
+    invariant: "AffineTransform(p) has zero spatial drift."
+    input_schema: "TransformMatrixSchema"
+    output_schema: "WorldTransformSchema"
+    failure_modes: ["MATRIX_SINGULAR_ERROR", "HIERARCHY_CYCLE_ERROR"]
+    verification_tests:
+      - "src/tests/transform/TransformMath.test.ts"
+      - "src/tests/animation/Interpolation.test.ts"
+
+  - id: "REQ-007"
+    title: "Level C: Perceptual Determinism"
+    criticality: "MAJOR"
+    status: "IMPLEMENTED"
+    description: "Rendered frames maintain SSIM >= 0.999 and DeltaE <= 0.5 against reference frames."
+    invariant: "SSIM(Frame_A, Frame_B) >= 0.999"
+    input_schema: "RenderedFrameBuffer"
+    output_schema: "PerceptualMetricsSchema"
+    failure_modes: ["PERCEPTUAL_DEVIATION_ERROR"]
+    verification_tests:
+      - "src/tests/qa/PerceptualQA.test.ts"
+
+  - id: "REQ-008"
+    title: "Level D: Binary Determinism"
+    criticality: "MINOR"
+    status: "PARTIAL"
+    description: "Bit-exact byte emission for JSX ExtendScript, JSON and uncompressed WAV."
+    invariant: "JSX_bytes_1 === JSX_bytes_2"
+    input_schema: "CanonicalProjectIR"
+    output_schema: "UTF8ByteStream"
+    failure_modes: ["ENCODING_DEVIATION_ERROR"]
+    verification_tests:
+      - "src/tests/exporters/JSXSerializer.test.ts"
+
+  # =========================================================================
+  # 3. IDEMPOTENCY & CONCURRENCY
+  # =========================================================================
+  - id: "REQ-009"
+    title: "Operation Idempotency via operation_id"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Mutations with duplicate operation_id return previous cached result without re-executing."
+    invariant: "Execute(op_123) followed by Execute(op_123) creates exactly 1 layer."
+    input_schema: "MCPMutationRequestSchema"
+    output_schema: "MCPMutationResponseSchema"
+    failure_modes: ["IDEMPOTENCY_COLLISION_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Idempotency.test.ts"
+
+  - id: "REQ-010"
+    title: "Optimistic Concurrency Versioning"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Operations provide expected_version. Rejects stale operations with VERSION_CONFLICT."
+    invariant: "Project.version advances monotonically by +1 on each committed transaction."
+    input_schema: "VersionedCommandSchema"
+    output_schema: "VersionAckSchema"
+    failure_modes: ["VERSION_CONFLICT_ERROR"]
+    verification_tests:
+      - "src/tests/ai-director/RevisionEngine.test.ts"
+      - "src/tests/mcp/Versioning.test.ts"
+
+  - id: "REQ-011"
+    title: "Network Retry Deduplication"
+    criticality: "MAJOR"
+    status: "IMPLEMENTED"
+    description: "Deduplicates in-flight or retried requests transparently across network hiccups."
+    invariant: "InFlightRequests.deduplicate(op_id) returns existing Promise."
+    input_schema: "NetworkEnvelopeSchema"
+    output_schema: "DeduplicatedResultSchema"
+    failure_modes: ["RETRY_TIMEOUT_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Idempotency.test.ts"
+
+  # =========================================================================
+  # 4. TRANSACTIONS & ROLLBACK
+  # =========================================================================
+  - id: "REQ-012"
+    title: "ACID Transaction Envelope"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Complex multi-operation batches execute inside a transactional boundary."
+    invariant: "All operations succeed and commit, or all fail and roll back."
+    input_schema: "TransactionBeginSchema"
+    output_schema: "TransactionCommitSchema"
+    failure_modes: ["TRANSACTION_ABORT_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Transactions.test.ts"
+      - "src/tests/workflow/WorkflowEngine.test.ts"
+
+  - id: "REQ-013"
+    title: "Strict Cryptographic Rollback"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Rollback restores exact SHA-256 state from before the transaction."
+    invariant: "Hash(IR_after_rollback) === Hash(IR_before_transaction)"
+    input_schema: "TransactionIdSchema"
+    output_schema: "RollbackAckSchema"
+    failure_modes: ["ROLLBACK_INTEGRITY_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Transactions.test.ts"
+      - "src/tests/ai-director/RevisionEngine.test.ts"
+
+  # =========================================================================
+  # 5. MCP KERNEL & SAFETY
+  # =========================================================================
+  - id: "REQ-014"
+    title: "Prohibition of Arbitrary JSX/Shell Execution"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "AI agent cannot execute arbitrary eval(), JSX or shell. Only compiled AST is allowed."
+    invariant: "Compiler is the sole emitter of ExtendScript."
+    input_schema: "StructuredToolCallSchema"
+    output_schema: "SanitizedASTSchema"
+    failure_modes: ["UNAUTHORIZED_EXECUTION_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Permissions.test.ts"
+
+  - id: "REQ-015"
+    title: "Structured Machine-Readable Error Catalog"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "All errors return error_code, severity, recoverable flag and suggested_actions."
+    invariant: "Every error object conforms to MCPErrorSchema."
+    input_schema: "ThrownException"
+    output_schema: "MCPErrorResponseSchema"
+    failure_modes: ["UNSTRUCTURED_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Errors.test.ts"
+
+  - id: "REQ-016"
+    title: "Dry-Run Simulation Mode"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Simulates plans with dry_run: true returning planned changes without mutating state."
+    invariant: "dry_run: true guarantees Hash(IR_after) === Hash(IR_before)"
+    input_schema: "DryRunRequestSchema"
+    output_schema: "DryRunReportSchema"
+    failure_modes: ["DRY_RUN_VALIDATION_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/DryRun.test.ts"
+
+  # =========================================================================
+  # 6. AE BRIDGE & RECONCILIATION
+  # =========================================================================
+  - id: "REQ-017"
+    title: "Bidirectional JSON-RPC 2.0 IPC Bridge"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Encapsulates AE commands, heartbeats, and status queries over JSON-RPC 2.0."
+    invariant: "Every IPC request receives structured JSON response or timeout error."
+    input_schema: "JSONRPCRequestSchema"
+    output_schema: "JSONRPCResponseSchema"
+    failure_modes: ["IPC_TIMEOUT_ERROR", "AE_DISCONNECTED_ERROR"]
+    verification_tests:
+      - "src/tests/exporters/AELiveBridgeProtocol.test.ts"
+
+  - id: "REQ-018"
+    title: "State Reconciliation (Expected vs Actual)"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Reconciles runtime layer bounds and properties against IR with tolerance epsilon <= 0.05px."
+    invariant: "Abs(Layer.pos_actual - Layer.pos_expected) <= 0.05px"
+    input_schema: "AERuntimeInspectionSchema"
+    output_schema: "ReconciliationReportSchema"
+    failure_modes: ["RECONCILIATION_MISMATCH_ERROR"]
+    verification_tests:
+      - "src/tests/mcp/Reconciliation.test.ts"
+
+  # =========================================================================
+  # 7. VISUAL QA & AUTO-REPAIR
+  # =========================================================================
+  - id: "REQ-019"
+    title: "7-Family Automated QA Suite"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Detects black frames, clipping, text collisions, safe-area violations, and audio drift."
+    invariant: "QAReport.score >= 85.0 required for production delivery."
+    input_schema: "CanonicalProjectIR"
+    output_schema: "QAReportSchema"
+    failure_modes: ["QA_CRITICAL_FAILURE"]
+    verification_tests:
+      - "src/tests/qa/QAEvaluator.test.ts"
+
+  - id: "REQ-020"
+    title: "Bounded Auto-Repair Loop"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Auto-repair converges within max_repair_iterations = 3 or aborts cleanly."
+    invariant: "RepairLoop.iterations <= 3"
+    input_schema: "QAReportSchema"
+    output_schema: "RepairedPlanSchema"
+    failure_modes: ["REPAIR_CONVERGENCE_FAILED"]
+    verification_tests:
+      - "src/tests/ai-planner/PlanRepairEngine.test.ts"
+
+  # =========================================================================
+  # 8. SECURITY & OFFLINE
+  # =========================================================================
+  - id: "REQ-021"
+    title: "100% Offline Capability"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Zero external network dependency for acoustic, vision, or motion computation."
+    invariant: "All core operations execute without network connectivity."
+    input_schema: "MediaFilePath"
+    output_schema: "ExtractedMetadataSchema"
+    failure_modes: ["NETWORK_DEPENDENCY_DETECTED"]
+    verification_tests:
+      - "src/tests/captions/SpeechRecognitionEngine.test.ts"
+      - "src/tests/audio/AudioTransientSync.test.ts"
+
+  - id: "REQ-022"
+    title: "Filesystem Sandbox & Path Sanitization"
+    criticality: "CRITICAL"
+    status: "IMPLEMENTED"
+    description: "Prevents path traversal and restricts file I/O to authorized project directories."
+    invariant: "PathSanitizer rejects paths containing '../' or outside safe base directory."
+    input_schema: "RawFilePathString"
+    output_schema: "SanitizedPathString"
+    failure_modes: ["PATH_TRAVERSAL_ERROR"]
+    verification_tests:
+      - "src/tests/common/PathSanitizer.test.ts"

@@ -1,0 +1,26 @@
+{
+  "dataset": {
+    "id": "ds-bar-basic",
+    "title": "Global Defense Expenditure 2024",
+    "description": "Annual defense spending by nation in billions USD",
+    "points": [
+      { "id": "p1", "label": "United States", "value": 842.0, "unit": "B USD", "category": "Americas" },
+      { "id": "p2", "label": "China", "value": 292.0, "unit": "B USD", "category": "Asia" },
+      { "id": "p3", "label": "Russia", "value": 86.4, "unit": "B USD", "category": "Europe" },
+      { "id": "p4", "label": "India", "value": 81.4, "unit": "B USD", "category": "Asia" },
+      { "id": "p5", "label": "Saudi Arabia", "value": 75.0, "unit": "B USD", "category": "Middle East" }
+    ],
+    "unit": "B USD",
+    "precision": 1
+  },
+  "config": {
+    "orientation": "VERTICAL",
+    "sort": "DESCENDING",
+    "showValues": true,
+    "showLabels": true,
+    "showGrid": true,
+    "animationDurationSeconds": 2.5,
+    "staggerSeconds": 0.1,
+    "easing": "EASE_OUT"
+  }
+}

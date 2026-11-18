@@ -68,6 +68,25 @@ from backend.core.models import ImageTo3DResult, MeshFormat, PBRTextureSet
 REPO_ROOT: Path = Path(__file__).resolve().parent.parent.parent
 
 
+def _resolve_blender_bin() -> str:
+    """Resolve path to executable blender binary with Windows drive fallback."""
+    which_b = shutil.which("blender")
+    if which_b:
+        return which_b
+    candidates = [
+        Path(r"E:\Blender\blender.exe"),
+        Path(r"D:\Blender\blender.exe"),
+        Path(r"C:\Blender\blender.exe"),
+        Path(r"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe"),
+        Path(r"C:\Program Files\Blender Foundation\Blender 5.0\blender.exe"),
+        Path(r"C:\Program Files\Blender Foundation\Blender 4.3\blender.exe"),
+    ]
+    for c in candidates:
+        if c.is_file():
+            return str(c)
+    return "blender"
+
+
 class ConceptPreprocessMeta(BaseModel):
     """Metadata for a square-normalized defringed RGBA concept image."""
 
@@ -537,11 +556,14 @@ if mesh_objs:
     bpy.ops.export_scene.gltf(filepath={repr(str(prep_mesh))}, export_format='GLB')
 """
     try:
+        blender_bin = _resolve_blender_bin()
         proc = subprocess.run(
-            ["blender", "--background", "--python-expr", script],
+            [blender_bin, "--background", "--python-expr", script],
             capture_output=True,
             text=True,
-            timeout=60,
+            encoding="utf-8",
+            errors="replace",
+            timeout=180,
             check=False,
         )
         target_input = prep_mesh if (proc.returncode == 0 and prep_mesh.exists()) else mesh_path
@@ -1088,10 +1110,10 @@ import numpy as np
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 
-raw_glb = {repr(str(raw_glb_path))}
-sq_path = {repr(str(square_rgba_path))}
-out_glb = Path({repr(str(out_glb_path))})
-out_obj = {repr(str(out_obj_path) if out_obj_path else "")}
+raw_glb = {repr(str(Path(raw_glb_path).resolve()))}
+sq_path = {repr(str(Path(square_rgba_path).resolve()))}
+out_glb = Path({repr(str(Path(out_glb_path).resolve()))})
+out_obj = {repr(str(Path(out_obj_path).resolve()) if out_obj_path else "")}
 do_rig = {repr(bool(auto_rig))}
 
 # 1. Import primary textured Neural 3D mesh
@@ -1329,8 +1351,24 @@ if do_rig:
         ("Foot_R", (float(leg_x_R), 0.0, float(ankle_z)), (float(leg_x_R), -0.10, 0.02), "LowerLeg_R", True),
     ]
 
-    from backend.ai.character_dynamics import inject_twist_bones
-    bone_defs = inject_twist_bones(bone_defs)
+    bone_map = dict((b[0], (b[1], b[2], b[3], b[4])) for b in bone_defs)
+    twist_targets = [
+        ("UpperArm_L", "UpperArm_Twist_L", 0.5),
+        ("UpperArm_R", "UpperArm_Twist_R", 0.5),
+        ("LowerArm_L", "LowerArm_Twist_L", 0.5),
+        ("LowerArm_R", "LowerArm_Twist_R", 0.5),
+        ("UpperLeg_L", "UpperLeg_Twist_L", 0.5),
+        ("UpperLeg_R", "UpperLeg_Twist_R", 0.5),
+    ]
+    for parent_name, twist_name, ratio in twist_targets:
+        if parent_name in bone_map:
+            p_head, p_tail, _, _ = bone_map[parent_name]
+            h = np.array(p_head, dtype=np.float32)
+            t = np.array(p_tail, dtype=np.float32)
+            mid = h + ratio * (t - h)
+            t_head = (float(mid[0]), float(mid[1]), float(mid[2]))
+            t_tail = (float(t[0]), float(t[1]), float(t[2]))
+            bone_defs.append((twist_name, t_head, t_tail, parent_name, True))
 
     deform_bones = []
     for bname, head, tail, parent_name, is_deform in bone_defs:
@@ -1410,9 +1448,10 @@ gc.collect()
         script_path = tf.name
 
     try:
+        blender_bin = _resolve_blender_bin()
         proc = subprocess.run(
             [
-                "blender",
+                blender_bin,
                 "--background",
                 "--threads",
                 "2",
@@ -1424,6 +1463,8 @@ gc.collect()
             ],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
             timeout=180,
             check=False,
         )

@@ -1,0 +1,136 @@
+{
+  "0": {
+    "time": 0,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 1200 },
+          "scale": { "x": 0.5, "y": 0.5 },
+          "rotation": 0,
+          "opacity": 0
+        }
+      }
+    ]
+  },
+  "0.25": {
+    "time": 0.25,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 1185 },
+          "scale": { "x": 0.9375, "y": 0.9375 },
+          "rotation": 45,
+          "opacity": 0.875
+        }
+      }
+    ]
+  },
+  "0.5": {
+    "time": 0.5,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 1080 },
+          "scale": { "x": 1, "y": 1 },
+          "rotation": 90,
+          "opacity": 1
+        }
+      }
+    ]
+  },
+  "0.75": {
+    "time": 0.75,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 975 },
+          "scale": { "x": 1, "y": 1 },
+          "rotation": 135,
+          "opacity": 1
+        }
+      }
+    ]
+  },
+  "1": {
+    "time": 1,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 960 },
+          "scale": { "x": 1, "y": 1 },
+          "rotation": 180,
+          "opacity": 1
+        }
+      }
+    ]
+  },
+  "2": {
+    "time": 2,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": true,
+        "properties": {
+          "position": { "x": 540, "y": 960 },
+          "scale": { "x": 1, "y": 1 },
+          "rotation": 360,
+          "opacity": 1
+        }
+      }
+    ]
+  },
+  "4.5": {
+    "time": 4.5,
+    "duration": 5,
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "layers": [
+      {
+        "id": "title",
+        "name": "Main Title",
+        "active": false
+      }
+    ]
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "proj_evidence_failure",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "4444444444444444444444444444444444444444444444444444444444444444",
+  "metadata": {
+    "title": "Evidence Verification Failure",
+    "profile": "INVESTIGATIVE",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 8.0
+  },
+  "tracks": [
+    {
+      "id": "v1",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "clips": [
+        {
+          "id": "c_claim_01",
+          "assetId": "asset_claim",
+          "timelineRange": { "startSeconds": 0, "durationSeconds": 8.0 }
+        }
+      ]
+    }
+  ],
+  "evidenceReport": {
+    "audits": [
+      {
+        "claimId": "claim_unverified_corrupt",
+        "claimText": "Unsubstantiated allegation without source document",
+        "status": "MISSING_SOURCE",
+        "hasEvidence": false,
+        "requiresCitation": true,
+        "hasCitation": false,
+        "blockingIssue": true,
+        "confidence": 0.98,
+        "notes": "No public or legal record found"
+      }
+    ]
+  }
+}

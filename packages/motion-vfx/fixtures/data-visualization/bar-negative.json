@@ -1,0 +1,27 @@
+{
+  "dataset": {
+    "id": "ds-bar-negative",
+    "title": "Quarterly Corporate Net Margin Changes",
+    "description": "Earnings expansion and contraction across operating sectors",
+    "points": [
+      { "id": "p1", "label": "Tech Hardware", "value": -14.2, "unit": "%" },
+      { "id": "p2", "label": "Software & Cloud", "value": 24.8, "unit": "%" },
+      { "id": "p3", "label": "Consumer Discretionary", "value": -6.5, "unit": "%" },
+      { "id": "p4", "label": "Energy & Utilities", "value": 18.2, "unit": "%" },
+      { "id": "p5", "label": "Commercial Banking", "value": 11.4, "unit": "%" },
+      { "id": "p6", "label": "Real Estate Reits", "value": -21.0, "unit": "%" }
+    ],
+    "unit": "%",
+    "precision": 1
+  },
+  "config": {
+    "orientation": "HORIZONTAL",
+    "sort": "INPUT",
+    "showValues": true,
+    "showLabels": true,
+    "showGrid": true,
+    "animationDurationSeconds": 2.2,
+    "staggerSeconds": 0.08,
+    "easing": "EASE_OUT"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "mcpServers": {
+    "ianimation-3d": {
+      "command": "python",
+      "args": [
+        "-m",
+        "backend.main"
+      ],
+      "cwd": "E:\\Disco F\\Dev\\IANIMATION"
+    },
+    "adobe-animation-mcp": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "packages/adobe-suite/src/index.ts"
+      ],
+      "cwd": "E:\\Disco F\\Dev\\IANIMATION"
+    },
+    "after-effects-motion-engine": {
+      "command": "npx",
+      "args": [
+        "tsx",
+        "packages/motion-vfx/src/index.ts"
+      ],
+      "cwd": "E:\\Disco F\\Dev\\IANIMATION"
+    },
+    "stykanimate-mcp": {
+      "command": "node",
+      "args": [
+        "packages/stick-animator/stykanimate-mcp/src/index.js"
+      ],
+      "cwd": "E:\\Disco F\\Dev\\IANIMATION"
+    }
+  }
+}

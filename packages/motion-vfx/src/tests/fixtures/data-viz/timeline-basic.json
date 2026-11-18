@@ -1,0 +1,10 @@
+{
+  "id": "ds_timeline_basic",
+  "title": "Decade of Innovation",
+  "events": [
+    { "id": "e1", "label": "Protocol Genesis", "timestamp": 1388534400000, "importance": "CRITICAL" },
+    { "id": "e2", "label": "Mainnet Deployment", "timestamp": 1451606400000, "importance": "HIGH" },
+    { "id": "e3", "label": "Global Expansion", "timestamp": 1514764800000, "importance": "MEDIUM" },
+    { "id": "e4", "label": "Next-Gen Migration", "timestamp": 1577836800000, "importance": "HIGH" }
+  ]
+}

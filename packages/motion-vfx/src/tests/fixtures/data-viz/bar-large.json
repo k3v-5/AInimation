@@ -1,0 +1,11 @@
+{
+  "id": "ds_bar_large",
+  "title": "National Scale GDP Contribution",
+  "unit": "USD",
+  "values": [
+    { "label": "Technology", "value": 1500000000 },
+    { "label": "Healthcare", "value": 1250000000 },
+    { "label": "Energy", "value": 980000000 },
+    { "label": "Finance", "value": 1850000000 }
+  ]
+}

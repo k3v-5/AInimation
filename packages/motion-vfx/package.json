@@ -1,0 +1,60 @@
+{
+  "name": "after-effects-mcp",
+  "version": "3.0.0",
+  "description": "Motion Graphics Engine & MCP Platform for Adobe After Effects",
+  "main": "build/index.js",
+  "bin": {
+    "motion-engine": "./bin/motion-engine.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc && copyfiles -u 1 \"src/scripts/**/*\" build && copyfiles -u 1 \"src/tests/**/*.json\" build",
+    "test": "node --test build/tests/**/*.test.js",
+    "conformance": "node scripts/run-conformance.mjs",
+    "golden": "node --test build/tests/e2e/GoldenProject.test.js",
+    "benchmark:100": "node scripts/run-benchmark100.mjs",
+    "generate:guadalajara": "node scripts/generate-guadalajara-video.mjs",
+    "generate:guadalajara-v4": "node scripts/build-guadalajara-v4-masterpiece.mjs",
+    "profiles:guadalajara": "node scripts/compare-editorial-profiles-guadalajara.mjs",
+    "generate:guadalajara-beat-sync": "node scripts/build-guadalajara-beat-sync.mjs",
+    "demo:subject-compositing": "node scripts/demo-subject-compositing-guadalajara.mjs",
+    "demo:optics": "node scripts/demo-phase20-optics-guadalajara.mjs",
+    "demo:temporal": "node scripts/demo-phase21-temporal-guadalajara.mjs",
+    "demo:film": "node scripts/demo-phase22-film-guadalajara.mjs",
+    "demo:rhythm": "node scripts/demo-phase23-rhythm-guadalajara.mjs",
+    "demo:kinetic-typography": "node scripts/demo-phase24-typography-guadalajara.mjs",
+    "demo:spatial": "node scripts/demo-phase25-spatial-guadalajara.mjs",
+    "demo:mechanics": "node scripts/demo-phase26-mechanics-guadalajara.mjs",
+    "demo:photonics": "node scripts/demo-phase27-photonics-guadalajara.mjs",
+    "demo:mixed-media": "node scripts/demo-phase28-mixed-media-guadalajara.mjs",
+    "demo:stem-kinetics": "node scripts/demo-phase29-kinetics-guadalajara.mjs",
+    "auto-clip": "node bin/auto-clip.js",
+    "vlog:produce": "node bin/vlog-cli.js",
+    "editorial:data-viz": "node bin/editorial-cli.js data-viz",
+    "editorial:qa": "node bin/editorial-cli.js qa",
+    "editorial:diff": "node bin/editorial-cli.js diff",
+    "editorial:trim": "node bin/editorial-cli.js trim",
+    "dataviz:validate": "node bin/editorial-cli.js dataviz-validate",
+    "dataviz:compile": "node bin/editorial-cli.js dataviz-compile",
+    "dataviz:fixture": "node bin/editorial-cli.js dataviz-fixture",
+    "data-viz:validate": "node bin/editorial-cli.js dataviz-validate",
+    "data-viz:compile": "node bin/editorial-cli.js dataviz-compile",
+    "data-viz:test-fixture": "node bin/editorial-cli.js dataviz-fixture",
+    "example:phase1": "node build/examples/phase-1-basic.js",
+    "example:phase2": "node build/examples/phase-2-elements.js",
+    "start": "node build/index.js",
+    "install-bridge": "node install-bridge.js",
+    "postinstall": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "node-fetch": "^3.3.2",
+    "zod": "^3.22.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.30",
+    "copyfiles": "^2.4.1",
+    "fast-check": "^4.9.0",
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "bar-chart-basic",
+  "input": {
+    "id": "ds_tech_growth",
+    "title": "Tech Growth 2024",
+    "unit": "%",
+    "points": [
+      { "id": "p1", "label": "Cloud", "value": 24.5 },
+      { "id": "p2", "label": "AI", "value": 68.2, "emphasis": "PRIMARY" },
+      { "id": "p3", "label": "Hardware", "value": 12.1 }
+    ]
+  },
+  "expectedType": "BAR_CHART",
+  "expectedElementCount": 10,
+  "expectedAnimationCount": 6
+}

@@ -1,0 +1,10 @@
+{
+  "id": "ds_bar_zero",
+  "title": "Baseline Zero Test",
+  "unit": "USD",
+  "values": [
+    { "label": "Zero Baseline", "value": 0.0 },
+    { "label": "Positive Margin", "value": 45.0 },
+    { "label": "Negative Deficit", "value": -30.0 }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "id": "multilingual_energy_mix",
+    "title": "Mix Énergétique / Energiewende 2025",
+    "unit": "PERCENT",
+    "columns": [
+      { "key": "source", "label": "Source d'énergie", "type": "STRING" },
+      { "key": "share", "label": "Part (%)", "type": "NUMBER" }
+    ],
+    "rows": [
+      { "source": "Éolien (Wind)", "share": 32.4 },
+      { "source": "Solaire (Solar)", "share": 24.1 },
+      { "source": "Nucléaire (Nuclear)", "share": 28.5 },
+      { "source": "Hydroélectrique", "share": 15.0 }
+    ]
+  },
+  "spec": {
+    "type": "BAR_CHART",
+    "spec": {
+      "categoryColumn": "source",
+      "valueColumns": ["share"],
+      "orientation": "HORIZONTAL",
+      "sort": "DESCENDING",
+      "showValues": true,
+      "showLabels": true,
+      "showAxis": true,
+      "animationDurationSeconds": 2.0
+    }
+  }
+}

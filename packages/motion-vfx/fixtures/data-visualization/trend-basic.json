@@ -1,0 +1,27 @@
+{
+  "dataset": {
+    "id": "ds-trend-basic",
+    "title": "Global Inflation Trajectory 2019-2024",
+    "description": "Composite headline consumer price index YoY",
+    "points": [
+      { "id": "t1", "label": "2019", "value": 2.1, "timestamp": 1546300800 },
+      { "id": "t2", "label": "2020", "value": 1.4, "timestamp": 1577836800 },
+      { "id": "t3", "label": "2021", "value": 4.7, "timestamp": 1609459200 },
+      { "id": "t4", "label": "2022", "value": 8.8, "timestamp": 1640995200 },
+      { "id": "t5", "label": "2023", "value": 5.2, "timestamp": 1672531200 },
+      { "id": "t6", "label": "2024", "value": 2.9, "timestamp": 1704067200 }
+    ],
+    "unit": "%",
+    "precision": 1
+  },
+  "config": {
+    "showPoints": true,
+    "showLabels": true,
+    "showGrid": true,
+    "showAreaFill": true,
+    "animationDurationSeconds": 2.8,
+    "lineWidth": 4,
+    "pointRadius": 6,
+    "smoothing": "NONE"
+  }
+}

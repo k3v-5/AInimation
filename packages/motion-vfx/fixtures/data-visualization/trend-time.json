@@ -1,0 +1,27 @@
+{
+  "dataset": {
+    "id": "ds-trend-time",
+    "title": "High Frequency 10-Year Treasury Yield Spread",
+    "description": "Daily basis point movement during central bank policy announcements",
+    "points": [
+      { "id": "m1", "label": "09:00 EST", "value": 4.12, "timestamp": 1709215200 },
+      { "id": "m2", "label": "10:30 EST", "value": 4.18, "timestamp": 1709220600 },
+      { "id": "m3", "label": "12:00 EST", "value": 4.15, "timestamp": 1709226000 },
+      { "id": "m4", "label": "14:00 EST", "value": 4.35, "timestamp": 1709233200 },
+      { "id": "m5", "label": "15:30 EST", "value": 4.29, "timestamp": 1709238600 },
+      { "id": "m6", "label": "16:00 EST", "value": 4.31, "timestamp": 1709240400 }
+    ],
+    "unit": "%",
+    "precision": 2
+  },
+  "config": {
+    "showPoints": true,
+    "showLabels": true,
+    "showGrid": true,
+    "showAreaFill": false,
+    "animationDurationSeconds": 2.0,
+    "lineWidth": 5,
+    "pointRadius": 7,
+    "smoothing": "CATMULL_ROM"
+  }
+}

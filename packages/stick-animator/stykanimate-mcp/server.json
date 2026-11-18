@@ -1,0 +1,33 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.ghassentn/stykanimate-mcp",
+  "description": "Read, inspect and edit StykAnimate and Pivot stick figure animations.",
+  "version": "0.1.0",
+  "status": "active",
+  "website_url": "https://stykanimate.com",
+  "repository": {
+    "url": "https://github.com/ghassenTn/stykanimate-mcp",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registry_type": "mcpb",
+      "identifier": "https://github.com/ghassenTn/stykanimate-mcp/releases/download/v0.1.0/stykanimate-mcp-0.1.0.mcpb",
+      "file_sha256": "5c68269afae62bb753fee2a2276e3fde4ef2886c9b10379cc4bbf35e71a1aa6e",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ],
+  "_meta": {
+    "io.modelcontextprotocol.registry/publisher-provided": {
+      "runtime": {
+        "node": ">=20.0.0"
+      },
+      "optionalDependencies": {
+        "python": "3.10 or newer, only needed to read and write Pivot .piv and .stk files"
+      }
+    }
+  }
+}

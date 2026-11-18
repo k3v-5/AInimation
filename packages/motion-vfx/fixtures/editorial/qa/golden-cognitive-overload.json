@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "4.0.0",
+  "projectId": "proj_cog_overload",
+  "createdAt": "2026-09-02T00:00:00.000Z",
+  "checksum": "3333333333333333333333333333333333333333333333333333333333333333",
+  "metadata": {
+    "title": "Cognitive Overload Sequence",
+    "profile": "DOCUMENTARY",
+    "frameRate": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationSeconds": 10.0
+  },
+  "tracks": [
+    {
+      "id": "v1",
+      "type": "VIDEO_PRIMARY",
+      "index": 0,
+      "clips": [
+        {
+          "id": "c_dense_01",
+          "assetId": "asset_dense",
+          "timelineRange": { "startSeconds": 0, "durationSeconds": 10.0 }
+        }
+      ]
+    }
+  ],
+  "cognitiveAnalysis": {
+    "overloadIntervals": [
+      {
+        "startSeconds": 2.0,
+        "durationSeconds": 4.5,
+        "cognitiveLoad": 0.92,
+        "primaryDrivers": ["VISUAL_CHAOS", "DENSE_SPEECH"]
+      }
+    ]
+  }
+}

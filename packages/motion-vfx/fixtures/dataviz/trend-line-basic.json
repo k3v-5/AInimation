@@ -1,0 +1,17 @@
+{
+  "id": "trend-line-basic",
+  "input": {
+    "id": "ds_monthly_inflation",
+    "title": "Monthly Inflation 2024",
+    "unit": "%",
+    "points": [
+      { "id": "p1", "label": "Jan", "value": 3.4 },
+      { "id": "p2", "label": "Feb", "value": 3.1 },
+      { "id": "p3", "label": "Mar", "value": 3.5, "emphasis": "PRIMARY" },
+      { "id": "p4", "label": "Apr", "value": 3.2 }
+    ]
+  },
+  "expectedType": "LINE_GRAPH",
+  "expectedElementCount": 10,
+  "expectedAnimationCount": 5
+}

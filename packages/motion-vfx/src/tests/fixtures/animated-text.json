@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "0.2.0",
+  "composition": {
+    "id": "comp_anim_text",
+    "name": "Animated Text Project",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 5
+  },
+  "assets": [],
+  "elements": [
+    {
+      "id": "text_animated",
+      "name": "Animated Headline",
+      "type": "text",
+      "startTime": 0,
+      "duration": 5,
+      "visible": true,
+      "text": "Smooth Fade & Pop",
+      "style": {
+        "fontFamily": "Inter",
+        "fontSize": 72,
+        "fontWeight": 800,
+        "color": { "r": 1, "g": 1, "b": 1, "a": 1 },
+        "lineHeight": 1.2,
+        "letterSpacing": 0,
+        "textAlign": "center"
+      },
+      "transform": {
+        "position": {
+          "type": "vector2",
+          "baseValue": { "x": 540, "y": 960 },
+          "keyframes": [
+            { "time": 0, "value": { "x": 540, "y": 1060 }, "easing": "easeOut" },
+            { "time": 1, "value": { "x": 540, "y": 960 } }
+          ]
+        },
+        "opacity": {
+          "type": "number",
+          "baseValue": 0,
+          "keyframes": [
+            { "time": 0, "value": 0, "easing": "easeOut" },
+            { "time": 0.8, "value": 1 }
+          ]
+        }
+      }
+    }
+  ]
+}

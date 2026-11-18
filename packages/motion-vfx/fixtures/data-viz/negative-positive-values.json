@@ -1,0 +1,30 @@
+{
+  "dataset": {
+    "id": "quarterly_ebitda_swings",
+    "title": "Quarterly Net Margin Performance",
+    "unit": "PERCENT",
+    "columns": [
+      { "key": "quarter", "label": "Quarter", "type": "STRING" },
+      { "key": "margin", "label": "Margin %", "type": "NUMBER" }
+    ],
+    "rows": [
+      { "quarter": "Q1 2024", "margin": 14.2 },
+      { "quarter": "Q2 2024", "margin": -8.5 },
+      { "quarter": "Q3 2024", "margin": -3.1 },
+      { "quarter": "Q4 2024", "margin": 21.0 }
+    ]
+  },
+  "spec": {
+    "type": "BAR_CHART",
+    "spec": {
+      "categoryColumn": "quarter",
+      "valueColumns": ["margin"],
+      "orientation": "VERTICAL",
+      "sort": "INPUT",
+      "showValues": true,
+      "showLabels": true,
+      "showAxis": true,
+      "animationDurationSeconds": 2.0
+    }
+  }
+}

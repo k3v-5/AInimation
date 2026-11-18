@@ -1,10 +1,24 @@
-# IANIMATION - Orquestador de Animación 3D e IA Generativa
+# IANIMATION — Monorepo Maestro Unificado de Animación, Render y VFX para IA
 
-IANIMATION es una aplicación de escritorio nativa de alta fidelidad que automatiza la creación de escenas, personajes 3D, auto-rigging, captura de movimiento y renderizado cinemático audiovisual controlando **Unreal Engine 5** mediante **FastMCP (Model Context Protocol)** e integrando pipelines híbridos de inteligencia artificial (locales y cloud).
+> **Manual Operativo para Agentes de IA**: Lee primero [`AGENTS.md`](AGENTS.md) · **Arquitectura Global**: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) · **Catálogo de 144 Tools MCP + 123 Scripts Blender**: [`docs/MCP_CATALOG.md`](docs/MCP_CATALOG.md) · **Recetas Multi-Motor**: [`docs/WORKFLOW_RECIPES.md`](docs/WORKFLOW_RECIPES.md) · **Configuración MCP**: [`mcp_servers.config.json`](mcp_servers.config.json)
+
+`IANIMATION` unifica en un único repositorio estandarizado **5 subsistemas especializados** en animación 3D/2D, rigging, captura de movimiento, renderizado cinematográfico, texturizado PBR y Motion Graphics/VFX para ser orquestados tanto por ingenieros humanos como por agentes de IA vía **Model Context Protocol (MCP)**:
 
 ---
 
-## Arquitectura del Sistema (Clean Architecture & SOLID)
+## Subsistemas Unificados (`packages/` + Core Raíz)
+
+| Paquete | Origen | Servidor MCP / Runtime | Qué Incluye | Documentación |
+| :--- | :--- | :--- | :--- | :--- |
+| **[`packages/3d-ai-engine/`](packages/3d-ai-engine/)** | Core `IANIMATION` (`backend/`, `scripts/`, `src/`, `src-tauri/`) | `ianimation-3d` (Python FastMCP + Tauri v2) | Orquestador 3D AI-First (Image-to-3D, Quad Remeshing, PBR Baking, Two-Bone IK, Isometría Rígida $SE(3)$, Blender 5.2, UE5 Remote Control/MRQ). **8 tools MCP**. | [`README.md`](packages/3d-ai-engine/README.md) |
+| **[`packages/adobe-suite/`](packages/adobe-suite/)** | `AdobeEngineSuit` *(copia verificada)* | `adobe-animation-mcp` (Node/TS) | Rigging `.psd` para **Character Animator** (14 visemas, Head Turner, física), Illustrator vectorial, TTS 48kHz lip-sync, AE 2.5D y Blender Grease Pencil. **38 tools MCP**. | [`README.md`](packages/adobe-suite/README.md) |
+| **[`packages/motion-vfx/`](packages/motion-vfx/)** | `after-effects-mcp` *(copia verificada)* | `after-effects-motion-engine` (Node/TS) | Motor **After Effects** VFX, óptica, speed-ramps, emulación fílmica, tipografía brutalista, Snorricam, fotónica, FLIR, mixed-media, vlog autónomo y Data-Viz. **72 tools MCP**. | [`README.md`](packages/motion-vfx/README.md) |
+| **[`packages/stick-animator/`](packages/stick-animator/)** | `StictAnimator` *(copia verificada)* | `stykanimate-mcp` (Node.js >=20 + Python codec) | Animación 2D headless de **stick figures con IK**, línea de tiempo, soporte `.styk`/`.piv`/`.stk` y exportadores HTML5/MP4. **26 tools MCP**. | [`README.md`](packages/stick-animator/README.md) |
+| **[`packages/blender-procedural-lab/`](packages/blender-procedural-lab/)** | `Game/Art` *(copia verificada)* | `blender-procedural-lab` (Blender 5.2 Headless) | **123 generadores/exportadores Python** (Shader Balls V5, 40 mapas PBR 2K, Trim Sheets, personajes riggeados, solvers IK, kits modulares 90 activos, props, bestiario y FBX UE5). | [`README.md`](packages/blender-procedural-lab/README.md) |
+
+---
+
+## Arquitectura del Núcleo 3D `IANIMATION` (Clean Architecture & SOLID)
 
 ```mermaid
 graph TD

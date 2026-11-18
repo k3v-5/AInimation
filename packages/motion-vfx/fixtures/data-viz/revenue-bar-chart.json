@@ -1,0 +1,38 @@
+{
+  "dataset": {
+    "id": "annual_revenue_2020_2024",
+    "title": "Annual Company Revenue",
+    "description": "Historical revenue growth in millions USD",
+    "unit": "CURRENCY",
+    "source": {
+      "id": "src_sec_filing_2024",
+      "title": "SEC 10-K Annual Report",
+      "publisher": "U.S. Securities and Exchange Commission",
+      "url": "https://www.sec.gov/edgar"
+    },
+    "columns": [
+      { "key": "year", "label": "Year", "type": "STRING" },
+      { "key": "revenue", "label": "Revenue (M$)", "type": "NUMBER" }
+    ],
+    "rows": [
+      { "year": "2020", "revenue": 142.5 },
+      { "year": "2021", "revenue": 189.2 },
+      { "year": "2022", "revenue": 245.8 },
+      { "year": "2023", "revenue": 312.4 },
+      { "year": "2024", "revenue": 398.1 }
+    ]
+  },
+  "spec": {
+    "type": "BAR_CHART",
+    "spec": {
+      "categoryColumn": "year",
+      "valueColumns": ["revenue"],
+      "orientation": "VERTICAL",
+      "sort": "ASCENDING",
+      "showValues": true,
+      "showLabels": true,
+      "showAxis": true,
+      "animationDurationSeconds": 2.5
+    }
+  }
+}

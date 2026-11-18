@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "0.2.0",
+  "composition": {
+    "id": "comp_nested_groups",
+    "name": "Nested Groups Project",
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "duration": 5
+  },
+  "assets": [],
+  "elements": [
+    {
+      "id": "group_a",
+      "name": "Group Root",
+      "type": "group",
+      "startTime": 0,
+      "duration": 5,
+      "visible": true,
+      "transform": {
+        "position": {
+          "type": "vector2",
+          "baseValue": { "x": 100, "y": 100 },
+          "keyframes": []
+        }
+      },
+      "children": [
+        {
+          "id": "group_b",
+          "name": "Group Sub",
+          "type": "group",
+          "startTime": 0,
+          "duration": 5,
+          "visible": true,
+          "parentId": "group_a",
+          "transform": {
+            "position": {
+              "type": "vector2",
+              "baseValue": { "x": 50, "y": 50 },
+              "keyframes": []
+            }
+          },
+          "children": [
+            {
+              "id": "text_leaf",
+              "name": "Leaf Text",
+              "type": "text",
+              "startTime": 0,
+              "duration": 5,
+              "visible": true,
+              "parentId": "group_b",
+              "text": "Deeply Nested",
+              "style": {
+                "fontFamily": "Inter",
+                "fontSize": 32,
+                "fontWeight": 400,
+                "color": { "r": 1, "g": 1, "b": 1, "a": 1 },
+                "lineHeight": 1.2,
+                "letterSpacing": 0,
+                "textAlign": "left"
+              },
+              "transform": {
+                "position": {
+                  "type": "vector2",
+                  "baseValue": { "x": 25, "y": 25 },
+                  "keyframes": []
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

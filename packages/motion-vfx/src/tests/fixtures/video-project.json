@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "0.2.0",
+  "composition": {
+    "id": "comp_video_proj",
+    "name": "Video Project",
+    "width": 1920,
+    "height": 1080,
+    "fps": 60,
+    "duration": 15
+  },
+  "assets": [
+    {
+      "id": "main_video_asset",
+      "type": "video",
+      "source": { "path": "assets/footage.mp4" },
+      "metadata": { "width": 1920, "height": 1080, "duration": 30, "fps": 60 }
+    }
+  ],
+  "elements": [
+    {
+      "id": "video_clip_1",
+      "name": "Video Layer 1",
+      "type": "video",
+      "startTime": 0,
+      "duration": 15,
+      "visible": true,
+      "assetId": "main_video_asset",
+      "sourceStartTime": 5
+    }
+  ]
+}

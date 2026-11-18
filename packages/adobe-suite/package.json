@@ -1,0 +1,41 @@
+{
+  "name": "adobe-animation-mcp",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server for 2D Animation, Character Animator, Illustrator, After Effects, and Blender",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": {
+    "adobe-animation-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"fs.mkdirSync('dist/core/scripts', {recursive:true}); fs.copyFileSync('src/core/scripts/edge_synth.py', 'dist/core/scripts/edge_synth.py')\"",
+    "start": "node dist/index.js",
+    "test": "vitest run tests/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/k3v-5/AdobeEngineSuit.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "adobe",
+    "character-animator",
+    "illustrator",
+    "after-effects",
+    "animation",
+    "blender"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "ag-psd": "^24.0.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.0",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.5"
+  }
+}

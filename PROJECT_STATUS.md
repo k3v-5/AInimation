@@ -1,12 +1,22 @@
-# Estado del Proyecto — IANIMATION (Orquestador 3D con IA y MCP)
+# Estado del Proyecto — IANIMATION (Monorepo Unificado de Animación, Render y VFX para IA)
 
-> **Última actualización**: 2026-11-06  
-> **Estado general**: Orquestador completo, verificado y operativo al 100%. Motor Image-to-3D (`backend/ai/neural_3d_engine.py`) actualizado al estándar de **Estudio Profesional (AAA Studio Upgrade)** con tres pilares fundamentales:
+> **Última actualización**: 2026-11-18 (Unificación Completa del Monorepo en 5 Subsistemas, Gateway MCP Unificado y Documentación Maestra AI-First)  
+> **Estado general**: Monorepo unificado y validado al 100% con **0 archivos corruptos/vacíos**, consolidando **5 paquetes especializados**, **144 herramientas MCP** y **123 generadores/exportadores procedurales en Blender 5.2 LTS**:
+> - **Hito de Unificación (`scripts/unify_monorepo.py` y `packages/INGESTION_MANIFEST.json`)**:
+>   1. **`packages/3d-ai-engine/` (`ianimation-3d`)**: Descriptor enlazado a `backend/`, `scripts/`, `src/`, `src-tauri/` (**8 tools MCP**: 6 core 3D/UE5/Blender + `list_monorepo_subsystems` y `search_monorepo_tools`).
+>   2. **`packages/adobe-suite/` (`adobe-animation-mcp`)**: **139 archivos intactos** migrados de `E:\Disco F\Dev\AdobeEngineSuit` (**38 tools MCP** activas para Character Animator `.psd`, 14 visemas, Illustrator vectorial, Voz Neural 48kHz, After Effects 2.5D y Blender Grease Pencil; omitidos 358 archivos en blanco/corruptos en origen).
+>   3. **`packages/motion-vfx/` (`after-effects-motion-engine`)**: **1,766 archivos intactos** migrados de `E:\Disco F\Dev\after-effects-mcp` (**72 tools MCP** de Motion Graphics, óptica, speed-ramps, emulación fílmica, tipografía brutalista, Snorricam, fotónica, FLIR, mixed-media, vlog CLI y Data-Viz; omitidos 333 archivos corruptos/vacíos en origen).
+>   4. **`packages/stick-animator/` (`stykanimate-mcp`)**: **377 archivos intactos** (100% íntegro) migrados de `E:\Disco F\Dev\StictAnimator` (**26 tools MCP** para stick figures + Cinemática Inversa `.styk`/`.piv`/`.stk`, 7 CLIs y 3 ejemplos).
+>   5. **`packages/blender-procedural-lab/` (`Game/Art`)**: **134 archivos intactos** (123 scripts `.py` clasificados en `generators/` + `exporters/` y 10 docs arquitectónicos en `docs/`).
+> - **Gateway Unificado (`backend/mcp/unified_registry.py`) y Configuración (`mcp_servers.config.json`)**: Registro Pydantic v2 (`StrictBaseModel`, Zero-Any) con validación de integridad física, protección contra path traversal y búsqueda transversal entre dominios (`unified_mcp_server` + `mcp_server` retrocompatible con 6 tools).
+> - **Documentación Maestra para IA**: [`AGENTS.md`](AGENTS.md), [`README.md`](README.md), [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/MCP_CATALOG.md`](docs/MCP_CATALOG.md) y [`docs/WORKFLOW_RECIPES.md`](docs/WORKFLOW_RECIPES.md).
+> - **Hito Anterior (2026-11-07 — Ragdoll Firefighter 3D-First)**: Erradicación de pintura 2D fantasma vía BVH simétrico, `Hero_FireAxe` 3D con isometría rígida $SE(3)$ ($\sigma^2 < 10^{-10}$), material PBR mate de arpillera y 3/3 + 5/5 tests verdes.
 > 1. **Motor de Retopología y Quad Remeshing (`backend/ai/quad_remesher.py`)**: Conversión automatizada de mallas densas triangulares / marching-cubes en topología regular de cuadriláteros (*quad-dominant* y *pure-quads* vía subdivisión Catmull-Clark), alineación con tensores de curvatura principal $(v_{min}, v_{max})$, métricas de aspecto e integridad manifold, y exportadores a OBJ (con polígonos de 4 vértices `f v1 v2 v3 v4`) y glTF 2.0.
 > 2. **Baker PBR High-to-Low Poly (`backend/ai/pbr_baker.py`)**: Transferencia de micro-relieve y detalles de alta frecuencia desde el esculpido denso high-poly (arrugas, costuras mecánicas, micro-poros) hacia la malla low-poly retopologizada. Generación de mapas de normales en espacio tangente (TBN ortogonalizado MikkTSpace), mapas de cavidad/curvatura, oclusión ambiental (AO) y empaquetado glTF estándar ORM (Occlusion-Roughness-Metallic).
 > 3. **Dinámicas de Personaje y Twist Bones (`backend/ai/character_dynamics.py`)**: Inyección anatómica de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) para suprimir el colapso de volumen ("candy-wrapper artifact") durante rotaciones axiales. Simulación física secundaria de resortes-amortiguador (Verlet spring-damper) para accesorios dinámicos (cabello, cables, capas, colas) con preservación exacta de longitud y hulls de colisión esférica corporales.
 > 4. **Cinemática Avanzada, IK Analítico y Anti-Colisión (`backend/ai/advanced_kinematics.py` & `scripts/build_ragdoll_firefighter_production.py`)**: Solucionador analítico Two-Bone IK para extremidades, restricciones de rotación angular anatómicas estrictas (rodillas con flexión exclusivamente hacia atrás $[-135^\circ, 0^\circ]$, codos con bisagra exclusivamente hacia adelante $[0^\circ, 135^\circ]$), cápsulas anti-colisión corporal (`Hull_Torso`) para erradicar solapamientos de geometría o penetración de ropa, y generador procedural de ciclos de marcha bípeda/robótica con balanceo pélvico, balanceo de brazos contralateral y contacto firme con el suelo a $Z=0.00$m.
-> Suite global de pruebas con **910/910 tests backend pasados al 100%** (incluyendo los 6 tests de cinemática avanzada y los 6 tests de integración nativa con Blender 5.2.0 LTS), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux con auto-detección en `E:/Blender/blender.exe`).
+> 5. **Articulación Modular, Descomposición de Piezas e Isometría Rígida $SE(3)$ (`backend/ai/modular_articulation.py`)**: Solución de raíz para erradicar la deformación elástica de accesorios duros (casco, hacha, armas, escudos) y cabezas de marioneta/stop-motion (cráneo, cabello de estambre, ojos de botón, sonrisa cosida). Segmentación automatizada en ensamblajes rígidos con vinculación isométrica $SE(3)$ ($\sigma^2 = 0.000000$ de varianza de distancia entre vértices), saneamiento bilateral y axilar de influencias cruzadas (brazos con 0% de peso en torso y hacha), poda bmesh de aristas puente degeneradas ($>0.25$m), y generación de colecciones modulares en el Outliner de Blender (`Modular_Parts`) para exportación limpia a Unreal Engine 5.
+> Suite global de pruebas con **915/915 tests backend pasados al 100%** (incluyendo los 5 tests de articulación modular, los 6 tests de cinemática avanzada y los 6 tests de integración nativa con Blender 5.2.0 LTS), **11/11 tests frontend de Vitest pasados**, **0 errores en TypeScript estricto** (`strict: true`, Zero-Any). Compatible de forma nativa y multiplataforma (Windows y Linux con auto-detección en `E:/Blender/blender.exe`).
 
 ---
 
@@ -76,12 +86,31 @@ graph TD
 - `pbr_baker.py`: Baker PBR High-to-Low Poly por texel para mapas de normales en espacio tangente con TBN ortogonalizado MikkTSpace, oclusión ambiental (AO), mapas de cavidad/curvatura y packing glTF ORM.
 - `character_dynamics.py`: Inyector de huesos de torsión (`UpperArm_Twist`, `LowerArm_Twist`, `UpperLeg_Twist`) y simulador físico de resortes Verlet con amortiguamiento y detección de colisiones esféricas anatómicas.
 - `advanced_kinematics.py`: Motor de cinemática inversa analítica (Two-Bone IK), límites angulares mecánicos (`Limit Rotation`), colisionadores de cápsulas anti-solapamiento (`CollisionCapsule`) y generador de ciclos de marcha bípedos/robóticos libres de penetración.
+- `modular_articulation.py`: Motor de descomposición modular de mallas, isometría rígida $SE(3)$ con preservación estricta de distancias ($\sigma^2 = 0.000000$), aislamiento bilateral/axilar y generador de scripts para colecciones modulares en Blender 5.2.0 LTS.
 - `neural_3d_engine.py`: Motor neural 3D unificado con resolución dinámica multiplataforma de rutas, integración de quad remeshing, PBR baking y twist bones.
 - `audio.py`: Análisis de audio con extracción de BPM, timestamps de beats, envolvente de energía y separación de stems.
 - `image_to_3d.py`: Conversión de imágenes 2D a mallas 3D estructuradas con generador procedimental GLB para tests.
 - `auto_rig.py`: Detección anatómica bípeda, inyección de esqueleto estándar de 53 huesos y skinning.
 - `mocap.py`: Extracción de movimiento 3D desde video (GVHMR) y rotoscopia/limpieza de fondos.
 - `neural.py`: Cliente headless de ComfyUI para pases estéticos finales con ControlNet/AnimateDiff.
+
+### Módulo 3.1 — Solución de Raíz a Deformación de Accesorios, Sombras Parásitas y Verificación Visual (`scripts/build_clean_watertight_ragdoll.py`)
+- **Diagnóstico Forense de los Fallos Previos**:
+  * **Por qué pasó el Frame 36 anteriormente**: Las pruebas unitarias previas comprobaban matrices NumPy sintéticas en aislamiento y el pipeline validaba únicamente `returncode == 0` de Blender (Blender renderizaba sin estrellarse, reportando falso positivo).
+  * **Causa de la vela/cortina en Frame 36 y la cuña azul en Frame 12**: Hunyuan3D extruyó la sombra de contacto 2D de la imagen original en una lámina poligonal parásita detrás del abrigo ($Y > 0.19$) y un puente de inter-piernas de 1,600+ caras con textura UV no pintada (fondo gris-azul del atlas). Al caminar, la pierna izquierda arrastraba esa lámina como una vela.
+  * **Causa de las hendiduras y agujeros al "dividir en partes"**: Cortar una malla continua con planos de coordenadas (`cen.x >= 0.28`) cercena polígonos sin socketing, dejando boquetes vacíos en axilas, pecho y cercenando el hacha en pedazos.
+- **Implementación Técnica Definitiva**:
+  * Poda bmesh de 3,115 caras parásitas: lámina posterior ($Y > 0.19, Z < 0.48, |N_y| > 0.65$), sombra tras mano izquierda ($X > 0.25, Y > 0.08$) y puente inter-piernas ($|X| < 0.08, Z < 0.48, Y > -0.05$).
+  * Sellado de bucles de borde abiertos con `holes_fill` para garantizar colectores cerrados manifold.
+  * Vinculación matemática estricta $SE(3)$ para Head Assembly ($Z \ge 0.98 \to Head=1.000$) y Fire Axe ($0.60 \le Z < 0.98, 0.05 \le X \le 0.30, Y \le -0.05 \to Spine=1.000$) con $0.000$ de influencia de brazos y piernas.
+  * Transición de pesos $C^\infty$ (Linear Blend Skinning) en la costura de hombros ($X \in [0.24, 0.32]$) y bastilla de chaqueta a muslos ($Z \in [0.44, 0.50]$), preservando continuidad superficial sin rupturas.
+- **Suite Automatizada de Integridad Geométrica (`tests/backend/test_animation_visual_integrity.py`)**:
+  * Inspecciona la malla deformada real en Blender vía `evaluated_get(depsgraph)` en keyframes 1, 12, 24 y 36.
+  * Varianza de distancia en Cabeza: $\sigma^2 = 0.00000000000000$ (0.00% deformación).
+  * Varianza de distancia en Hacha: $\sigma^2 = 0.00000000000000$ (0.00% deformación).
+  * Vértices en corredor inter-piernas: 0 vértices en todos los frames evaluados.
+  * Envolventes físicas de contención acotadas sin explosión de tensores.
+  * 3/3 tests automatizados pasando al 100%.
 
 ### Módulo 4 — Servidor FastMCP y Motor Copiloto HITL (`backend/mcp/`)
 - `server.py`: Servidor FastMCP con registro de herramientas y paridad de invocación dual.
@@ -465,6 +494,27 @@ graph TD
         - Contenedor animado glTF 2.0: [`outputs/scenes/ragdoll_firefighter_walk.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.glb) (1.76 MB).
         - Video de animación MP4 H.264: [`outputs/renders/ragdoll_firefighter_walk.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.mp4) (335 KB, 24 FPS, 48 cuadros).
         - Animación GIF en bucle: [`outputs/renders/ragdoll_firefighter_walk.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.gif) (2.44 MB).
+
+    - **12. Producción Neural 3D, Atlas de Textura Conforme 360° PBR UV-Pinned y Sanitización de Pesos Skinning**:
+      - **Generación Neural 3D Watertight Estanca**:
+        - Inferencia mediante Hunyuan3D-2 (`outputs/cache/neural_3d/neural_shape_dc720e0e2fa0a11ca47469dd_res384_s50.glb`, 24.4 MB) y pre-decimación a 44,595 caras poligonales (`prep_test.glb`).
+        - Pintado neural 360° mediante Hunyuan3D-Paint 2.1 (`hunyuan_painted_ragdoll.glb`) generando mapas de textura PBR completos en resolución 2048x2048 (`Image_0.png` albedo y `Image_1.png` metallic-roughness) desplegados en `UVMap`.
+        - Erradicación del "texture swimming" y estiramiento plano horizontal: la textura está fijada 100% a las coordenadas UV de los vértices, deformándose de manera rígidamente anatómica con los huesos sin resbalar por la superficie.
+      - **Sanitización Rigurosa de Pesos y Erradicación de Deformaciones Parasitarias**:
+        - Detección y erradicación de 4,530 asignaciones residuales de huesos del brazo en el torso y espalda mediante `vg.remove()`, eliminando membranas o estiramientos de tela ("alas de murciélago").
+        - Aislamiento sagital bilateral estricto (huesos izquierdos confinados a $X > -0.05$, huesos derechos confinados a $X < 0.05$).
+        - Nivelación del faldón dorsal inferior ($Y \le 0.14$m) eliminando la extrusión de sombra que provocaba solapamiento con las piernas.
+      - **Mecánica Locomotriz Contralateral y Restricciones**:
+        - Marcha bípeda contralateral coordinada: pierna izquierda avanza $\implies$ brazo derecho avanza con flexión de codo ($-25^\circ$), brazo izquierdo oscila hacia atrás ($+16^\circ$) con extensión relajada.
+        - Restricción de bisagra estricta de rodilla ($[0^\circ, 135^\circ]$ local X) y codo ($[-135^\circ, 0^\circ]$ local X).
+        - Balanceo pélvico en eje local Y (UP mundial $+Z$) con amortiguación sinusoidal y compensación de inclinación espinal.
+      - **Entregables Finales de Producción**:
+        - Escena maestra: [`outputs/scenes/ragdoll_firefighter_walk.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.blend) (133k vértices, rig de 24 huesos con twist bones y materiales PBR).
+        - Activo glTF 2.0: [`outputs/scenes/ragdoll_firefighter_walk.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.glb).
+        - Video MP4: [`outputs/renders/ragdoll_firefighter_walk.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.mp4).
+        - Animación GIF: [`outputs/renders/ragdoll_firefighter_walk.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.gif).
+        - Cuadros de inspección verificados: [`ragdoll_angle_000_front.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_000_front.png), [`ragdoll_angle_045_hero34.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_045_hero34.png), [`ragdoll_angle_090_profile.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_090_profile.png), [`ragdoll_angle_180_dorsal.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_180_dorsal.png), [`walk_f12_left_step.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/walk_f12_left_step.png), [`walk_f24_plant.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/walk_f24_plant.png), [`walk_f36_right_step.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/walk_f36_right_step.png).
+        - Script de automatización: [`scripts/build_neural_ragdoll_firefighter_production.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/build_neural_ragdoll_firefighter_production.py).
         - Cuadros canónicos de inspección visual:
           - Frontal 0°: [`ragdoll_angle_000_front.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_000_front.png)
           - Perfil 90°: [`ragdoll_angle_090_profile.png`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_angle_090_profile.png)
@@ -473,6 +523,33 @@ graph TD
         - Script maestro de automatización: [`scripts/build_ragdoll_firefighter_production.py`](file:///e:/Disco%20F/Dev/IANIMATION/scripts/build_ragdoll_firefighter_production.py).
         - Documento Showcase: [`ragdoll_firefighter_showcase.md`](file:///C:/Users/sasuk/.gemini/antigravity/brain/25a9dd69-1a8e-409b-85e3-41655796e664/ragdoll_firefighter_showcase.md).
         - Pruebas unitarias: `tests/backend/test_advanced_kinematics.py` (**6/6 tests pasados al 100% en 1.95s**).
+
+    - **13. Solución Estructural de Articulación Modular: Desacoplamiento de Partes Rígidas y Ponderación Rígida Isométrica (Zero Deformation Helmet & Axe)**:
+      - **Diagnóstico de la Deformación del Casco (*Smooth Skinning Bleed*)**:
+        - Se descubrió que la transferencia de pesos inicial asignó de forma parásita miles de vértices del casco duro a 9 huesos móviles: `Shoulder_R` (4,484 v), `UpperArm_R` (3,370 v), `Shoulder_L` (3,103 v), `UpperArm_L` (2,197 v), `Neck` (5,358 v) y `Chest` (1,041 v).
+        - Al oscilar los brazos durante la marcha bípeda, los hombros y brazos estiraban y retorcían los lados opuestos del casco, deformando el ala rígida como si fuera de goma.
+      - **Implementación de la Solución de Raíz (Arquitectura Modular y Rigging Rígido Isométrico $SE(3)$)**:
+        - **Desacoplamiento Modular en Partes Funcionales**:
+          - `Part_Helmet` (Casco Rígido de Bombero): 21,840 vértices clasificados por cota sagital ($Z \ge 1.38$m) y firma cromática roja ($R > 0.35, G < 0.28, B < 0.28, Z \ge 1.20$m). Se eliminó el 100% de cualquier peso de brazos, hombros, cuello o torso y se asignó estrictamente `Head = 1.00`.
+          - `Part_Axe` (Hacha de Bombero): 504 vértices en cintura/vientre con asignación exclusiva y rígida `Spine = 1.00`, eliminando el retorcimiento del mango o filo.
+          - `Part_Head_Hair` (Cabeza y Cabello): Aislamiento sagital estricto; para $Z \ge 1.28$m se asignó `Head = 1.00`, y para $1.15 \le Z < 1.28$m se aplicó una transición lineal controlada con `Neck` para permitir el giro natural del cuello sin fisuras.
+          - `Part_Body_Coat` (Chaqueta y Torso): Erradicación completa de influencias de brazos y piernas, vinculado únicamente a `Pelvis`, `Spine` y `Chest`.
+          - `Part_Limbs` (Brazos y Piernas): Aislamiento bilateral estricto con eliminación de pesos de torso y pelvis por debajo de $Z = 0.58$m, suprimiendo la membrana residual de la entrepierna.
+        - **Colección de Inspección Modular en Blender (`Modular_Parts`)**:
+          - Se integró la colección `Modular_Parts` en el Outliner de Blender conteniendo `Part_Helmet` como prop desacoplado independiente sin modificador Armature, listo para inspección, swap de accesorios o exportación a sockets de Unreal Engine 5.
+      - **Verificación Matemática de Invariancia Isométrica**:
+        - Medición de distancias inter-vértice en el casco evaluadas a través del depsgraph en los cuadros 1, 12, 24, 36 y 48:
+          - Cuadro 1: $d(0,1) = 0.098202$, $d(2,3) = 0.058002$, $d(4,5) = 0.053535$
+          - Cuadro 12: $d(0,1) = 0.098202$, $d(2,3) = 0.058002$, $d(4,5) = 0.053535$
+          - Cuadro 24: $d(0,1) = 0.098202$, $d(2,3) = 0.058002$, $d(4,5) = 0.053535$
+          - Cuadro 36: $d(0,1) = 0.098202$, $d(2,3) = 0.058002$, $d(4,5) = 0.053535$
+          - Cuadro 48: $d(0,1) = 0.098202$, $d(2,3) = 0.058002$, $d(4,5) = 0.053535$
+          - **Varianza de distancia: $\sigma^2 = 0.000000$ (Rigidez isométrica 100% matemática, CERO deformación)**.
+      - **Entregables Sincronizados**:
+        - Escena: [`outputs/scenes/ragdoll_firefighter_walk.blend`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.blend) (4.91 MB).
+        - GLB: [`outputs/scenes/ragdoll_firefighter_walk.glb`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/scenes/ragdoll_firefighter_walk.glb) (8.88 MB).
+        - Video: [`outputs/renders/ragdoll_firefighter_walk.mp4`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.mp4).
+        - GIF: [`outputs/renders/ragdoll_firefighter_walk.gif`](file:///e:/Disco%20F/Dev/IANIMATION/outputs/renders/ragdoll_firefighter_walk.gif).
 
 ---
 

@@ -1,0 +1,11 @@
+{
+  "id": "ds_bar_negative",
+  "title": "Net Operating Margin",
+  "unit": "%",
+  "values": [
+    { "label": "Product A", "value": 15.4 },
+    { "label": "Product B", "value": -8.2 },
+    { "label": "Product C", "value": 22.0 },
+    { "label": "Product D", "value": -14.5 }
+  ]
+}

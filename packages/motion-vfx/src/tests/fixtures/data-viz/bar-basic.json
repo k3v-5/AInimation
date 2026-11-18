@@ -1,0 +1,15 @@
+{
+  "id": "ds_bar_basic",
+  "title": "Quarterly Revenue Growth",
+  "unit": "USD",
+  "source": {
+    "type": "STATIC",
+    "description": "Financial Department Report Q4"
+  },
+  "values": [
+    { "label": "Q1", "value": 120.5 },
+    { "label": "Q2", "value": 145.2 },
+    { "label": "Q3", "value": 138.0 },
+    { "label": "Q4", "value": 190.4 }
+  ]
+}

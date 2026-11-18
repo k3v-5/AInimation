@@ -1,0 +1,88 @@
+# StykAnimate MCP server
+
+An MCP server for StykAnimate, the open-source stick figure animation app. It opens StykAnimate
+(`.styk`, `.stkz`, `.stykmov`) and Pivot (`.piv`, `.stk`) projects, reports the animation and its
+rig, and changes the animation without a screen.
+
+## Install
+
+```sh
+npx -y github:ghassenTn/stykanimate-mcp
+```
+
+Pin a release with `npx -y github:ghassenTn/stykanimate-mcp#v0.1.0`.
+
+Local stdio transport. `stykanimate-mcp --transport http --port 7331` serves Streamable HTTP on
+localhost. Python 3.10 or newer is needed only for Pivot files; the server starts the bundled
+codec on demand.
+
+## How to use it
+
+1. `capabilities` — what this server supports and which projects are open.
+2. `project_open` — open a file; returns a project id.
+3. `project_describe` — the structure of the project.
+4. `project_timeline` — the keyframes and the playback timeline.
+5. `figure_list`, `figure_describe` — the figures and their joints.
+6. `pose_evaluate` — where every joint is at a tick.
+7. Change something: `pose_set`, `figure_transform`, `style_set`, `keyframe_edit`, `layer_edit`.
+8. `pose_evaluate` again to check the result.
+9. `project_save` to write it out.
+
+## Conventions
+
+- A **frame number** is a place on the timeline, one of the positions the playhead moves through.
+  The pose and figure tools use it, because they act on what the animation shows. The "playback"
+  section of `project_timeline` lists them.
+- A **keyframe number** in `keyframe_edit` and `keyframe_timing` is a stored pose, one entry in
+  the project's pose list. The "keyframes" section of `project_timeline` lists them, with the
+  place each one is shown at. On a project with one keyframe per moment the two are the same
+  number.
+- A **figure** is named by its instance id; a **joint** by its handle id. Both come from
+  `figure_list` and `figure_describe`.
+- Angles are absolute and measured from the parent joint. `pose_set` takes degrees or radians;
+  `figure_transform` takes degrees.
+- Colours are `"#rrggbb"` or three red, green and blue bytes. A layer takes a palette name
+  instead: blue, violet, rose, orange, green or teal.
+- Every tool that changes something makes one undoable step. `history_undo` and `history_redo`
+  walk back and forth.
+- Tools take an optional `project` id. Without one they act on the project used most recently.
+
+## Tools
+
+| Tool | What it does |
+| --- | --- |
+| `capabilities` | What this server supports, and which projects are open. |
+| `project_open` | Open a project file. |
+| `project_close` | Close a project. |
+| `project_describe` | The structure of the open project. |
+| `project_validate` | Run the editor's own document validation. |
+| `project_save` | Write the project to a file. |
+| `project_timeline` | The keyframes and the playback timeline. |
+| `project_seek` | Move the playhead. |
+| `figure_list` | The figures the animation shows. |
+| `figure_describe` | One figure's definition, rig and instance. |
+| `figure_add` | Add a figure instance. |
+| `figure_duplicate` | Copy a figure, with its pose. |
+| `figure_delete` | Remove a figure from keyframes. |
+| `figure_transform` | Move, rotate, scale, flip, align, centre or re-order figures. |
+| `pose_evaluate` | The solved rig at a tick. |
+| `pose_set` | Set a figure's root, scale and joint angles, lengths and positions. |
+| `pose_ik_set` | Move an inverse kinematics target. |
+| `pose_set_ik` | Turn a joint's inverse kinematics controller on or off, or change it. |
+| `pose_reset` | Return a figure to its rest pose. |
+| `keyframe_edit` | Add, delete, duplicate or move keyframes. |
+| `keyframe_timing` | Change a keyframe's length, the frame rate or the canvas size. |
+| `layer_list` | The layers of the project. |
+| `layer_edit` | Create, rename, delete, reorder, fill, show, hide, lock and unlock layers. |
+| `style_set` | Recolour a figure, a part, a layer or the scene. |
+| `history_undo` | Undo the last change. |
+| `history_redo` | Redo the last undone change. |
+
+## Resources
+
+`stykanimate://projects`, `stykanimate://projects/{project}/document`,
+`stykanimate://projects/{project}/pose`.
+
+## Licence
+
+GPL-3.0-or-later. A derivative of the StykAnimate app; see NOTICE.md.
